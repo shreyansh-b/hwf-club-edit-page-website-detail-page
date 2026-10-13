@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Edit Club – Webpage Detail (Redesign)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  color-scheme:light;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+  --bg:#ebebeb; --surface:#ffffff; --surface-2:#f7f7f9; --line:#e0e0e0; --line-strong:#bdbdbd; --tab-off:#808080;
+  --ink:#212121; --ink-2:#424242; --ink-3:#757575;
+  --blue-900:#283593; --blue-700:#303f9f; --blue-600:#3f51b5; --blue-500:#5c6bc0; --blue-300:#9fa8da; --blue-100:#e8eaf6; --blue-50:#f3f4fb;
+  --drop-bg:#f3f6ff; --drop-hover:#e8eaf6;
+  --ok:#157a4a; --ok-bg:#e2f5ea; --warn:#9a5b00; --warn-bg:#fff1d6; --err:#d32f2f; --err-bg:#fdecea;
+  --shadow:0 1px 3px rgba(0,0,0,.14),0 1px 2px rgba(0,0,0,.08);
+}
+
+
+html{height:100%;scroll-padding-top:calc(env(safe-area-inset-top,0px) + 90px);scroll-behavior:smooth}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;min-height:100%;background:var(--bg);color:var(--ink);font-family:"Roboto",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;font-size:15px;line-height:1.5}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--blue-500);outline-offset:2px;border-radius:6px}
+
+/* ---------- App shell ---------- */
+.topbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:30;background:linear-gradient(100deg,var(--blue-900),var(--blue-600));color:#fff;display:flex;align-items:center;gap:16px;padding:10px 20px;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+.brand{display:flex;align-items:center;gap:10px;font-weight:800;letter-spacing:.2px}
+.brand .mark{width:34px;height:34px;border-radius:50%;background:#fff;color:var(--blue-700);display:grid;place-items:center;font-size:18px}
+.brand small{display:block;font-weight:500;opacity:.8;font-size:11px;margin-top:-2px}
+.topbar .tag{margin-left:auto;display:flex;align-items:center;gap:14px;font-size:13px}
+.topbar .tag .pill{background:rgba(255,255,255,.14);padding:6px 12px;border-radius:99px;font-weight:600}
+.menu-btn{display:none;background:rgba(255,255,255,.14);border:0;color:#fff;width:38px;height:38px;border-radius:10px;cursor:pointer;font-size:18px}
+.shell{display:grid;grid-template-columns:230px minmax(0,1fr);min-height:calc(100vh - 58px)}
+.side{background:var(--surface);border-right:1px solid var(--line);padding:14px 10px;position:sticky;top:calc(env(safe-area-inset-top,0px) + 58px);align-self:start;height:calc(100vh - 58px);overflow:auto}
+.side a{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:10px;color:var(--ink-2);text-decoration:none;font-weight:600;font-size:13.5px;cursor:pointer}
+.side a:hover{background:var(--blue-50);color:var(--blue-700)}
+.side a.on{background:var(--blue-100);color:var(--blue-700)}
+.side a span.i{width:22px;text-align:center;font-size:16px}
+main{padding:22px clamp(14px,3vw,34px) 120px;min-width:0}
+.crumbs{font-size:13px;color:var(--ink-3);margin-bottom:10px}
+.crumbs b{color:var(--ink-2);font-weight:600}
+.titlebar{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:20px}
+.titlebar .ico{width:54px;height:54px;border-radius:16px;background:var(--blue-600);color:#fff;display:grid;place-items:center;font-size:28px;box-shadow:var(--shadow)}
+.titlebar h1{margin:0;font-size:clamp(22px,3.2vw,32px);font-weight:800;letter-spacing:-.4px;color:var(--blue-700)}
+.titlebar .grow{flex:1}
+.btn{display:inline-flex;align-items:center;gap:8px;border:1px solid transparent;border-radius:10px;padding:10px 16px;font-weight:700;font-size:14px;cursor:pointer;transition:background .15s,transform .05s}
+.btn:active{transform:translateY(1px)}
+.btn.primary{background:var(--blue-600);color:#fff}
+.btn.primary:hover{background:var(--blue-700)}
+.btn.ghost{background:var(--surface);border-color:var(--line-strong);color:var(--blue-700)}
+.btn.ghost:hover{background:var(--blue-50)}
+
+/* ---------- Tabs ---------- */
+.tabs{display:flex;gap:4px;background:var(--surface);border:1px solid var(--line);padding:5px;border-radius:14px;box-shadow:var(--shadow);overflow-x:auto;margin-bottom:22px}
+.tab{flex:1 0 auto;border:0;background:transparent;padding:12px 18px;border-radius:10px;font-weight:700;color:var(--ink-2);cursor:pointer;white-space:nowrap;display:flex;align-items:center;justify-content:center;gap:8px}
+.tab:hover{background:var(--blue-50)}
+.tab[aria-selected="true"]{background:var(--blue-600);color:#fff;box-shadow:0 6px 16px -8px var(--blue-600)}
+.panel[hidden]{display:none}
+.stub{background:var(--surface);border:1px dashed var(--line-strong);border-radius:16px;padding:60px 20px;text-align:center;color:var(--ink-3)}
+
+/* ---------- Webpage detail layout ---------- */
+.wd{display:block;max-width:1100px;margin:0 auto}
+.jump{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.jump a{font-size:13px;font-weight:700;color:var(--blue-700);background:var(--blue-100);padding:6px 12px;border-radius:99px;text-decoration:none}
+.jump a:hover{background:var(--blue-300);color:#0c1030}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);margin-bottom:22px;overflow:hidden}
+.card>header{display:flex;align-items:center;gap:14px;padding:18px 22px;border-bottom:1px solid var(--line);background:linear-gradient(180deg,var(--blue-50),var(--surface))}
+.card>header .ci{width:40px;height:40px;border-radius:12px;background:var(--blue-600);color:#fff;display:grid;place-items:center;font-size:19px;flex:none}
+.card>header h2{margin:0;font-size:17px;font-weight:800}
+.card>header p{margin:0;font-size:13px;color:var(--ink-3)}
+.card .body{padding:22px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+.full{grid-column:1/-1}
+label.lbl,.lbl{display:block;font-weight:700;font-size:13.5px;margin-bottom:7px;color:var(--ink)}
+.req{color:var(--err);margin-left:3px}
+.help{font-size:12px;color:var(--ink-3);margin-top:6px}
+.field input[type=text],.field input[type=url],.field select{width:100%;background:var(--surface-2);border:1.5px solid var(--line);border-radius:11px;padding:11px 14px;transition:border-color .15s,box-shadow .15s}
+.field input:hover,.field select:hover{border-color:var(--line-strong)}
+.field input:focus,.field select:focus{outline:none;border-color:var(--blue-500);box-shadow:0 0 0 4px color-mix(in srgb,var(--blue-500) 22%,transparent);background:var(--surface)}
+.field.bad input,.field.bad select,.field.bad .editor{border-color:var(--err)}
+.err-msg{color:var(--err);font-size:12.5px;font-weight:600;margin-top:6px;display:none}
+.field.bad .err-msg,.drop-wrap.bad .err-msg{display:block}
+
+/* Segmented yes/no */
+.seg{display:inline-flex;background:var(--surface-2);border:1.5px solid var(--line);border-radius:11px;padding:3px}
+.seg label{position:relative;cursor:pointer}
+.seg input{position:absolute;opacity:0;inset:0}
+.seg span{display:block;padding:8px 22px;border-radius:8px;font-weight:700;font-size:13.5px;color:var(--ink-2)}
+.seg input:checked+span{background:var(--blue-600);color:#fff}
+.seg input:focus-visible+span{outline:3px solid var(--blue-500);outline-offset:2px}
+
+/* ---------- Drag & drop ---------- */
+.drop-wrap{min-width:0}
+.drop{position:relative;border:2px dashed var(--blue-300);background:var(--drop-bg);border-radius:14px;min-height:150px;display:flex;align-items:center;justify-content:center;text-align:center;padding:16px;cursor:pointer;transition:background .15s,border-color .15s,transform .15s}
+.drop:hover{background:var(--drop-hover);border-color:var(--blue-500)}
+.drop.over{background:var(--drop-hover);border-color:var(--blue-600);border-style:solid;transform:scale(1.012)}
+.drop.filled{cursor:default;border-style:solid;border-color:var(--line-strong);background:var(--surface)}
+.drop.wide{min-height:190px}
+.drop input[type=file]{position:absolute;inset:0;opacity:0;width:100%;height:100%;cursor:pointer}
+.drop.filled input[type=file]{display:none}
+.dz-empty .up{width:46px;height:46px;border-radius:50%;background:var(--blue-100);color:var(--blue-600);display:grid;place-items:center;margin:0 auto 10px;font-size:22px;transition:transform .2s}
+.drop.over .dz-empty .up{transform:translateY(-4px)}
+.dz-empty strong{display:block;font-size:14px;color:var(--blue-700)}
+.dz-empty small{color:var(--ink-3);font-size:12px}
+.dz-file{width:100%;display:flex;flex-direction:column;align-items:center;gap:10px}
+.thumb{width:100%;max-height:150px;border-radius:10px;border:1px solid var(--line);display:grid;place-items:center;overflow:hidden;background:
+ conic-gradient(var(--line) 25%,transparent 0 50%,var(--line) 0 75%,transparent 0) 0 0/16px 16px}
+.thumb img{max-width:100%;max-height:150px;object-fit:contain;display:block}
+.pdfbox{font-size:34px;padding:16px}
+.meta{font-size:12.5px;color:var(--ink-2);display:flex;gap:8px;flex-wrap:wrap;justify-content:center;align-items:center;max-width:100%}
+.meta .nm{font-weight:700;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--ink)}
+.chip{font-size:11.5px;font-weight:700;padding:2px 8px;border-radius:99px}
+.chip.ok{background:var(--ok-bg);color:var(--ok)}
+.chip.warn{background:var(--warn-bg);color:var(--warn)}
+.actions{display:flex;gap:8px}
+.mini{border:1px solid var(--line-strong);background:var(--surface);color:var(--blue-700);font-weight:700;font-size:12.5px;padding:6px 12px;border-radius:8px;cursor:pointer}
+.mini:hover{background:var(--blue-50)}
+.mini.rm{color:var(--err);border-color:color-mix(in srgb,var(--err) 40%,var(--line))}
+.mini.rm:hover{background:var(--err-bg)}
+.rules{display:flex;flex-wrap:wrap;gap:6px;margin-top:9px}
+.rules span{font-size:11.5px;font-weight:600;color:var(--ink-2);background:var(--blue-50);border:1px solid var(--line);padding:3px 9px;border-radius:99px}
+.drop-wrap.bad .drop{border-color:var(--err);background:var(--err-bg)}
+
+/* ---------- Editor ---------- */
+.editor-wrap{border:1.5px solid var(--line);border-radius:12px;overflow:hidden;background:var(--surface-2)}
+.editor-wrap:focus-within{border-color:var(--blue-500);box-shadow:0 0 0 4px color-mix(in srgb,var(--blue-500) 22%,transparent)}
+.tb{display:flex;gap:2px;padding:6px;border-bottom:1px solid var(--line);background:var(--surface)}
+.tb button{border:0;background:transparent;width:32px;height:30px;border-radius:7px;cursor:pointer;font-weight:800;color:var(--ink-2)}
+.tb button:hover{background:var(--blue-100)}
+.editor{min-height:130px;padding:12px 14px;outline:none}
+.field.bad .editor-wrap{border-color:var(--err)}
+
+/* ---------- Live preview ---------- */
+.pv{position:sticky;top:calc(env(safe-area-inset-top,0px) + 76px)}
+.pv-card{background:var(--surface);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);overflow:hidden}
+.pv-head{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid var(--line)}
+.pv-head b{font-size:14px}
+.dev{display:inline-flex;background:var(--surface-2);border:1px solid var(--line);border-radius:9px;padding:2px}
+.dev button{border:0;background:transparent;padding:4px 10px;border-radius:7px;font-weight:700;font-size:12px;cursor:pointer;color:var(--ink-2)}
+.dev button[aria-pressed="true"]{background:var(--blue-600);color:#fff}
+.browser{margin:14px;border:1px solid var(--line-strong);border-radius:12px;overflow:hidden;background:#fff;color:#1a2050;transition:width .25s;margin-inline:auto;width:calc(100% - 28px)}
+.browser.mobile{width:240px}
+.chrome{display:flex;align-items:center;gap:6px;background:#e8ebf8;padding:7px 10px}
+.chrome i{width:8px;height:8px;border-radius:50%;background:#b9c3ee}
+.chrome .url{flex:1;margin-left:6px;background:#fff;border-radius:99px;padding:2px 10px;font-size:10.5px;color:#5a64a0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.site-nav{display:flex;align-items:center;gap:8px;padding:8px 12px;background:#fff;border-bottom:1px solid #e3e8fc}
+.site-nav .logo{height:26px;max-width:110px;object-fit:contain}
+.site-nav .logo-fallback{height:26px;min-width:70px;border-radius:6px;background:#e3e8fc;display:grid;place-items:center;font-size:9px;color:#5468d4;font-weight:700;padding:0 8px}
+.site-nav .nm{font-size:11px;font-weight:800;margin-left:auto;color:#2b3f9e}
+.hero{position:relative;height:130px;background:linear-gradient(120deg,#17226e,#5468d4);background-size:cover;background-position:center;color:#fff;display:flex;flex-direction:column;justify-content:flex-end;padding:12px}
+.hero::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(10,16,70,.75),transparent 70%)}
+.hero *{position:relative;z-index:1}
+.hero h3{margin:0;font-size:15px;font-weight:800}
+.hero p{margin:2px 0 0;font-size:10px;opacity:.9}
+.site-body{padding:12px;font-size:11px;line-height:1.5;color:#3a4278}
+.site-body h4{margin:0 0 4px;font-size:12px;color:#2b3f9e}
+.site-body .desc{max-height:70px;overflow:hidden}
+.site-body .row{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.site-body .box{flex:1;min-width:90px;background:#f1f4ff;border-radius:8px;padding:8px;font-size:10.5px}
+.site-body .box b{display:block;color:#2b3f9e;font-size:10px;margin-bottom:2px}
+.pv-foot{padding:12px 16px;border-top:1px solid var(--line);font-size:12px;color:var(--ink-3)}
+.progress{height:8px;background:var(--blue-100);border-radius:99px;overflow:hidden;margin:8px 0 4px}
+.progress i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--blue-500),var(--blue-700));transition:width .3s}
+
+[hidden]{display:none!important}
+.tb{flex-wrap:wrap;align-items:center}
+.tb .sep{width:1px;height:20px;background:var(--line);margin:0 5px}
+.tb select{background:var(--surface-2);border:1px solid var(--line);border-radius:7px;padding:4px 6px;font-size:12.5px;height:30px;max-width:112px}
+.tb .grow{flex:1}
+.tb button.txt{width:auto;padding:0 10px;font-size:12.5px}
+.tb button[aria-pressed="true"]{background:var(--blue-600);color:#fff}
+.tb button:disabled,.tb select:disabled{opacity:.35;cursor:not-allowed}
+.editor-wrap{position:relative}
+.editor-wrap.fs{position:fixed;inset:0;z-index:80;border-radius:0;background:var(--surface);display:flex;flex-direction:column;padding-top:env(safe-area-inset-top,0px)}
+.editor-wrap.fs .editor,.editor-wrap.fs .src{flex:1;max-height:none}
+.editor{max-height:340px;overflow:auto}
+.src{display:block;width:100%;border:0;padding:12px 14px;background:var(--surface-2);font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12.5px;resize:vertical;color:var(--ink)}
+.editor h1{font-size:24px;margin:.3em 0}.editor h2{font-size:20px;margin:.3em 0}.editor h3{font-size:17px;margin:.3em 0}
+.editor blockquote{border-left:4px solid var(--blue-300);margin:.5em 0;padding:2px 12px;color:var(--ink-2)}
+.editor p{margin:0 0 .6em}
+.editor img{max-width:100%}
+.pop{position:absolute;z-index:5;background:var(--surface);border:1px solid var(--line-strong);border-radius:10px;padding:6px;display:grid;grid-template-columns:repeat(8,1fr);gap:2px;box-shadow:var(--shadow)}
+.pop button{width:30px;height:30px;border:0;background:transparent;border-radius:6px;cursor:pointer;font-size:17px}
+.pop button:hover{background:var(--blue-100)}
+.info{display:inline-grid;place-items:center;width:16px;height:16px;border-radius:50%;background:var(--blue-600);color:#fff;font-size:10.5px;font-weight:800;margin-left:6px;cursor:help;position:relative;vertical-align:middle}
+.info:hover::after,.info:focus::after{content:attr(data-tip);position:absolute;left:50%;bottom:140%;transform:translateX(-50%);width:230px;background:var(--blue-900);color:#fff;padding:8px 10px;border-radius:8px;font-size:12px;font-weight:500;line-height:1.4;z-index:10}
+.sub-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+.note{margin:0;color:var(--ink-2);font-size:13.5px;font-weight:600}
+.dim{opacity:.45;filter:grayscale(.4)}
+.notice{background:#e3e8fc;color:#17226e;padding:8px 12px;font-size:11px}
+.notice h1,.notice h2,.notice h3,.notice p{margin:0;font-size:12px}
+.guide{margin:10px 12px 0;border:1px solid #b9c3ee;background:#f1f4ff;border-radius:8px;padding:8px;font-size:10.5px;color:#3a4278}
+.guide b{display:block;color:#2b3f9e;font-size:11px}
+.lnk{color:#5468d4;font-weight:700;font-size:10px;display:block;margin-top:3px}
+.pvimg{max-width:100%;max-height:36px;display:block;margin:4px 0;object-fit:contain}
+.vid{flex-basis:100%;background:#17226e!important;color:#fff;text-align:center;padding:14px!important}
+#pvContact{max-height:84px;overflow:hidden}
+#pvContact p{margin:0 0 4px}
+@media (min-width:1181px){.pv-card{max-height:calc(100vh - 100px);overflow:auto}}
+@media (max-width:860px){.sub-grid{grid-template-columns:1fr}}
+
+/* ---------- Save bar & toast ---------- */
+.savebar{position:fixed;left:0;right:0;bottom:0;z-index:25;background:color-mix(in srgb,var(--surface) 92%,transparent);backdrop-filter:blur(10px);border-top:1px solid var(--line);padding:12px 24px;padding-bottom:calc(12px + env(safe-area-inset-bottom,0px));display:flex;align-items:center;gap:12px;justify-content:flex-end}
+.savebar .st{margin-right:auto;font-size:13px;color:var(--ink-2);padding-left:230px}
+.toast{position:fixed;left:50%;bottom:calc(84px + env(safe-area-inset-bottom,0px));transform:translate(-50%,20px);background:var(--blue-900);color:#fff;padding:12px 18px;border-radius:12px;font-weight:600;font-size:14px;opacity:0;pointer-events:none;transition:.25s;z-index:60;max-width:92vw}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+.toast.bad{background:var(--err)}
+
+/* ---------- Responsive ---------- */
+@media (max-width:1180px){.wd{grid-template-columns:1fr}.pv{position:static}}
+@media (max-width:860px){
+  .shell{grid-template-columns:1fr}
+  .side{position:fixed;left:0;top:calc(env(safe-area-inset-top,0px) + 58px);z-index:40;width:250px;transform:translateX(-100%);transition:transform .25s;box-shadow:var(--shadow)}
+  .side.open{transform:none}
+  .menu-btn{display:block}
+  .topbar .tag .pill{display:none}
+  .card .body{grid-template-columns:1fr}
+  .savebar .st{padding-left:0;display:none}
+  .savebar{justify-content:stretch}.savebar .btn{flex:1;justify-content:center}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+
+/* ================= Theme: matches the live app (indigo #3f51b5 + grey) ================= */
+.topbar{background:#3f51b5;min-height:56px;padding-top:6px;padding-bottom:6px}
+.brand{font-weight:700;font-size:15px}
+.brand .mark{background:#fff;color:#3f51b5}
+.topbar .tag .pill{background:rgba(255,255,255,.16);border-radius:6px;font-weight:500}
+.side{background:#fff;border-right:0;box-shadow:1px 0 3px rgba(0,0,0,.12);padding:8px 0}
+.side a{border-radius:0;color:var(--ink);text-transform:uppercase;font-size:12.5px;font-weight:700;letter-spacing:.3px;padding:13px 18px;border-left:4px solid transparent}
+.side a:hover{background:var(--blue-50);color:var(--blue-600)}
+.side a.on{background:var(--blue-100);color:var(--blue-600);border-left-color:var(--blue-600)}
+.crumbs{color:var(--blue-600);font-size:14px}
+.crumbs b{color:var(--ink);font-weight:500}
+.titlebar{background:var(--surface);padding:18px 22px 16px;margin-bottom:16px;border-radius:4px;box-shadow:var(--shadow);border-bottom:2px solid var(--blue-600)}
+.titlebar .ico{background:transparent;color:var(--ink);box-shadow:none;width:auto;height:auto;font-size:44px;border-radius:0}
+.titlebar h1{font-weight:500;letter-spacing:0;color:var(--blue-600);font-size:clamp(24px,3.4vw,36px)}
+.btn{border-radius:4px;font-weight:500;letter-spacing:.2px}
+.btn.primary{background:var(--blue-600)}
+.btn.primary:hover{background:var(--blue-700)}
+.btn.ghost{border-color:var(--blue-600);color:var(--blue-600)}
+.tabs{background:transparent;border:0;box-shadow:none;padding:0;gap:2px;border-radius:0;margin-bottom:18px}
+.tab{background:var(--tab-off);color:#fff;border-radius:0;text-transform:uppercase;letter-spacing:.4px;font-weight:700;padding:16px 18px}
+.tab:hover{background:color-mix(in srgb,var(--tab-off) 82%,#000)}
+.tab[aria-selected="true"]{background:var(--blue-600);box-shadow:none}
+.stub{border-radius:4px}
+.jump a{border-radius:4px;background:var(--blue-100);color:var(--blue-600);font-weight:500}
+.jump a:hover{background:var(--blue-600);color:#fff}
+.card{border:0;border-radius:4px;box-shadow:var(--shadow)}
+.card>header{background:var(--surface);border-bottom:1px solid var(--line);border-left:4px solid var(--blue-600);padding:16px 22px}
+.card>header .ci{width:38px;height:38px;border-radius:50%;background:var(--blue-600);font-size:17px}
+.card>header h2{color:var(--blue-600);font-weight:500;font-size:19px}
+.card>header p{color:var(--ink-3)}
+label.lbl,.lbl{font-weight:700;font-size:14px;color:var(--ink)}
+.req{color:#f00}
+.field input[type=text],.field input[type=url],.field select{background:var(--surface-2);border:0;border-bottom:1.5px solid #757575;border-radius:4px 4px 0 0;padding:12px 14px;box-shadow:none}
+.field input:hover,.field select:hover{border-bottom-color:var(--ink)}
+.field input:focus,.field select:focus{border-bottom:2px solid var(--blue-600);box-shadow:none;background:var(--surface)}
+.field.bad input,.field.bad select{border-bottom-color:var(--err)}
+.seg{border-radius:4px;border:1px solid var(--line-strong);background:var(--surface);padding:0;overflow:hidden}
+.seg span{border-radius:0;font-weight:500;padding:9px 24px}
+.seg label+label span{border-left:1px solid var(--line-strong)}
+.seg input:checked+span{background:var(--blue-600);color:#fff}
+.drop{border-radius:10px;border:2px dashed var(--blue-600);background:var(--drop-bg)}
+.drop:hover{background:var(--drop-hover);border-color:var(--blue-600)}
+.drop.filled{border-style:solid;border-color:var(--line-strong);background:var(--surface)}
+.dz-empty .up{background:var(--blue-600);color:#fff}
+.dz-empty strong{color:var(--blue-600);font-weight:700}
+.rules span{border-radius:4px;background:var(--blue-50)}
+.chip{border-radius:4px}
+.mini{border-radius:4px;color:var(--blue-600);border-color:var(--blue-600)}
+.mini.rm{color:var(--err);border-color:var(--err)}
+.editor-wrap{border-radius:4px;border:1px solid var(--line-strong);background:var(--surface)}
+.editor-wrap:focus-within{border-color:var(--blue-600);box-shadow:0 0 0 1px var(--blue-600)}
+.tb{background:var(--surface-2)}
+.tb button:hover{background:var(--blue-100)}
+.tb button[aria-pressed="true"]{background:var(--blue-600)}
+.savebar{background:var(--surface);backdrop-filter:none;box-shadow:0 -1px 4px rgba(0,0,0,.15);border-top:0}
+.toast{background:#283593}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <button class="menu-btn" id="menuBtn" aria-label="Toggle menu">☰</button>
+  <div class="brand"><div class="mark">⚑</div><div>Helping with Flags<small>Cloud Application Software</small></div></div>
+  <div class="tag">
+    <span class="pill">#1 Flag program Management · Software in America</span>
+    <span class="pill">🎧 Help</span><span class="pill">SuperUser</span>
+  </div>
+</div>
+
+<div class="shell">
+  <nav class="side" id="side" aria-label="Main">
+    <a><span class="i">👥</span>Groups</a>
+    <a class="on"><span class="i">🏛️</span>Clubs</a>
+    <a><span class="i">🧑‍🤝‍🧑</span>Customers</a>
+    <a><span class="i">✉️</span>Schedule Reminder</a>
+    <a><span class="i">🧾</span>Invoicing</a>
+    <a><span class="i">👛</span>HWF Wallet</a>
+    <a><span class="i">⚙️</span>Settings</a>
+    <a><span class="i">🏠</span>Home</a>
+    <a><span class="i">📋</span>User Activity Log</a>
+    <a><span class="i">📨</span>Abstract Email API</a>
+    <a><span class="i">🕘</span>Global Email History</a>
+    <a><span class="i">💬</span>Global SMS History</a>
+    <a><span class="i">🚀</span>Onboarding</a>
+    <a><span class="i">🤝</span>Super Users</a>
+    <a><span class="i">🗂️</span>Server Logs</a>
+  </nav>
+
+  <main>
+    <div class="crumbs">Clubs &nbsp;›&nbsp; <b>Edit club</b></div>
+    <div class="titlebar">
+      <div class="ico">🏛️</div>
+      <h1>Edit Club "Friends Of Fairview"</h1>
+      <div class="grow"></div>
+      <button class="btn primary" type="button">⇄ Switch to club</button>
+    </div>
+
+    <div class="tabs" role="tablist">
+      <button class="tab" role="tab" aria-selected="false" data-tab="profile">Profile</button>
+      <button class="tab" role="tab" aria-selected="false" data-tab="payment">App payment</button>
+      <button class="tab" role="tab" aria-selected="true" data-tab="web">Webpage detail</button>
+      <button class="tab" role="tab" aria-selected="false" data-tab="invoice">Invoice history</button>
+    </div>
+
+    <div class="panel stub" data-panel="profile" hidden>Profile tab (unchanged in this demo)</div>
+    <div class="panel stub" data-panel="payment" hidden>App payment tab (unchanged in this demo)</div>
+    <div class="panel stub" data-panel="invoice" hidden>Invoice history tab (unchanged in this demo)</div>
+
+    <section class="panel" data-panel="web">
+      <div class="wd">
+        <div>
+          <div class="jump" aria-label="Jump to section">
+            <a href="#sec-site">Website</a><a href="#sec-brand">Logos</a><a href="#sec-home">Homepage</a><a href="#sec-contact">Contact &amp; display</a><a href="#sec-loc">Location &amp; OTP</a><a href="#sec-don">Donation</a><a href="#sec-guide">Subscription guide</a><a href="#sec-misc">Validation &amp; video</a>
+          </div>
+
+          <!-- Website -->
+          <section class="card" id="sec-site">
+            <header><div class="ci">🌐</div><div><h2>Website</h2><p>Where the club lives online and how it is named.</p></div></header>
+            <div class="body">
+              <div class="field full" data-f="link">
+                <label class="lbl" for="websiteLink">Website link<span class="req">*</span></label>
+                <input type="url" id="websiteLink" value="https://friendsoffairview.org">
+                <div class="err-msg">Enter a website link that starts with https://</div>
+              </div>
+              <div class="field" data-f="title">
+                <label class="lbl" for="websiteTitle">Website title<span class="req">*</span></label>
+                <input type="text" id="websiteTitle" value="Fairview&#39;s Stars &amp; Stripes Holiday Flags">
+                <div class="err-msg">Website title is required.</div>
+              </div>
+              <div class="field">
+                <label class="lbl" for="group">Group<span class="req">*</span></label>
+                <select id="group"><option>HWF Club FOF</option><option>HWF Club Rotary</option><option>HWF Club Lions</option><option>HWF Club Kiwanis</option></select>
+              </div>
+            </div>
+          </section>
+
+          <!-- Logos -->
+          <section class="card" id="sec-brand">
+            <header><div class="ci">🖼️</div><div><h2>Logos</h2><p>Drop a file onto a box, or click it to browse.</p></div></header>
+            <div class="body" id="logoGrid"></div>
+          </section>
+
+          <!-- Homepage -->
+          <section class="card" id="sec-home">
+            <header><div class="ci">🏠</div><div><h2>Homepage</h2><p>What customers see first.</p></div></header>
+            <div class="body">
+              <div class="full" id="bgSlot"></div>
+              <div class="field full" data-f="desc">
+                <span class="lbl">Club home page description<span class="req">*</span></span>
+                <div class="rte" data-id="desc" data-h="150"></div>
+                <div class="err-msg">Add a short description for the club home page.</div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Contact -->
+          <section class="card" id="sec-contact">
+            <header><div class="ci">☎️</div><div><h2>Contact &amp; display</h2><p>Choose what appears on the customer side.</p></div></header>
+            <div class="body">
+              <div class="field full" data-f="contact">
+                <label class="lbl" for="contactHeading">Contact heading<span class="req">*</span></label>
+                <input type="text" id="contactHeading" value="CONTACT">
+                <div class="err-msg">Contact heading is required.</div>
+              </div>
+              <div>
+                <span class="lbl" id="l-support">Show customer support number to club</span>
+                <div class="seg" role="radiogroup" aria-labelledby="l-support">
+                  <label><input type="radio" name="support" value="yes" checked><span>Yes</span></label>
+                  <label><input type="radio" name="support" value="no"><span>No</span></label>
+                </div>
+                <div class="help">Customers will see our support number on the club page.</div>
+              </div>
+              <div>
+                <span class="lbl" id="l-common">Add common area field</span>
+                <div class="seg" role="radiogroup" aria-labelledby="l-common">
+                  <label><input type="radio" name="common" value="yes"><span>Yes</span></label>
+                  <label><input type="radio" name="common" value="no" checked><span>No</span></label>
+                </div>
+                <div class="help">Adds a common area field to the customer form.</div>
+              </div>
+              <div class="field full" data-f="contactDetail">
+                <span class="lbl">Contact detail<span class="req">*</span></span>
+                <div class="rte" data-id="contactDetail" data-h="170"></div>
+                <div class="err-msg">Add the contact details customers should see.</div>
+              </div>
+              <div class="field full">
+                <span class="lbl">Instruction note</span>
+                <div class="rte" data-id="instrNote" data-h="110"></div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Location & OTP -->
+          <section class="card" id="sec-loc">
+            <header><div class="ci">📍</div><div><h2>Location map &amp; OTP</h2><p>Map details, a note for customers and where one-time codes are sent.</p></div></header>
+            <div class="body">
+              <div class="full">
+                <span class="lbl" id="l-map">Has location map</span>
+                <div class="seg" role="radiogroup" aria-labelledby="l-map">
+                  <label><input type="radio" name="hasmap" value="yes" checked><span>Yes</span></label>
+                  <label><input type="radio" name="hasmap" value="no"><span>No</span></label>
+                </div>
+              </div>
+              <div class="full sub-grid" id="mapFields">
+                <div id="mapSlot"></div>
+                <div class="field" data-f="mapLink">
+                  <label class="lbl" for="mapLink">Location map link</label>
+                  <input type="url" id="mapLink" value="https://www.google.com/maps/d/viewer?mid=SAMPLE&z=13">
+                  <div class="err-msg">Enter a link that starts with https://</div>
+                </div>
+                <div class="field full">
+                  <label class="lbl" for="addNote">Additional note</label>
+                  <input type="text" id="addNote" placeholder="Add a short note about the location, such as parking or entrance">
+                </div>
+              </div>
+              <div class="field full" data-f="otp">
+                <label class="lbl" for="otpEmail">OTP email address<span class="req">*</span></label>
+                <input type="text" inputmode="email" id="otpEmail" value="admin@fairviewrotary.org">
+                <div class="err-msg">Enter a valid email address, like name@club.org</div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Donation -->
+          <section class="card" id="sec-don">
+            <header><div class="ci">💝</div><div><h2>Additional donation</h2><p>Shown on the shopping cart page and in the shopping cart backend console.</p></div></header>
+            <div class="body">
+              <p class="full note">Customize the donation module title, description and invoice line-item text. These appear on the shopping cart page of the customer website and in the shopping cart backend console.</p>
+              <div class="field">
+                <label class="lbl" for="donLabel">Donation label</label>
+                <input type="text" id="donLabel" placeholder="Enter donation label">
+              </div>
+              <div class="field">
+                <label class="lbl" for="donDesc">Donation description</label>
+                <input type="text" id="donDesc" placeholder="Enter donation description">
+              </div>
+              <div id="donImgSlot"></div>
+              <div id="donPdfSlot"></div>
+            </div>
+          </section>
+
+          <!-- Subscription guide -->
+          <section class="card" id="sec-guide">
+            <header><div class="ci">🔒</div><div><h2>Customer portal subscription guide</h2><p>Show a guidance message to customers above the product list and Cart &amp; Payment section on the customer portal.</p></div></header>
+            <div class="body">
+              <div class="full">
+                <span class="lbl" id="l-guide">Display subscription guide on customer portal</span>
+                <div class="seg" role="radiogroup" aria-labelledby="l-guide">
+                  <label><input type="radio" name="guide" value="yes"><span>Yes</span></label>
+                  <label><input type="radio" name="guide" value="no" checked><span>No</span></label>
+                </div>
+              </div>
+              <div class="full dim" id="guideFields" inert style="display:grid;gap:20px">
+                <div class="field">
+                  <label class="lbl" for="guideTitle">Subscription guide title</label>
+                  <input type="text" id="guideTitle" placeholder="Enter subscription guide title">
+                </div>
+                <div class="field">
+                  <span class="lbl">Subscription guide description</span>
+                  <div class="rte" data-id="guideDesc" data-h="140" data-lite></div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Validation & video -->
+          <section class="card" id="sec-misc">
+            <header><div class="ci">🛠️</div><div><h2>Validation &amp; video</h2><p>Address checking and a welcome video for customers.</p></div></header>
+            <div class="body">
+              <div>
+                <span class="lbl" id="l-street">Street validation setting</span>
+                <div class="seg" role="radiogroup" aria-labelledby="l-street">
+                  <label><input type="radio" name="street" value="on"><span>ON</span></label>
+                  <label><input type="radio" name="street" value="off" checked><span>OFF</span></label>
+                </div>
+                <div class="help">When ON, street addresses entered by customers are checked.</div>
+              </div>
+              <div class="field" data-f="yt">
+                <label class="lbl" for="ytLink">YouTube video link<span class="info" tabindex="0" data-tip="Paste a YouTube link. The video appears on the customer home page.">i</span></label>
+                <input type="url" id="ytLink" placeholder="https://www.youtube.com/watch?v=...">
+                <div class="err-msg">Enter a YouTube link (youtube.com or youtu.be).</div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<div class="savebar">
+  <span class="st" id="saveSt">Changes are not saved yet.</span>
+  <button class="btn ghost" type="button" id="resetBtn">Reset</button>
+  <button class="btn primary" type="button" id="saveBtn">Save changes</button>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function(){
+  var $ = function(s,r){return (r||document).querySelector(s)};
+  var $$ = function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))};
+
+  /* ---------- Rich text editors ---------- */
+  var rteSeed = {
+    desc:'<p>Fairview Rotary brings neighbors together to serve our community. Join us for weekly meetings, flag programs and local projects.</p><ul><li>Community outreach</li><li>Youth scholarships</li><li>Rotary Foundation</li></ul>',
+    contactDetail:'<p><b>CLUB CONTACT</b></p><p>Jane Smith<br>555-010-0142</p><p><u>FLAG SUPPORT CONTACT</u></p><p>support@example.com</p><p><b><u>Mailing address</u></b></p><p>Fairview Rotary Club<br>123 Main Street<br>Fairview, Texas | 75069</p>',
+    instrNote:'<h2>Don\'t miss out! Sign up now.</h2>',
+    guideDesc:''
+  };
+  var EMOJI=['😀','😊','😍','👍','🎉','🏆','⭐','🇺🇸','🚩','❤️','🙏','📅','📍','📞','✉️','✅'];
+  var SYMS=['©','®','™','§','¶','•','–','—','…','°','±','×','÷','€','£','¥'];
+  function tbtn(act,label,title,cls){ return '<button type="button" data-act="'+act+'" title="'+title+'" aria-label="'+title+'"'+(cls?' class="'+cls+'"':'')+'>'+label+'</button>'; }
+  var SEP='<i class="sep"></i>';
+  function makeRte(host){
+    var id=host.dataset.id, h=+host.dataset.h||130, lite=host.hasAttribute('data-lite');
+    var bar = lite ?
+      tbtn('undo','↶','Undo')+tbtn('redo','↷','Redo')+SEP+tbtn('bold','<b>B</b>','Bold')+tbtn('italic','<i>I</i>','Italic')+SEP+
+      '<select data-sel="fontName" aria-label="Font"><option value="">Font</option><option>Arial</option><option>Georgia</option><option>Tahoma</option><option>Verdana</option><option>Courier New</option></select>'+
+      '<select data-sel="fontSize" aria-label="Size"><option value="">Size</option><option value="2">Small</option><option value="3">Normal</option><option value="5">Large</option><option value="6">Huge</option></select>'+SEP+
+      tbtn('image','🖼','Insert image')+tbtn('emoji','☺','Insert emoji')+tbtn('symbol','Ω','Insert symbol')
+      :
+      tbtn('undo','↶','Undo')+tbtn('redo','↷','Redo')+SEP+
+      tbtn('bold','<b>B</b>','Bold')+tbtn('italic','<i>I</i>','Italic')+tbtn('strikeThrough','<s>S</s>','Strikethrough')+tbtn('removeFormat','Tx','Clear formatting')+SEP+
+      tbtn('insertOrderedList','1.','Numbered list')+tbtn('insertUnorderedList','•','Bulleted list')+tbtn('outdent','⇤','Decrease indent')+tbtn('indent','⇥','Increase indent')+tbtn('quote','❝','Quote')+SEP+
+      tbtn('createLink','🔗','Insert link')+tbtn('unlink','⛓','Remove link')+tbtn('image','🖼','Insert image')+tbtn('symbol','Ω','Insert symbol')+SEP+
+      '<select data-sel="format" aria-label="Format"><option value="">Format</option><option value="p">Paragraph</option><option value="h1">Heading 1</option><option value="h2">Heading 2</option><option value="h3">Heading 3</option></select>'+
+      '<span class="grow"></span>'+tbtn('source','&lt;/&gt; Source','Edit HTML source','txt')+tbtn('full','⛶','Full screen');
+    host.innerHTML='<div class="editor-wrap"><div class="tb">'+bar+'</div><div class="editor" id="'+id+'" contenteditable="true" role="textbox" aria-multiline="true" style="min-height:'+h+'px"></div><textarea class="src" hidden spellcheck="false" aria-label="HTML source" style="min-height:'+h+'px"></textarea><input type="file" accept="image/*" hidden></div>';
+    var wrap=$('.editor-wrap',host), ed=$('.editor',host), ta=$('.src',host), file=$('input[type=file]',host), srcMode=false, saved=null;
+    ed.innerHTML=rteSeed[id]||'';
+    function saveSel(){ var s=getSelection(); if(s.rangeCount&&ed.contains(s.anchorNode)) saved=s.getRangeAt(0).cloneRange(); }
+    function restoreSel(){ ed.focus(); if(saved){ var s=getSelection(); s.removeAllRanges(); s.addRange(saved); } }
+    ['keyup','mouseup','focus','input'].forEach(function(ev){ ed.addEventListener(ev,saveSel); });
+    function fire(){ ed.dispatchEvent(new Event('input',{bubbles:true})); }
+    ed.addEventListener('input',function(){ var f=host.closest('.field'); if(f) f.classList.remove('bad'); markDirty(); });
+    function exec(cmd,val){ restoreSel(); document.execCommand(cmd,false,val||null); saveSel(); fire(); }
+    function closePop(){ var p=$('.pop',wrap); if(p) p.remove(); }
+    function pop(btn,items){
+      var p=document.createElement('div'); p.className='pop';
+      items.forEach(function(ch){ var b=document.createElement('button'); b.type='button'; b.textContent=ch; b.addEventListener('mousedown',function(e){e.preventDefault();}); b.addEventListener('click',function(e){ e.stopPropagation(); closePop(); exec('insertText',ch); }); p.appendChild(b); });
+      wrap.appendChild(p); p.style.left=Math.min(btn.offsetLeft, Math.max(0,wrap.clientWidth-270))+'px'; p.style.top=(btn.offsetTop+btn.offsetHeight+4)+'px';
+    }
+    function toggleSrc(b){
+      srcMode=!srcMode;
+      if(srcMode){ ta.value=ed.innerHTML; ta.hidden=false; ed.hidden=true; } else { ed.innerHTML=ta.value; ta.hidden=true; ed.hidden=false; }
+      b.setAttribute('aria-pressed',String(srcMode));
+      $$('.tb button,.tb select',wrap).forEach(function(x){ if(x.dataset.act!=='source'&&x.dataset.act!=='full') x.disabled=srcMode; });
+    }
+    ta.addEventListener('input',function(){ ed.innerHTML=ta.value; fire(); });
+    wrap.addEventListener('mousedown',function(e){ if(e.target.closest('.tb button')) e.preventDefault(); });
+    wrap.addEventListener('click',function(e){
+      var b=e.target.closest('[data-act]'); if(!b) return; var a=b.dataset.act; closePop();
+      if(a==='source'){ toggleSrc(b); return; }
+      if(a==='full'){ wrap.classList.toggle('fs'); return; }
+      if(srcMode) return;
+      if(a==='quote') exec('formatBlock','<blockquote>');
+      else if(a==='createLink'){ var u=prompt('Link address (https://…)'); if(u) exec('createLink',u); }
+      else if(a==='image'){ saveSel(); file.click(); }
+      else if(a==='emoji') pop(b,EMOJI);
+      else if(a==='symbol') pop(b,SYMS);
+      else exec(a);
+    });
+    wrap.addEventListener('change',function(e){
+      var s=e.target.closest('[data-sel]'); if(!s||!s.value) return;
+      if(s.dataset.sel==='format') exec('formatBlock','<'+s.value+'>'); else exec(s.dataset.sel,s.value);
+      s.selectedIndex=0;
+    });
+    file.addEventListener('change',function(){
+      var f=file.files[0]; if(!f) return;
+      if(f.size>3*1048576){ toast('Image must be under 3 MB.',true); file.value=''; return; }
+      var r=new FileReader(); r.onload=function(){ exec('insertImage',r.result); }; r.readAsDataURL(f); file.value='';
+    });
+    document.addEventListener('click',function(e){ if(!e.target.closest('.pop')&&!e.target.closest('[data-act=emoji],[data-act=symbol]')) closePop(); });
+    document.addEventListener('keydown',function(e){ if(e.key==='Escape') wrap.classList.remove('fs'); });
+  }
+  $$('.rte').forEach(makeRte);
+
+  /* ---------- Sample starting logo (front side) ---------- */
+  var sampleLogo = 'data:image/svg+xml;utf8,' + encodeURIComponent(
+    '<svg xmlns="http://www.w3.org/2000/svg" width="260" height="70" viewBox="0 0 260 70"><rect width="260" height="70" rx="12" fill="#3949ab"/><circle cx="35" cy="35" r="20" fill="#fff"/><path d="M26 35l6 6 12-14" stroke="#3949ab" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/><text x="68" y="42" font-family="Arial" font-weight="700" font-size="22" fill="#fff">Fairview</text></svg>');
+
+  /* ---------- Upload definitions ---------- */
+  var defs = [
+    {id:'front', label:'Front side logo', req:true, kind:'image', maxMB:3, dim:null, where:'Customer side · top centre header', initial:{name:'image.png', size:18400, url:sampleLogo, w:260, h:70}},
+    {id:'adminHeader', label:'Admin header logo', req:true, kind:'image', maxMB:3, dim:[185,50], where:'Home page · above the tabs'},
+    {id:'adminPage', label:'Admin page logo', req:true, kind:'image', maxMB:3, dim:[185,50], where:'Top left corner of the page'},
+    {id:'check', label:'Pay by check PDF', req:false, kind:'pdf', maxMB:3, dim:null, where:'Offered to customers who pay by check'},
+    {id:'bg', label:'Homepage background image', req:false, kind:'image', maxMB:20, dim:[1920,1080], wide:true, where:'Customer side · main home banner', preview:true},
+    {id:'mapImg', label:'Location map image', req:false, kind:'image', maxMB:3, dim:[185,50], slot:'mapSlot', where:'Customer side · location section'},
+    {id:'donImg', label:'Donation image', req:true, kind:'image', maxMB:3, dim:null, slot:'donImgSlot', where:'Shopping cart · donation module'},
+    {id:'donPdf', label:'Donation PDF flyer for “Read more”', req:false, kind:'pdf', maxMB:3, dim:null, slot:'donPdfSlot', where:'Opens from the “Read more” link'}
+  ];
+  var state = {};
+
+  function fmtSize(b){return b<1024*1024 ? Math.max(1,Math.round(b/1024))+' KB' : (b/1048576).toFixed(1)+' MB'}
+
+  function build(d){
+    var wrap = document.createElement('div');
+    wrap.className = 'drop-wrap'+(d.wide?' full':'');
+    wrap.id = 'dw-'+d.id;
+    var rules = ['Max '+d.maxMB+' MB'];
+    if(d.dim) rules.push(d.dim[0]+' × '+d.dim[1]+' px');
+    rules.push(d.kind==='pdf'?'PDF':'PNG, JPG, SVG, WebP');
+    wrap.innerHTML =
+      '<span class="lbl">'+d.label+(d.req?'<span class="req">*</span>':'')+'</span>'+
+      '<div class="drop'+(d.wide?' wide':'')+'" tabindex="-1"></div>'+
+      '<div class="rules">'+rules.map(function(r){return '<span>'+r+'</span>'}).join('')+'</div>'+
+      '<div class="help">Shown at: '+d.where+(d.preview?' · <a href="#" data-def="'+d.id+'" style="color:var(--blue-600);font-weight:700">Use default</a>':'')+'</div>'+
+      '<div class="err-msg" aria-live="polite"></div>';
+    return wrap;
+  }
+
+  function render(d){
+    var wrap = $('#dw-'+d.id), zone = $('.drop',wrap), s = state[d.id];
+    zone.innerHTML = '';
+    wrap.classList.remove('bad');
+    if(s && s.url){
+      zone.classList.add('filled');
+      var warn = s.warn ? '<span class="chip warn" title="'+s.warn+'">Size differs</span>' : '<span class="chip ok">Ready</span>';
+      zone.innerHTML =
+        '<div class="dz-file">'+
+          (d.kind==='pdf' ? '<div class="thumb pdfbox" style="background:none">📄</div>' : '<div class="thumb"><img src="'+s.url+'" alt="Preview of '+s.name.replace(/"/g,'')+'"></div>')+
+          '<div class="meta"><span class="nm" title="'+s.name.replace(/"/g,'')+'">'+s.name.replace(/</g,'&lt;')+'</span><span>'+fmtSize(s.size)+'</span>'+(s.w?'<span>'+s.w+'×'+s.h+' px</span>':'')+warn+'</div>'+
+          (s.warn?'<div class="meta" style="color:var(--warn)">'+s.warn+'</div>':'')+
+          '<div class="actions"><button type="button" class="mini" data-replace>Replace</button><button type="button" class="mini rm" data-remove>Remove</button></div>'+
+          '<input type="file" tabindex="-1" aria-hidden="true">'+
+        '</div>';
+    } else {
+      zone.classList.remove('filled');
+      zone.innerHTML =
+        '<div class="dz-empty"><div class="up">⬆</div><strong>Drag &amp; drop file here</strong><small>or click to upload</small></div>'+
+        '<input type="file" aria-label="Upload '+d.label+'">';
+    }
+    var inp = $('input[type=file]',zone);
+    inp.accept = d.kind==='pdf' ? 'application/pdf' : 'image/*';
+    inp.addEventListener('change', function(){ if(inp.files[0]) handle(d, inp.files[0]); inp.value=''; });
+    var rp = $('[data-replace]',zone); if(rp) rp.onclick = function(){ inp.click(); };
+    var rm = $('[data-remove]',zone); if(rm) rm.onclick = function(){ clear(d); };
+    updateAll();
+  }
+
+  function fail(d,msg){
+    var wrap = $('#dw-'+d.id);
+    wrap.classList.add('bad');
+    $('.err-msg',wrap).textContent = msg;
+    toast(msg,true);
+  }
+  function clear(d){
+    var s = state[d.id]; if(s && s.url && s.url.indexOf('blob:')===0) URL.revokeObjectURL(s.url);
+    state[d.id] = null; render(d); markDirty();
+  }
+  function handle(d,file){
+    var wrap = $('#dw-'+d.id);
+    wrap.classList.remove('bad'); $('.err-msg',wrap).textContent='';
+    if(d.kind==='pdf'){
+      if(file.type!=='application/pdf' && !/\.pdf$/i.test(file.name)) return fail(d,'Upload a PDF file.');
+    } else if(!/^image\//.test(file.type)){
+      return fail(d,'Upload an image file (PNG, JPG, SVG or WebP).');
+    }
+    if(file.size > d.maxMB*1048576) return fail(d,'File is '+fmtSize(file.size)+'. Choose a file under '+d.maxMB+' MB.');
+    var url = URL.createObjectURL(file);
+    var rec = {name:file.name,size:file.size,url:url};
+    if(d.kind==='pdf'){ var old=state[d.id]; if(old&&old.url&&old.url.indexOf('blob:')===0)URL.revokeObjectURL(old.url); state[d.id]=rec; render(d); markDirty(); return; }
+    var img = new Image();
+    img.onload = function(){
+      rec.w = img.naturalWidth||0; rec.h = img.naturalHeight||0;
+      if(d.dim && rec.w && (rec.w!==d.dim[0]||rec.h!==d.dim[1])){
+        rec.warn = 'Recommended '+d.dim[0]+' × '+d.dim[1]+' px. Yours is '+rec.w+' × '+rec.h+'.';
+      }
+      var old=state[d.id]; if(old&&old.url&&old.url.indexOf('blob:')===0)URL.revokeObjectURL(old.url);
+      state[d.id]=rec; render(d); markDirty();
+    };
+    img.onerror = function(){ URL.revokeObjectURL(url); fail(d,'That image could not be read. Try another file.'); };
+    img.src = url;
+  }
+
+  /* init uploaders */
+  var logoGrid = $('#logoGrid'), bgSlot = $('#bgSlot');
+  defs.forEach(function(d){
+    var el = build(d);
+    (d.slot ? $('#'+d.slot) : (d.wide ? bgSlot : logoGrid)).appendChild(el);
+    var zone = $('.drop',el);
+    ['dragenter','dragover'].forEach(function(ev){ zone.addEventListener(ev,function(e){e.preventDefault(); zone.classList.add('over');}); });
+    ['dragleave','drop'].forEach(function(ev){ zone.addEventListener(ev,function(e){e.preventDefault(); zone.classList.remove('over');}); });
+    zone.addEventListener('drop',function(e){ var f=e.dataTransfer&&e.dataTransfer.files[0]; if(f) handle(d,f); });
+    state[d.id] = d.initial ? JSON.parse(JSON.stringify(d.initial)) : null;
+    render(d);
+  });
+  // stop browser from opening a file dropped outside the zones
+  ['dragover','drop'].forEach(function(ev){ window.addEventListener(ev,function(e){ e.preventDefault(); }); });
+  $('[data-def="bg"]').addEventListener('click',function(e){ e.preventDefault(); clear(defs[4]); toast('Using the default homepage background.'); });
+
+  /* ---------- Conditional sections ---------- */
+  function updateAll(){
+    var mapOn=$('input[name=hasmap]:checked').value==='yes';
+    $('#mapFields').style.display = mapOn?'':'none';
+    var gOn=$('input[name=guide]:checked').value==='yes', gf=$('#guideFields');
+    gf.classList.toggle('dim',!gOn); if(gOn) gf.removeAttribute('inert'); else gf.setAttribute('inert','');
+  }
+  function strip(h){var d=document.createElement('div');d.innerHTML=h;return d.textContent.trim()}
+
+  /* ---------- Form wiring ---------- */
+  var dirty=false;
+  function markDirty(){ dirty=true; $('#saveSt').textContent='You have unsaved changes.'; updateAll(); }
+  ['websiteLink','websiteTitle','contactHeading','group','otpEmail','mapLink','addNote','donLabel','donDesc','guideTitle','ytLink'].forEach(function(id){ $('#'+id).addEventListener('input',function(){ this.closest('.field').classList.remove('bad'); markDirty(); }); });
+
+  $$('input[type=radio]').forEach(function(r){ r.addEventListener('change',markDirty); });
+  $$('.tb-legacy button').forEach(function(b){ b.addEventListener('mousedown',function(e){e.preventDefault();}); b.addEventListener('click',function(){
+    var c=b.dataset.cmd, v=null; if(c==='createLink'){ v=prompt('Link address (https://…)'); if(!v) return; }
+    document.execCommand(c,false,v); markDirty(); }); });
+
+  /* ---------- Save / validate ---------- */
+  var toastT;
+  function toast(msg,bad){ var t=$('#toast'); t.textContent=msg; t.className='toast show'+(bad?' bad':''); clearTimeout(toastT); toastT=setTimeout(function(){t.className='toast'},3200); }
+  $('#saveBtn').addEventListener('click',function(){
+    var first=null;
+    function flag(el){ el.classList.add('bad'); if(!first || el.getBoundingClientRect().top < first.getBoundingClientRect().top) first=el; }
+    var link=$('#websiteLink').value.trim();
+    if(!/^https?:\/\/.+\..+/.test(link)) flag($('[data-f=link]'));
+    if(!$('#websiteTitle').value.trim()) flag($('[data-f=title]'));
+    if(!$('#contactHeading').value.trim()) flag($('[data-f=contact]'));
+    if(!strip($('#desc').innerHTML)) flag($('[data-f=desc]'));
+    if(!strip($('#contactDetail').innerHTML)) flag($('[data-f=contactDetail]'));
+    if(!/^\S+@\S+\.\S+$/.test($('#otpEmail').value.trim())) flag($('[data-f=otp]'));
+    var ml=$('#mapLink').value.trim(); if(ml && !/^https?:\/\//.test(ml)) flag($('[data-f=mapLink]'));
+    var yt=$('#ytLink').value.trim(); if(yt && !/^https?:\/\/(www\.|m\.)?(youtube\.com|youtu\.be)\//.test(yt)) flag($('[data-f=yt]'));
+    defs.forEach(function(d){ if(d.req && !(state[d.id]&&state[d.id].url)){ var w=$('#dw-'+d.id); w.classList.add('bad'); $('.err-msg',w).textContent=d.label+' is required.'; flag(w); } });
+    if(first){ first.scrollIntoView({behavior:'smooth',block:'center'}); toast('Fix the highlighted fields, then save again.',true); return; }
+    dirty=false; $('#saveSt').textContent='All changes saved just now.'; toast('Changes saved.');
+  });
+  $('#resetBtn').addEventListener('click',function(){ location.reload(); });
+
+  /* ---------- Tabs, device toggle, menu, theme ---------- */
+  $$('.tab').forEach(function(t){ t.addEventListener('click',function(){
+    $$('.tab').forEach(function(x){ x.setAttribute('aria-selected', x===t?'true':'false'); });
+    $$('.panel').forEach(function(p){ p.hidden = p.dataset.panel!==t.dataset.tab; });
+    $('.savebar').style.display = t.dataset.tab==='web' ? '' : 'none';
+  }); });
+  $('#menuBtn').onclick=function(){ $('#side').classList.toggle('open'); };
+
+  updateAll();
+})();
+</script>
+</body>
+</html>
