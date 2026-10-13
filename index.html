@@ -65,7 +65,7 @@ main{padding:22px clamp(14px,3vw,34px) 120px;min-width:0}
 .stub{background:var(--surface);border:1px dashed var(--line-strong);border-radius:16px;padding:60px 20px;text-align:center;color:var(--ink-3)}
 
 /* ---------- Webpage detail layout ---------- */
-.wd{display:block;max-width:1100px;margin:0 auto}
+.wd{display:block;width:100%;max-width:none;margin:0}
 .jump{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
 .jump a{font-size:13px;font-weight:700;color:var(--blue-700);background:var(--blue-100);padding:6px 12px;border-radius:99px;text-decoration:none}
 .jump a:hover{background:var(--blue-300);color:#0c1030}
@@ -281,6 +281,184 @@ label.lbl,.lbl{font-weight:700;font-size:14px;color:var(--ink)}
 .tb button[aria-pressed="true"]{background:var(--blue-600)}
 .savebar{background:var(--surface);backdrop-filter:none;box-shadow:0 -1px 4px rgba(0,0,0,.15);border-top:0}
 .toast{background:#283593}
+
+/* ================= Match the live system shell (only the Webpage Detail content is redesigned) ================= */
+.shell{grid-template-columns:200px minmax(0,1fr)}
+main{padding:10px 14px 40px 16px}
+.crumbs{margin:6px 0 12px;font-size:14px}
+.sheet{background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.16);min-height:calc(100vh - 120px);padding:0 22px 40px}
+.sheet .titlebar{background:transparent;box-shadow:none;border-radius:0;border-bottom:2px solid var(--blue-600);padding:26px 0 14px;margin:0 0 30px}
+.sheet .titlebar h1{font-size:34px;font-weight:500}
+.sheet .titlebar .btn{padding:8px 16px;font-size:14px}
+.sheet .tabs{gap:1px;margin:0;padding:0}
+.sheet .tab{padding:0 18px;height:48px;font-size:14px;font-weight:500;letter-spacing:.3px}
+.sheet .panel{padding-top:24px}
+.sheet .panel.shot{padding:0;border:1px solid var(--line);border-top:0}
+.sheet .panel.shot img{display:block;width:100%;height:auto}
+.sheet .card{box-shadow:none;border:1px solid var(--line);border-radius:4px}
+.sheet .savebar{position:static;box-shadow:none;background:transparent;border-top:1px solid var(--line);padding:18px 0 0;margin-top:6px;backdrop-filter:none}
+.sheet .savebar .st{padding-left:0}
+/* Uploaded file preview: show the real file at its natural size on a clean surface */
+.drop.filled{padding:18px;border:1px solid var(--line-strong);border-radius:6px;background:var(--surface)}
+.thumb{width:100%;max-height:none;min-height:96px;padding:16px;border:0;border-radius:4px;background:var(--surface-2);display:flex;align-items:center;justify-content:center;overflow:hidden}
+.thumb img{width:auto;height:auto;max-width:100%;max-height:120px;object-fit:contain;display:block}
+.drop.wide .thumb img{max-height:220px}
+.thumb.pdfbox{min-height:96px}
+.dz-file{gap:12px}
+.meta{padding-top:2px}
+@media (max-width:860px){.sheet{padding:0 12px 30px}.sheet .titlebar h1{font-size:24px}.sheet .tab{padding:0 8px;font-size:12px}}
+
+/* ================= Real system tabs: Profile / App Payment / Invoice History ================= */
+.sys{font-size:14px;color:var(--ink)}
+.sys .sub_title{font-size:22px;font-weight:500;color:var(--blue-600);margin:30px 0 10px;line-height:1.25}
+.sys .sub_title small{font-size:13px;color:var(--ink-3);font-weight:400}
+.sys h4{font-size:16px;font-weight:700;margin:6px 0 14px;color:#333;line-height:1.4}
+.sys h4 small{font-size:12px;font-weight:400;color:var(--ink-3)}
+.sys p{margin:0 0 12px}
+.sys .g2,.sys .g3,.sys .g4{display:grid;gap:4px 28px}
+.sys .g2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.sys .g3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.sys .g4{grid-template-columns:repeat(4,minmax(0,1fr))}
+.sys .fg{margin-bottom:14px;min-width:0}
+.sys .fg>label,.sys .lbl2{display:block;font-weight:700;font-size:14px;margin-bottom:3px;color:#333}
+.sys .rq{color:#f00;font-weight:700}
+.sys .note{display:block;font-size:12px;color:var(--ink-3);font-style:italic;margin:2px 0 4px}
+.sys .fg input[type=text],.sys .fg input[type=number],.sys .fg input[type=date],.sys .fg textarea{width:100%;border:0;border-bottom:1px solid #757575;background:transparent;padding:9px 12px 8px;font-size:14px;border-radius:0;outline:none;transition:background .15s,border-color .15s}
+.sys .fg textarea{resize:vertical;background:var(--surface-2);border:1px solid var(--line-strong);border-bottom:1px solid #757575;padding:10px 12px}
+.sys .fg select{width:100%;border:1px solid var(--line-strong);background:#fff;padding:9px 10px;font-size:14px;border-radius:2px;outline:none}
+.sys .fg input:hover,.sys .fg select:hover,.sys .fg textarea:hover{border-bottom-color:#212121}
+.sys .fg input:focus,.sys .fg select:focus,.sys .fg textarea:focus{border-bottom:2px solid var(--blue-600);background:var(--blue-50)}
+.sys .fg input[readonly],.sys .fg input:disabled,.sys .fg select:disabled{background:#eee;color:#666;cursor:not-allowed}
+.sys .fg.bad input,.sys .fg.bad select,.sys .fg.bad textarea{border-bottom:2px solid var(--err)}
+.sys .fg.bad>label{color:var(--err)}
+.sys .chk{color:#43a047;font-size:15px;margin-left:4px}
+.sys .chk[hidden]{display:none}
+.sys .inwrap{position:relative}
+.sys .inwrap::after{content:attr(data-u);position:absolute;right:10px;top:50%;transform:translateY(-50%);color:#757575;pointer-events:none}
+.sys .inwrap.pre::after{right:auto;left:8px}
+.sys .inwrap.pre input{padding-left:24px!important}
+.sys .rads{display:flex;flex-wrap:wrap;gap:6px 22px;align-items:center;padding:4px 0}
+.sys .rads label,.sys .ck{display:inline-flex;align-items:center;gap:8px;cursor:pointer;font-weight:400;font-size:14px}
+.sys .ck{margin:4px 0 14px}
+.sys input[type=radio],.sys input[type=checkbox]{accent-color:var(--blue-600);width:16px;height:16px;margin:0}
+.sys .rads input:disabled+span{color:#777}
+.sys .vrow{display:flex;gap:10px;margin:0 0 8px}
+.sys .vrow[hidden]{display:none}
+.sys .btn.success{background:#43a047;color:#fff}.sys .btn.success:hover{background:#388e3c}
+.sys .btn.gray,.mdl .btn.gray{background:#ececec;color:#333;border-color:#ddd}
+.sys .btn.gray:hover,.mdl .btn.gray:hover{background:#e0e0e0}
+.sys .btn.danger,.mdl .btn.danger{background:#e53935;color:#fff}
+.sys .btnrow{display:flex;justify-content:flex-end;flex-wrap:wrap;gap:12px;margin-top:28px;padding-top:18px;border-top:1px solid var(--line)}
+.sys .hr{border:0;border-top:1px solid var(--line);margin:28px 0 0}
+.sys .alert-info{background:#d9edf7;color:#31708f;border-radius:2px;padding:11px 14px;font-size:13px}
+.sys .well{background:#f5f5f5;border:1px solid #e3e3e3;border-radius:2px;padding:10px 12px;line-height:1.8}
+.sys .badge-ok{background:#43a047;color:#fff;padding:1px 7px;font-size:11px;font-weight:700;border-radius:2px;letter-spacing:.3px}
+.sys .badge-off{background:#9e9e9e;color:#fff;padding:1px 7px;font-size:11px;font-weight:700;border-radius:2px}
+.sys mark{background:#fff3b0;padding:0 3px}
+.sys .sec-link{display:block;background:none;border:0;padding:0;cursor:pointer;text-align:left;font:inherit;color:inherit}
+.sys .plus{color:var(--blue-600);font-size:20px;margin-left:8px;vertical-align:middle}
+.sys .tags{display:flex;flex-wrap:wrap;gap:6px;align-items:center;border-bottom:1px solid #757575;padding:5px 8px;min-height:40px}
+.sys .tags:focus-within{border-bottom:2px solid var(--blue-600);background:var(--blue-50)}
+.sys .tags input{flex:1;min-width:140px;border:0!important;background:transparent!important;padding:4px 2px!important}
+.sys .tg{background:var(--blue-600);color:#fff;border-radius:3px;padding:2px 8px;font-size:13px;display:inline-flex;gap:6px;align-items:center}
+.sys .tg button{background:none;border:0;color:#fff;cursor:pointer;font-size:14px;padding:0 0 0 2px;line-height:1}
+.sys .tbl-wrap{overflow-x:auto;border:1px solid var(--line);margin:6px 0 10px}
+.sys .stbl{width:100%;border-collapse:collapse;min-width:620px}
+.sys .stbl th{background:var(--blue-100);color:#1a237e;text-transform:uppercase;font-size:13px;font-weight:700;padding:11px 12px;text-align:left;white-space:nowrap}
+.sys .stbl td{padding:10px 12px;border-top:1px solid var(--line);vertical-align:middle}
+.sys .stbl tbody tr:nth-child(even){background:#f8f9fe}
+.sys .stbl .c{text-align:center}.sys .stbl .r{text-align:right}
+.sys .stbl tr.red td{color:#e53935}
+.sys .stbl small{color:var(--ink-3)}
+.sys .ib{background:none;border:0;cursor:pointer;color:var(--blue-600);padding:4px;border-radius:3px;display:inline-flex;align-items:center;vertical-align:middle}
+.sys .ib:hover{background:var(--blue-100)}
+.sys .ib.del{color:#e53935}
+.sys .ib.dollar{font-weight:800;font-size:17px;width:26px;justify-content:center}
+.sys .pdfi{display:inline-block;border:1.5px solid #e53935;color:#e53935;font-size:8px;font-weight:800;line-height:1;padding:3px 2px;border-radius:2px}
+.sys .rf{border:0;border-radius:3px;padding:4px 10px;font-size:12px;font-weight:700;color:#fff;cursor:pointer}
+.sys .rf.ok{background:#43a047}.sys .rf.hist{background:var(--blue-600)}
+.sys .acts{display:flex;gap:6px;align-items:center;justify-content:center;flex-wrap:wrap}
+.sys .pgbar{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;color:#555;font-size:13px;margin:6px 0 12px}
+.sys .pg{display:flex;list-style:none;margin:0;padding:0;gap:3px}
+.sys .pg li{min-width:32px;height:32px;display:grid;place-items:center;border:1px solid var(--line-strong);cursor:pointer;border-radius:2px;background:#fff}
+.sys .pg li.on{background:var(--blue-600);border-color:var(--blue-600);color:#fff;cursor:default}
+.sys .pg li.off{color:#aaa;cursor:default}
+.sys .ref{background:#f7f8fd;border:1px solid var(--line);border-radius:4px;padding:6px 16px 8px;margin-top:18px}
+.sys .ref h4{color:var(--blue-600);margin-top:10px}
+.sys .payarea{margin:6px 0 4px}
+.sys .payarea[hidden]{display:none}
+.sys .bcard-wrap{display:flex;flex-wrap:wrap;gap:16px;align-items:flex-start;margin:6px 0 14px}
+.sys .bcard{position:relative;width:min(100%,440px);min-height:200px;border-radius:6px;background:linear-gradient(135deg,#727272 0%,#a9826c 55%,#d9784a 100%);color:#fff;padding:14px;overflow:hidden;box-shadow:var(--shadow)}
+.sys .bcard .bg{background:#fff;color:var(--blue-600);font-size:11px;font-weight:700;padding:2px 7px;border-radius:3px}
+.sys .bcard .num{margin:16px 0 4px;font-size:17px;letter-spacing:2px}
+.sys .bcard .x{position:absolute;top:10px;right:10px;width:22px;height:22px;border-radius:50%;background:#fff;color:#e53935;border:0;cursor:pointer;font-weight:800;line-height:1}
+.sys .bcard .hold{margin-top:30px;font-size:15px}
+.sys .bcard h5{margin:6px 0 2px;font-size:15px;letter-spacing:.4px}
+.sys .bcard .ico{position:absolute;right:16px;bottom:12px;font-size:28px;opacity:.85}
+.sys .addcard{width:min(100%,440px);min-height:200px;border:2px dashed var(--blue-300);border-radius:6px;background:var(--drop-bg);display:grid;place-items:center;text-align:center;padding:16px}
+.sys .addcard .big{font-size:34px;color:var(--blue-600);line-height:1}
+.sys .verified{background:#43a047;color:#fff;font-weight:700;padding:12px 18px;border-radius:3px;font-size:14px}
+.sys .rng input{width:100%;min-width:90px;border:0;border-bottom:1px solid #757575;background:transparent;padding:7px 8px;font-size:14px;outline:none;text-align:center}
+.sys .rng input:focus{border-bottom:2px solid var(--blue-600);background:var(--blue-50)}
+.sys .rng input[readonly]{background:#eee;color:#666}
+.sys .addmore{background:none;border:0;color:var(--blue-600);font-size:18px;font-weight:500;cursor:pointer;padding:6px 0;margin-bottom:6px}
+.sys .ttl{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding-bottom:12px;border-bottom:1px solid #333;margin-bottom:22px}
+.sys .flt .fg{margin-bottom:8px}
+.sys .dates{display:flex;gap:6px;align-items:flex-end}
+.sys .dates input{min-width:0;flex:1}
+.sys .sts{margin:0 0 12px}
+.sys .fbtn{display:flex;gap:10px;padding-bottom:18px;border-bottom:1px solid var(--line)}
+.sys .quick{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin:16px 0}
+.sys .quick b{margin-right:10px}
+.sys .qf{background:#fff;border:1px solid var(--blue-600);color:#222;padding:12px 15px;margin-right:12px;border-radius:2px;cursor:pointer;font-size:14px}
+.sys .qf:hover,.sys .qf.on{background:var(--blue-600);color:#fff}
+.sys .total{font-size:22px}.sys .total b{color:var(--blue-600);font-size:26px}
+.sys .stbl.inv th[data-sort]{cursor:pointer}
+.sys .srt{font-style:normal;color:#9fa8da;font-size:12px}
+.sys .srt.on{color:var(--blue-600)}
+.sys .stbl.inv a{color:var(--blue-600);text-decoration:underline;cursor:pointer}
+.sys .mbadge{display:inline-grid;place-items:center;width:26px;height:26px;border-radius:50%;border:2px solid var(--blue-600);color:var(--blue-600);font-weight:800;font-size:12px}
+.sys .stbl.inv td small{display:block;margin-top:4px}
+.sys .empty{text-align:center;padding:26px;color:var(--ink-3)}
+@media (max-width:1000px){.sys .g4{grid-template-columns:repeat(2,minmax(0,1fr))}.sys .g3{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:640px){.sys .g2,.sys .g3,.sys .g4{grid-template-columns:1fr}.sys .qf{margin-bottom:8px}}
+
+/* drawer modal (matches the system's right-side modals) */
+.mdl-back{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:90;display:flex;justify-content:flex-end}
+.mdl{width:min(560px,100%);height:100%;background:#fff;display:flex;flex-direction:column;box-shadow:-6px 0 24px rgba(0,0,0,.25);animation:slideIn .22s ease-out}
+@keyframes slideIn{from{transform:translateX(40px);opacity:.4}to{transform:none;opacity:1}}
+.mdl-h{background:var(--blue-600);color:#fff;padding:16px 20px;display:flex;align-items:center;justify-content:space-between;font-size:20px;font-weight:500}
+.mdl-x{background:none;border:0;color:#fff;font-size:26px;cursor:pointer;line-height:1}
+.mdl-b{padding:20px;overflow:auto;flex:1;font-size:14px}
+.mdl-f{padding:14px 20px;padding-bottom:calc(14px + env(safe-area-inset-bottom,0px));border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:10px;background:#fafafa}
+.mdl .btn.success{background:#43a047;color:#fff}
+.mdl .fg{margin-bottom:14px}
+.mdl .fg>label,.mdl .lbl2{display:block;font-weight:700;margin-bottom:3px}
+.mdl .fg input[type=text],.mdl .fg input[type=password],.mdl .fg input[type=number],.mdl .fg input[type=date],.mdl .fg textarea,.mdl .fg select{width:100%;border:0;border-bottom:1px solid #757575;background:transparent;padding:9px 10px;font-size:14px;outline:none}
+.mdl .fg select{border:1px solid var(--line-strong);background:#fff}
+.mdl .fg input:focus,.mdl .fg textarea:focus{border-bottom:2px solid var(--blue-600);background:var(--blue-50)}
+.mdl .fg.bad input,.mdl .fg.bad select,.mdl .fg.bad textarea{border-bottom:2px solid var(--err)}
+.mdl .fg .em{display:none;color:var(--err);font-size:12px;font-weight:600;margin-top:3px}
+.mdl .fg.bad .em{display:block}
+.mdl .rq{color:#f00}
+.mdl .rads{display:flex;flex-wrap:wrap;gap:6px 18px}
+.mdl .rads label{display:inline-flex;gap:7px;align-items:center;cursor:pointer}
+.mdl input[type=radio],.mdl input[type=checkbox]{accent-color:var(--blue-600)}
+.mdl .alert-s{background:#dff0d8;color:#3c763d;padding:10px 14px;border-radius:2px;margin-bottom:14px}
+.mdl .info{display:grid;grid-template-columns:repeat(2,1fr);gap:6px 16px;margin-bottom:14px}
+.mdl .info b{color:var(--blue-600)}
+.mdl table{width:100%;border-collapse:collapse}
+.mdl th,.mdl td{padding:8px;border-bottom:1px solid var(--line);text-align:left}
+.mdl th{background:var(--blue-100)}
+.mdl .li{display:grid;grid-template-columns:2fr 1fr 1fr 1fr auto;gap:8px;align-items:end;margin-bottom:8px}
+.mdl .li .fg{margin:0}
+.mdl .sum{margin-top:14px;border-top:1px solid var(--line);padding-top:10px}
+.mdl .sum div{display:flex;justify-content:space-between;padding:3px 0}
+.mdl .link{background:none;border:0;color:var(--blue-600);font-size:16px;cursor:pointer;padding:6px 0}
+.sys .stbl.inv{min-width:1120px}
+.sys .stbl.inv td:nth-child(2){white-space:nowrap}
+.sys .stbl.inv .acts{flex-wrap:nowrap}
+.sys .stbl.inv td:last-child{white-space:nowrap}
 </style>
 </head>
 <body>
@@ -315,9 +493,10 @@ label.lbl,.lbl{font-weight:700;font-size:14px;color:var(--ink)}
 
   <main>
     <div class="crumbs">Clubs &nbsp;›&nbsp; <b>Edit club</b></div>
+    <div class="sheet">
     <div class="titlebar">
       <div class="ico">🏛️</div>
-      <h1>Edit Club "Friends Of Fairview"</h1>
+      <h1>Edit Club "Allen Kiwanis"</h1>
       <div class="grow"></div>
       <button class="btn primary" type="button">⇄ Switch to club</button>
     </div>
@@ -329,9 +508,190 @@ label.lbl,.lbl{font-weight:700;font-size:14px;color:var(--ink)}
       <button class="tab" role="tab" aria-selected="false" data-tab="invoice">Invoice history</button>
     </div>
 
-    <div class="panel stub" data-panel="profile" hidden>Profile tab (unchanged in this demo)</div>
-    <div class="panel stub" data-panel="payment" hidden>App payment tab (unchanged in this demo)</div>
-    <div class="panel stub" data-panel="invoice" hidden>Invoice history tab (unchanged in this demo)</div>
+<!-- ================= PROFILE ================= -->
+    <section class="panel sys" data-panel="profile" hidden>
+      <div class="g4">
+        <div class="fg"><label for="p_club">Club Name <b class="rq">*</b></label><input type="text" id="p_club" placeholder="Enter club name" value="Allen Kiwanis" data-req></div>
+        <div class="fg"><label for="p_slug">Club Slug <b class="rq">*</b></label><input type="text" id="p_slug" value="kiwanis" disabled></div>
+        <div class="fg"><label for="p_num">Club Number <b class="rq">*</b></label><input type="text" id="p_num" placeholder="Enter club number" value="01-28-DAL-0003" data-req></div>
+        <div class="fg"><label for="p_state">Club State</label><input type="text" id="p_state" placeholder="Enter club state" value="TX"></div>
+      </div>
+
+      <h3 class="sub_title">Flag Manager Information</h3>
+      <div class="g3">
+        <div class="fg"><label for="p_first">First Name <b class="rq">*</b></label><input type="text" id="p_first" placeholder="Enter manager's first name" value="Shreyansh" data-req></div>
+        <div class="fg"><label for="p_last">Last Name <b class="rq">*</b></label><input type="text" id="p_last" placeholder="Enter manager's last name" value="Bhimani" data-req></div>
+        <div class="fg"><label for="p_phone">Phone <b class="rq">*</b></label><input type="text" id="p_phone" class="phone" inputmode="tel" placeholder="Enter manager's contact number" value="(555) 551-1111" data-req></div>
+      </div>
+      <div class="g2">
+        <div class="fg"><label for="p_ext">Extension</label><input type="text" id="p_ext" placeholder="Enter manager's extension"></div>
+        <div class="fg"><label for="p_email">Email <b class="rq">*</b> <span class="chk" id="p_emailok" title="Verified">✔</span></label><input type="text" id="p_email" inputmode="email" autocomplete="off" placeholder="Enter manager's email" value="shreyansh123@webcodegenie.net" data-req></div>
+      </div>
+      <div class="vrow"><button type="button" class="btn success" id="p_verify" hidden>Verify email address</button><button type="button" class="btn primary" id="p_addadmin" hidden>Add as an Administrator</button></div>
+
+      <h3 class="sub_title">Business Information</h3>
+      <div class="fg"><label for="p_biz">Business Name <b class="rq">*</b></label><input type="text" id="p_biz" placeholder="Enter business name" value="Allen Kiwanis TX" data-req></div>
+      <label class="ck"><input type="checkbox" id="p_same" checked><span>Same as contact information.</span></label>
+      <div class="g3">
+        <div class="fg"><label for="b_first">First Name <b class="rq">*</b></label><input type="text" id="b_first" placeholder="Enter first name"></div>
+        <div class="fg"><label for="b_last">Last Name <b class="rq">*</b></label><input type="text" id="b_last" placeholder="Enter last name"></div>
+        <div class="fg"><label for="b_phone">Phone <b class="rq">*</b></label><input type="text" id="b_phone" class="phone" placeholder="Enter contact number"></div>
+      </div>
+      <div class="g2">
+        <div class="fg"><label for="b_ext">Extension</label><input type="text" id="b_ext" placeholder="Enter extension"></div>
+        <div class="fg"><label for="b_email">Email <b class="rq">*</b></label><input type="text" id="b_email" placeholder="Enter email"></div>
+      </div>
+      <div class="g2">
+        <div class="fg"><label for="p_limit">Credit Card Processor Max Transaction Limit</label><small class="note">(Make it empty, for unlimited transaction)</small><input type="text" id="p_limit" inputmode="decimal" placeholder="Card Transaction Limit"></div>
+      </div>
+
+      <h3 class="sub_title">Finance Contact Information</h3>
+      <p class="note">Treasurer Email is used by the system to send HWF software monthly subscription invoices</p>
+      <div class="g2">
+        <div class="fg"><label for="p_finname">Finance Name <b class="rq">*</b></label><input type="text" id="p_finname" placeholder="Enter finance name" value="John Gifford" data-req></div>
+        <div class="fg"><label for="p_finemail">Finance Email <b class="rq">*</b></label><input type="text" id="p_finemail" inputmode="email" placeholder="Enter finance email" value="j-a-gifford@webcodegenie.net" data-req></div>
+      </div>
+      <p><b>Instructions</b>: After entering email address, click the "enter button" on your keyboard to create the tag. Add a comma (,) or semi-colon (;) after each email entry if adding more than one email address.</p>
+      <div class="fg"><label for="p_cc">CC Email For Invoice</label><div class="tags" id="p_tags"><input type="text" id="p_cc" placeholder="Type here" autocomplete="off"></div></div>
+
+      <button type="button" class="sec-link" id="p_addadminHead"><h3 class="sub_title">Administrator Account <span class="plus">＋</span></h3></button>
+      <div class="tbl-wrap"><table class="stbl" id="p_admins"><thead><tr><th>Username</th><th>Email Address</th><th class="c">Cell Number</th><th class="c">Status</th><th class="c">Action</th></tr></thead><tbody></tbody></table></div>
+      <div class="pgbar"><span id="p_adminCount"></span><ul class="pg"><li class="off">«</li><li class="on">1</li><li data-demo>2</li><li data-demo>3</li><li data-demo>4</li><li data-demo>5</li><li data-demo>»</li></ul></div>
+
+      <h3 class="sub_title">Customer Billing</h3>
+      <h4>Customer Billing &amp; Subscription Model</h4>
+      <div class="fg"><span class="lbl2">Subscription Type:</span>
+        <div class="rads"><label><input type="radio" name="p_subtype" checked disabled><span>Club Annually Program</span></label><label><input type="radio" name="p_subtype" disabled><span>Customer Annually Program</span></label></div></div>
+      <div class="g2">
+        <div class="fg"><label for="p_date">Date:</label><input type="text" id="p_date" value="12" readonly></div>
+        <div class="fg"><label for="p_month">Month:</label><select id="p_month" disabled><option>January</option><option>February</option><option>March</option><option>April</option><option>May</option><option>June</option><option>July</option><option>August</option><option>September</option><option>October</option><option selected>November</option><option>December</option></select></div>
+      </div>
+
+      <h4>Credit Card Payment Processor</h4>
+      <div class="g2">
+        <div class="fg"><span class="lbl2">Club has their own Authorize.net Payment Account</span>
+          <div class="rads"><label><input type="radio" name="p_own" value="no"><span>HWF</span></label><label><input type="radio" name="p_own" value="yes" checked><span>Club's Own Payment Processor</span></label></div></div>
+        <div>
+          <div class="fg" id="p_hwfBox" hidden><label for="p_hwfgw">HWF Gateway Account <b class="rq">*</b></label><select id="p_hwfgw"><option value="">Select Account</option><option>LIVE HWF authorize.net Account closed on 18-05</option><option>HWF default authorize.net</option><option>TSYS Acquiring Solutions</option><option>Shreyansh Stripe HWF Account</option><option>Authorize.net Shreyansh HWF</option><option>Shreyansh Squareup HWF</option></select></div>
+          <div class="fg" id="p_perBox"><label for="p_pergw">Personal Gateway Account <b class="rq">*</b></label><select id="p_pergw"><option value="">Select Personal Account</option><option>Prosper Authorised Account</option><option>Kiwanis Club Auth.Net</option><option>Stripe FOF Account</option><option>Fairview Rotary Stripe</option><option>Kiwanis Allen</option><option selected>Shreyansh Stripe Club Account</option><option>Authorize.net Shreyansh Club</option><option>Shreyansh Squareup Club</option></select></div>
+        </div>
+      </div>
+
+      <h4>Payment Processor Fee <small>(Calculated in Club Wallet)</small></h4>
+      <div class="rads"><label><input type="radio" name="p_fee" value="default" checked><span>Default Processor Fees</span></label><label><input type="radio" name="p_fee" value="custom"><span>Custom Processor Fees</span></label></div>
+      <div class="g4" style="margin-top:12px">
+        <div class="fg"><label for="p_cardfee">Card Processor Fee <b class="rq">*</b></label><div class="inwrap" data-u="%"><input type="number" step="0.01" id="p_cardfee" value="2.9" readonly></div></div>
+        <div class="fg"><label for="p_txfee">Card Transaction Fee <b class="rq">*</b></label><div class="inwrap pre" data-u="$"><input type="number" step="0.01" id="p_txfee" value="0.3" readonly></div></div>
+        <div class="fg"><label for="p_achfee">ACH Processor Fee <b class="rq">*</b></label><div class="inwrap" data-u="%"><input type="number" step="0.01" id="p_achfee" value="0.8" readonly></div></div>
+      </div>
+      <div class="ref">
+        <h4>ⓘ Payment Processor Fee Reference</h4>
+        <p>These are the fees charged by different payment processors for CARD/ACH/Bank transactions. Configure your club's payment processor fee here, which reflects in the club wallet as processor fee.</p>
+        <div class="tbl-wrap"><table class="stbl"><thead><tr><th>Payment Gateway</th><th>Card Processor Fee</th><th>ACH Processor Fee</th></tr></thead><tbody>
+          <tr><td><b>Stripe</b></td><td>2.9% + $0.30<br><small>per transaction</small></td><td>0.8% per transaction<br><small>($5 Max)</small></td></tr>
+          <tr><td><b>Square</b></td><td>2.6% + $0.10<br><small>per transaction</small></td><td>1.0% per transaction<br><small>($1 Min)</small></td></tr>
+          <tr><td><b>Authorize.Net</b></td><td>Variable<br><small>Typically 2.9% + $0.30</small></td><td>0.75% per transaction<br><small>Depends on merchant agreement</small></td></tr>
+        </tbody></table></div>
+      </div>
+
+      <div class="fg" style="margin-top:20px"><span class="lbl2">Stop Online Payments</span>
+        <div class="rads"><label><input type="radio" name="p_stop" value="yes"><span>Yes</span></label><label><input type="radio" name="p_stop" value="no" checked><span>No</span></label></div></div>
+      <div class="fg"><span class="lbl2">Message for Stop online Payment</span><div class="rte" data-id="stopMsg" data-h="150"></div></div>
+
+      <div class="btnrow"><button type="button" class="btn success" data-save="Profile">Save</button><button type="button" class="btn primary" data-goto="payment">Next</button></div>
+    </section>
+
+    <!-- ================= APP PAYMENT ================= -->
+    <section class="panel sys" data-panel="payment" hidden>
+      <h3 class="sub_title">🔒 Select HWF Processor Account</h3>
+      <div class="alert-info">ⓘ <b>Note:</b> Changing the payment gateway will remove previously stored Card and ACH details.</div>
+      <div class="g2" style="margin-top:16px">
+        <div class="fg"><label for="a_proc">HWF Processor Account</label>
+          <select id="a_proc"><option value="">-- Select Processor --</option><option value="54">Flag Heroes</option><option value="58" selected>Shreyansh Test</option></select>
+          <small class="note">ⓘ This processor will be used for all payment processing for this club.</small></div>
+        <div class="fg"><span class="lbl2">Current Assigned Processor</span>
+          <div class="well" id="a_well"></div></div>
+      </div>
+      <hr class="hr">
+
+      <h3 class="sub_title">Application Payment Type And Banking Information</h3>
+      <h4>Helping with Flags will charge your credit card or debit your account every month for the previous month. For any questions, call (214) 383-8010</h4>
+      <div class="g3">
+        <div class="fg"><span class="lbl2">Select Payment Type:</span>
+          <div class="rads"><label><input type="radio" name="a_ptype" value="credit"><span>Credit Card Payment</span></label><label><input type="radio" name="a_ptype" value="ach" checked><span>ACH Payment</span></label><label><input type="radio" name="a_ptype" value="manual"><span>Manual</span></label></div></div>
+        <div class="fg"><span class="lbl2">System Invoice Processing Status</span>
+          <div class="rads"><label><input type="radio" name="a_sys" value="on"><span>ON</span></label><label><input type="radio" name="a_sys" value="off" checked><span>OFF</span></label></div></div>
+      </div>
+      <div id="a_ach" class="payarea"></div>
+      <div id="a_cc" class="payarea" hidden></div>
+
+      <h3 class="sub_title">Invoice Settings:</h3>
+      <h4>This setting will be used when the system automatically creates the monthly pending invoice.</h4>
+      <div class="fg"><label for="a_idesc">Invoice Description <b class="rq">*</b></label><textarea id="a_idesc" rows="2" data-req>Helpingwithflags.com Monthly Invoice</textarea></div>
+      <div class="fg"><label for="a_iflag">Invoice Table Flag Detail Description <b class="rq">*</b></label><small class="note">If you want to use month or year in this field then, you can use <mark>%month%</mark> and <mark>%year%</mark> instead name of month or year, it will replace previous month and year.</small><textarea id="a_iflag" rows="2" data-req>Automatic payment flag subscription %month% %year% #</textarea></div>
+      <div class="fg"><label for="a_inote">Customer Note <b class="rq">*</b></label><textarea id="a_inote" rows="2" data-req>Your subscription is setup for payment by bank transfer, you don't need to take any action - we'll automatically charge the account on the 15th of each month and send you a paid invoice receipt. Thank you for your business.</textarea></div>
+
+      <h3 class="sub_title">Club Pricing</h3>
+      <div class="g2">
+        <div class="fg"><span class="lbl2">Flag Calculation Based On:</span><div class="rads"><label><input type="radio" name="a_calc" value="range" checked><span>Flag Range</span></label><label><input type="radio" name="a_calc" value="flat"><span>Flat Rate</span></label></div></div>
+        <div class="fg"><span class="lbl2">Invoice Generate Based On:</span><div class="rads"><label><input type="radio" name="a_gen" value="annual"><span>Annually Amount</span></label><label><input type="radio" name="a_gen" value="monthly" checked><span>Monthly Amount</span></label></div></div>
+      </div>
+      <div id="a_flat" hidden><div class="g3"><div class="fg"><label for="a_flatprice">Invoice Flat Price <b class="rq">*</b></label><div class="inwrap pre" data-u="$"><input type="number" step="0.01" id="a_flatprice" placeholder="00.00"></div></div></div></div>
+      <div id="a_range">
+        <div class="tbl-wrap"><table class="stbl rng"><thead><tr><th>Start Range</th><th>End Range</th><th>Start Price</th><th>End Price</th><th class="c">Action</th></tr></thead><tbody id="a_rows"></tbody></table></div>
+        <button type="button" class="addmore" id="a_addrow">Add More <span class="plus">＋</span></button>
+      </div>
+
+      <h3 class="sub_title">Sales Personnel Information</h3>
+      <div class="g2">
+        <div class="fg"><span class="lbl2">Turn ON/OFF Sales Personnel Feature</span><div class="rads"><label><input type="radio" name="a_sp" value="on" checked><span>ON</span></label><label><input type="radio" name="a_sp" value="off"><span>OFF</span></label></div></div>
+        <div class="fg"><label for="a_spamt">Sales Personnel Amount</label><div class="inwrap pre" data-u="$"><input type="number" min="0" step="0.01" id="a_spamt" value="10.00"></div></div>
+      </div>
+      <div class="fg"><label for="a_spdesc">Sales Personnel Description</label><input type="text" id="a_spdesc" placeholder="Enter sales personnel description" value="testing description"></div>
+
+      <button type="button" class="sec-link" id="a_addsvcHead"><h3 class="sub_title">Additional Services <span class="plus">＋</span></h3></button>
+      <div class="tbl-wrap"><table class="stbl" id="a_svc"><thead><tr><th>Description</th><th class="r">Amount</th><th class="c">Action</th></tr></thead><tbody></tbody></table></div>
+
+      <div class="btnrow"><button type="button" class="btn primary" data-goto="web">Next</button><button type="button" class="btn primary" data-goto="profile">Previous</button><button type="button" class="btn success" data-save="App payment">Save</button></div>
+    </section>
+
+    <!-- ================= INVOICE HISTORY ================= -->
+    <section class="panel sys" data-panel="invoice" hidden>
+      <div class="ttl"><h3 class="sub_title" style="margin:0">Master Invoice List</h3><button type="button" class="btn success" id="i_add">+ Add Invoice</button></div>
+      <div class="g4 flt">
+        <div class="fg"><select id="i_search"><option value="">Search Invoice ID</option></select></div>
+        <div class="fg"><select id="i_club"><option value="">Select Club</option><option>Allen Kiwanis</option></select></div>
+        <div class="fg dates"><input type="date" id="i_from" aria-label="From date"><span>–</span><input type="date" id="i_to" aria-label="To date"></div>
+        <div class="fg"><select id="i_type"><option value="">Invoice Type</option><option value="A">Automatic</option><option value="M">Manual</option></select></div>
+      </div>
+      <div class="rads sts" id="i_status">
+        <label><input type="checkbox" value="all" checked><span>All</span></label>
+        <label><input type="checkbox" value="paid"><span>Paid</span></label>
+        <label><input type="checkbox" value="unpaid"><span>Pending</span></label>
+        <label><input type="checkbox" value="past_due"><span>Past Due</span></label>
+        <label><input type="checkbox" value="in_process"><span>Processing</span></label>
+        <label><input type="checkbox" value="partially_refunded"><span>Partially Refunded</span></label>
+        <label><input type="checkbox" value="refunded"><span>Refunded</span></label>
+      </div>
+      <div class="fbtn"><button type="button" class="btn primary" id="i_apply">Apply Filters</button><button type="button" class="btn gray" id="i_reset">Reset</button></div>
+      <div class="quick">
+        <div><b>Quick Filters:</b>
+          <button type="button" class="qf" data-q="month">This Month (<span id="q_month">0</span>)</button>
+          <button type="button" class="qf" data-q="last">Last Month (<span id="q_last">0</span>)</button>
+          <button type="button" class="qf" data-q="year">This Year (<span id="q_year">0</span>)</button></div>
+        <div class="total">Total Amount: <b id="i_total">$0.00</b></div>
+      </div>
+      <div class="tbl-wrap"><table class="stbl inv" id="i_table"><thead><tr>
+        <th class="c" data-sort="type">Billings <i class="srt">⇅</i></th>
+        <th data-sort="club">Club <i class="srt">⇅</i></th>
+        <th class="c" data-sort="no">Invoice # <i class="srt">⇅</i></th>
+        <th class="c" data-sort="date">Invoice Date <i class="srt">⇅</i></th>
+        <th class="c">Invoiced</th><th class="c">Status</th><th class="c">Pmt. Type</th>
+        <th class="c" data-sort="sent">Sent <i class="srt">⇅</i></th>
+        <th class="c">Signed</th><th class="c">Generated Type</th><th class="c">Action</th></tr></thead><tbody></tbody></table></div>
+      <div class="pgbar"><span id="i_count"></span><ul class="pg"><li class="off">«</li><li class="on">1</li><li data-demo>2</li><li data-demo>3</li><li data-demo>»</li></ul></div>
+      <div class="btnrow"><button type="button" class="btn primary" data-goto="web">Previous</button></div>
+    </section>
 
     <section class="panel" data-panel="web">
       <div class="wd">
@@ -511,15 +871,16 @@ label.lbl,.lbl{font-weight:700;font-size:14px;color:var(--ink)}
           </section>
         </div>
       </div>
+      <div class="savebar">
+        <span class="st" id="saveSt">Changes are not saved yet.</span>
+        <button class="btn ghost" type="button" id="resetBtn">Reset</button>
+        <button class="btn primary" type="button" id="saveBtn">Save changes</button>
+      </div>
     </section>
+    </div>
   </main>
 </div>
 
-<div class="savebar">
-  <span class="st" id="saveSt">Changes are not saved yet.</span>
-  <button class="btn ghost" type="button" id="resetBtn">Reset</button>
-  <button class="btn primary" type="button" id="saveBtn">Save changes</button>
-</div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <script>
@@ -532,6 +893,7 @@ label.lbl,.lbl{font-weight:700;font-size:14px;color:var(--ink)}
     desc:'<p>Fairview Rotary brings neighbors together to serve our community. Join us for weekly meetings, flag programs and local projects.</p><ul><li>Community outreach</li><li>Youth scholarships</li><li>Rotary Foundation</li></ul>',
     contactDetail:'<p><b>CLUB CONTACT</b></p><p>Jane Smith<br>555-010-0142</p><p><u>FLAG SUPPORT CONTACT</u></p><p>support@example.com</p><p><b><u>Mailing address</u></b></p><p>Fairview Rotary Club<br>123 Main Street<br>Fairview, Texas | 75069</p>',
     instrNote:'<h2>Don\'t miss out! Sign up now.</h2>',
+    stopMsg:'<p>test</p>',
     guideDesc:''
   };
   var EMOJI=['😀','😊','😍','👍','🎉','🏆','⭐','🇺🇸','🚩','❤️','🙏','📅','📍','📞','✉️','✅'];
@@ -764,6 +1126,383 @@ label.lbl,.lbl{font-weight:700;font-size:14px;color:var(--ink)}
     $('.savebar').style.display = t.dataset.tab==='web' ? '' : 'none';
   }); });
   $('#menuBtn').onclick=function(){ $('#side').classList.toggle('open'); };
+
+  /* ================= Real tabs: Profile / App Payment / Invoice History ================= */
+  var IC = {
+    eye:'<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M12 4.5C7 4.5 2.7 7.6 1 12c1.7 4.4 6 7.5 11 7.5s9.3-3.1 11-7.5c-1.7-4.4-6-7.5-11-7.5zM12 17a5 5 0 110-10 5 5 0 010 10zm0-8a3 3 0 100 6 3 3 0 000-6z"/></svg>',
+    edit:'<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M3 17.25V21h3.75L17.8 9.94l-3.75-3.75L3 17.25zM20.7 7.04a1 1 0 000-1.41l-2.34-2.34a1 1 0 00-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>',
+    del:'<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M6 19a2 2 0 002 2h8a2 2 0 002-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>',
+    mail:'<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M20 4H4a2 2 0 00-2 2v12a2 2 0 002 2h16a2 2 0 002-2V6a2 2 0 00-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>'
+  };
+  function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
+  function money(n){ return '$'+Number(n).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}); }
+  function emailOk(v){ return /^\S+@\S+\.\S+$/.test(v); }
+  function fmtPhone(v){ var d=String(v).replace(/\D/g,'').slice(0,10); if(d.length<4) return d; if(d.length<7) return '('+d.slice(0,3)+') '+d.slice(3); return '('+d.slice(0,3)+') '+d.slice(3,6)+'-'+d.slice(6); }
+  function gotoTab(name){ var t=$('[data-tab='+name+']'); if(t){ t.click(); window.scrollTo({top:0,behavior:'smooth'}); } }
+
+  /* ----- generic drawer modal ----- */
+  function closeModal(){ var m=$('#mdlBack'); if(m) m.remove(); }
+  function openModal(title,body,o){
+    o=o||{}; closeModal();
+    var b=document.createElement('div'); b.className='mdl-back'; b.id='mdlBack';
+    b.innerHTML='<div class="mdl" role="dialog" aria-modal="true" aria-label="'+esc(title)+'"><div class="mdl-h"><span>'+esc(title)+'</span><button type="button" class="mdl-x" aria-label="Close">×</button></div><div class="mdl-b">'+body+'</div><div class="mdl-f"><button type="button" class="btn gray" data-c>'+(o.cancel||'Cancel')+'</button>'+(o.save===false?'':'<button type="button" class="btn '+(o.danger?'danger':'success')+'" data-s>'+(o.save||'Save')+'</button>')+'</div></div>';
+    document.body.appendChild(b);
+    function cancel(){ closeModal(); if(o.onCancel) o.onCancel(); }
+    b.addEventListener('mousedown',function(e){ if(e.target===b) cancel(); });
+    $('.mdl-x',b).onclick=cancel; $('[data-c]',b).onclick=cancel;
+    var s=$('[data-s]',b); if(s) s.onclick=function(){ if(!o.onSave || o.onSave(b)!==false) closeModal(); };
+    if(o.onOpen) o.onOpen(b);
+    var f=$('input,select,textarea',b); if(f && !o.noFocus) f.focus();
+    return b;
+  }
+  document.addEventListener('keydown',function(e){ if(e.key==='Escape' && $('#mdlBack')) closeModal(); });
+  function mval(b,id){ return ($('#'+id,b).value||'').trim(); }
+  function mbad(b,id,msg){ var f=$('#'+id,b).closest('.fg'); f.classList.add('bad'); var e=$('.em',f); if(e&&msg) e.textContent=msg; return f; }
+  function mclear(b){ $$('.fg.bad',b).forEach(function(x){ x.classList.remove('bad'); }); }
+  function confirmModal(title,text,yes,fn){ openModal(title,'<p>'+text+'</p>',{save:yes,danger:true,onSave:function(){ fn(); }}); }
+
+  /* ----- shared: required-field check for a panel ----- */
+  function checkReq(panel){
+    var first=null;
+    $$('[data-req]',panel).forEach(function(inp){
+      var fg=inp.closest('.fg'), ok=!!inp.value.trim();
+      if(ok && /email/i.test(inp.id)) ok=emailOk(inp.value.trim());
+      if(fg) fg.classList.toggle('bad',!ok);
+      if(!ok && !first) first=inp;
+    });
+    return first;
+  }
+  document.addEventListener('input',function(e){ var fg=e.target.closest&&e.target.closest('.sys .fg.bad'); if(fg) fg.classList.remove('bad'); });
+  $$('[data-goto]').forEach(function(b){ b.addEventListener('click',function(){ gotoTab(b.dataset.goto); }); });
+  $$('[data-save]').forEach(function(b){ b.addEventListener('click',function(){
+    var panel=b.closest('.panel'), first=checkReq(panel);
+    if(first){ first.scrollIntoView({behavior:'smooth',block:'center'}); first.focus(); toast('Fix the highlighted fields, then save again.',true); return; }
+    toast(b.dataset.save+' details saved.');
+  }); });
+  $$('.pg [data-demo]').forEach(function(li){ li.addEventListener('click',function(){ toast('Demo data has a single page.'); }); });
+
+  /* ================= PROFILE ================= */
+  $$('.phone').forEach(function(i){ i.addEventListener('input',function(){ var p=i.selectionStart===i.value.length; i.value=fmtPhone(i.value); }); });
+  // business = same as contact
+  var bizMap=[['p_first','b_first'],['p_last','b_last'],['p_phone','b_phone'],['p_ext','b_ext'],['p_email','b_email']];
+  function syncBiz(){
+    var same=$('#p_same').checked;
+    bizMap.forEach(function(m){ var s=$('#'+m[0]), d=$('#'+m[1]); if(same){ d.value=s.value; d.readOnly=true; } else { d.readOnly=false; } d.toggleAttribute('data-req',m[1]!=='b_ext'); });
+  }
+  $('#p_same').addEventListener('change',syncBiz);
+  bizMap.forEach(function(m){ $('#'+m[0]).addEventListener('input',syncBiz); });
+  syncBiz();
+  // email verification
+  var origEmail=$('#p_email').value;
+  $('#p_email').addEventListener('input',function(){
+    var v=this.value.trim(), changed=v!==origEmail;
+    $('#p_emailok').hidden=changed;
+    $('#p_verify').hidden=!(changed && emailOk(v));
+    if(changed) $('#p_addadmin').hidden=true;
+  });
+  $('#p_verify').addEventListener('click',function(){
+    openModal('Verify email address','<div class="alert-s">An email with a One-Time Passcode has been sent to your email account.</div><div class="fg"><label for="m_otp">Enter the 6 digit Passcode you received below</label><input type="text" id="m_otp" inputmode="numeric" maxlength="6" placeholder="Enter One Time Passcode" autocomplete="off"><div class="em">Enter the 6 digit passcode (any 6 digits work in this demo).</div></div>',{save:'Submit',onSave:function(b){
+      mclear(b); if(!/^\d{6}$/.test(mval(b,'m_otp'))){ mbad(b,'m_otp'); return false; }
+      origEmail=$('#p_email').value.trim(); $('#p_emailok').hidden=false; $('#p_verify').hidden=true; $('#p_addadmin').hidden=false; toast('Email address verified.');
+    }});
+  });
+  $('#p_addadmin').addEventListener('click',function(){ adminModal(null,{name:($('#p_first').value+' '+$('#p_last').value).trim(),email:$('#p_email').value.trim(),phone:$('#p_phone').value}); });
+  // CC email tags
+  var tags=['testing@webcodegenie.net'];
+  function renderTags(){
+    $$('.tg',$('#p_tags')).forEach(function(t){ t.remove(); });
+    tags.forEach(function(t,i){ var s=document.createElement('span'); s.className='tg'; s.innerHTML=esc(t)+'<button type="button" aria-label="Remove '+esc(t)+'">×</button>'; $('button',s).onclick=function(){ tags.splice(i,1); renderTags(); }; $('#p_tags').insertBefore(s,$('#p_cc')); });
+  }
+  function commitTag(){
+    var parts=$('#p_cc').value.split(/[,;\s]+/).filter(Boolean), bad=0;
+    parts.forEach(function(p){ if(emailOk(p)){ if(tags.indexOf(p)<0) tags.push(p); } else bad++; });
+    $('#p_cc').value=''; if(bad) toast('Some entries are not valid email addresses.',true); renderTags();
+  }
+  $('#p_cc').addEventListener('keydown',function(e){ if(e.key==='Enter'||e.key===','||e.key===';'){ e.preventDefault(); commitTag(); } else if(e.key==='Backspace' && !this.value && tags.length){ tags.pop(); renderTags(); } });
+  $('#p_cc').addEventListener('blur',function(){ if(this.value.trim()) commitTag(); });
+  renderTags();
+  // administrators
+  var admins=[{name:'Brynne Mayer',email:'ktie@webcodegenie.net',phone:'(133) 191-7135',status:'Active'},{name:'Cherokee Wheeler',email:'rhyanrotary@webcodegenie.net',phone:'(125) 263-8193',status:'Active'},{name:'Randall Mcintyre',email:'jipylyl@webcodegenie.net',phone:'',status:'Active'}];
+  var adminExtra=46;
+  function renderAdmins(){
+    var tb=$('#p_admins tbody'); tb.innerHTML='';
+    admins.forEach(function(a,i){
+      var tr=document.createElement('tr');
+      tr.innerHTML='<td>'+esc(a.name)+'</td><td>'+esc(a.email)+'</td><td class="c">'+esc(a.phone)+'</td><td class="c">'+a.status+'</td><td class="c"><div class="acts"><button type="button" class="ib" title="Edit Admin" data-e>'+IC.edit+'</button><button type="button" class="ib del" title="Delete Admin" data-d>'+IC.del+'</button></div></td>';
+      $('[data-e]',tr).onclick=function(){ adminModal(i,a); };
+      $('[data-d]',tr).onclick=function(){ confirmModal('Delete Admin','Delete <b>'+esc(a.name)+'</b> from this club?','Delete',function(){ admins.splice(i,1); renderAdmins(); toast('Admin deleted.'); }); };
+      tb.appendChild(tr);
+    });
+    $('#p_adminCount').textContent='Showing 1 to '+admins.length+' of '+(admins.length+adminExtra)+' entries';
+  }
+  function adminModal(idx,pre){
+    pre=pre||{};
+    var body='<div class="fg"><label for="m_name">Name <b class="rq">*</b></label><input type="text" id="m_name" placeholder="Enter admin name" value="'+esc(pre.name)+'"><div class="em">Name is required.</div></div>'+
+      '<div class="fg"><label for="m_email">Email <b class="rq">*</b></label><input type="text" id="m_email" placeholder="Enter admin email" value="'+esc(pre.email)+'"><div class="em">Enter a valid email address.</div></div>'+
+      '<div class="fg"><label for="m_pw">Password</label><input type="password" id="m_pw" autocomplete="new-password" placeholder="Enter password"></div>'+
+      '<div class="fg"><label for="m_pw2">Confirm Password</label><input type="password" id="m_pw2" autocomplete="new-password" placeholder="Enter confirm password"><div class="em">Passwords do not match.</div></div>'+
+      '<div class="fg"><label for="m_phone">Phone <b class="rq">*</b></label><input type="text" id="m_phone" placeholder="Enter admin contact number" value="'+esc(pre.phone)+'"><div class="em">Phone is required.</div></div>';
+    openModal(idx==null?'Add Admin':'Edit Admin',body,{save:'Save & Close',onOpen:function(b){ $('#m_phone',b).addEventListener('input',function(){ this.value=fmtPhone(this.value); }); },onSave:function(b){
+      mclear(b); var bad=0;
+      if(!mval(b,'m_name')){ mbad(b,'m_name'); bad++; }
+      if(!emailOk(mval(b,'m_email'))){ mbad(b,'m_email'); bad++; }
+      if($('#m_pw',b).value!==$('#m_pw2',b).value){ mbad(b,'m_pw2'); bad++; }
+      if(!mval(b,'m_phone')){ mbad(b,'m_phone'); bad++; }
+      if(bad) return false;
+      var rec={name:mval(b,'m_name'),email:mval(b,'m_email'),phone:mval(b,'m_phone'),status:'Active'};
+      if(idx==null){ admins.unshift(rec); toast('Admin added.'); } else { admins[idx]=rec; toast('Admin updated.'); }
+      renderAdmins();
+    }});
+  }
+  $('#p_addadminHead').addEventListener('click',function(){ adminModal(null); });
+  renderAdmins();
+  // processors + fees + stop payments
+  $$('input[name=p_own]').forEach(function(r){ r.addEventListener('change',function(){ var own=$('input[name=p_own]:checked').value==='yes'; $('#p_hwfBox').hidden=own; $('#p_perBox').hidden=!own; }); });
+  $$('input[name=p_fee]').forEach(function(r){ r.addEventListener('change',function(){
+    var custom=$('input[name=p_fee]:checked').value==='custom';
+    [['p_cardfee','2.9'],['p_txfee','0.3'],['p_achfee','0.8']].forEach(function(f){ var i=$('#'+f[0]); i.readOnly=!custom; if(!custom) i.value=f[1]; });
+    if(custom) $('#p_cardfee').focus();
+  }); });
+
+  /* ================= APP PAYMENT ================= */
+  var procs={'':{name:'None assigned',type:'-',on:false},'54':{name:'Flag Heroes',type:'Stripe',on:true},'58':{name:'Shreyansh Test',type:'Stripe',on:true}};
+  var procNow='58';
+  function renderWell(){ var p=procs[procNow]||procs['']; $('#a_well').innerHTML='<b>Processor:</b> '+esc(p.name)+'<br><b>Type:</b> '+esc(p.type)+'<br><b>Status:</b> <span class="'+(p.on?'badge-ok':'badge-off')+'">'+(p.on?'ACTIVE':'NONE')+'</span>'; }
+  var bank={holder:'Shreyansh Bhimani',bankName:'STRIPE TEST BANK',last:'6789',routing:'110000000'};
+  var cards=[];
+  $('#a_proc').addEventListener('change',function(){
+    var sel=this, nv=sel.value;
+    confirmModalKeep('Change processor?','Changing the payment gateway removes previously stored Card and ACH details. Continue?','Yes, change',function(){ procNow=nv; bank=null; cards=[]; renderWell(); renderPay(); toast('Processor changed. Stored card and bank details were removed.'); },function(){ sel.value=procNow; });
+  });
+  function confirmModalKeep(title,text,yes,ok,cancel){ openModal(title,'<p>'+text+'</p>',{save:yes,danger:true,noFocus:true,onSave:function(){ ok(); },onCancel:cancel}); }
+  function renderPay(){
+    var t=$('input[name=a_ptype]:checked').value;
+    $('#a_ach').hidden=t!=='ach'; $('#a_cc').hidden=t!=='credit';
+    var ach=$('#a_ach'); ach.innerHTML='';
+    var wrap=document.createElement('div'); wrap.className='bcard-wrap';
+    if(bank){
+      wrap.innerHTML='<div class="bcard"><button type="button" class="x" aria-label="Remove bank account" data-rb>×</button><span class="bg">stripe</span><div class="num">XXXX XXXX XXXX '+esc(bank.last)+'</div><div class="hold">'+esc(bank.holder)+'</div><h5>'+esc(bank.bankName)+'</h5><div><b>Routing No. :</b> '+esc(bank.routing)+'</div><div class="ico">🏛</div></div><div class="verified">Verified Account</div>';
+      $('[data-rb]',wrap).onclick=function(){ confirmModal('Remove bank account','Remove the stored bank account?','Remove',function(){ bank=null; renderPay(); toast('Bank account removed.'); }); };
+    } else {
+      wrap.innerHTML='<div class="addcard"><div><div class="big">＋</div><div style="font-size:30px">🏛</div><p style="margin:8px 0 12px">No bank account on file</p><button type="button" class="btn primary" data-ab>Add Bank</button></div></div>';
+      $('[data-ab]',wrap).onclick=bankModal;
+    }
+    ach.appendChild(wrap);
+    var cc=$('#a_cc'); cc.innerHTML=''; var w2=document.createElement('div'); w2.className='bcard-wrap';
+    cards.forEach(function(c,i){
+      var d=document.createElement('div'); d.className='bcard'; d.style.background='linear-gradient(135deg,#283593,#5c6bc0)';
+      d.innerHTML='<button type="button" class="x" aria-label="Remove card">×</button><span class="bg">stripe</span><div class="num">XXXX XXXX XXXX '+esc(c.last)+'</div><div class="hold">'+esc(c.name)+'</div><div>Expires '+esc(c.exp)+'</div><div class="ico">💳</div>';
+      $('.x',d).onclick=function(){ cards.splice(i,1); renderPay(); toast('Card removed.'); };
+      w2.appendChild(d);
+    });
+    var add=document.createElement('div'); add.className='addcard'; add.innerHTML='<div><div class="big">＋</div><div style="font-size:30px">💳</div><p style="margin:8px 0 12px">Add a payment card</p><button type="button" class="btn primary" data-ac>Add Credit Card</button></div>';
+    $('[data-ac]',add).onclick=cardModal; w2.appendChild(add); cc.appendChild(w2);
+  }
+  function bankModal(){
+    openModal('ACH Payment Information','<div class="fg"><label for="m_nm">Name On Account <b class="rq">*</b></label><input type="text" id="m_nm" placeholder="Enter name on bank account"><div class="em">Required.</div></div><div class="fg"><label for="m_bk">Name Of Bank <b class="rq">*</b></label><input type="text" id="m_bk" placeholder="Enter name of bank"><div class="em">Required.</div></div><div class="fg"><label for="m_ac">Account Number <b class="rq">*</b></label><input type="password" id="m_ac" autocomplete="new-password" placeholder="Enter account number"><div class="em">Enter 4 to 17 digits.</div></div><div class="fg"><span class="lbl2">Select Account Type:</span><div class="rads"><label><input type="radio" name="m_aty" checked><span>Saving</span></label><label><input type="radio" name="m_aty"><span>Checking</span></label></div></div><div class="fg"><label for="m_rt">Routing Number <b class="rq">*</b></label><input type="password" id="m_rt" autocomplete="new-password" placeholder="Enter routing number"><div class="em">Enter a 9 digit routing number.</div></div><div class="fg"><span class="lbl2">ACH Authorization Agreement Signed</span><div class="rads"><label><input type="radio" name="m_sig"><span>Yes</span></label><label><input type="radio" name="m_sig" checked><span>No</span></label></div></div>',{onSave:function(b){
+      mclear(b); var bad=0;
+      if(!mval(b,'m_nm')){ mbad(b,'m_nm'); bad++; } if(!mval(b,'m_bk')){ mbad(b,'m_bk'); bad++; }
+      if(!/^\d{4,17}$/.test(mval(b,'m_ac'))){ mbad(b,'m_ac'); bad++; } if(!/^\d{9}$/.test(mval(b,'m_rt'))){ mbad(b,'m_rt'); bad++; }
+      if(bad) return false;
+      var ac=mval(b,'m_ac'); bank={holder:mval(b,'m_nm'),bankName:mval(b,'m_bk').toUpperCase(),last:ac.slice(-4),routing:mval(b,'m_rt')}; renderPay(); toast('Bank account added.');
+    }});
+  }
+  function cardModal(){
+    var yr=new Date().getFullYear(), ys=''; for(var y=yr;y<yr+12;y++) ys+='<option>'+y+'</option>';
+    var ms=''; for(var m=1;m<=12;m++) ms+='<option value="'+(m<10?'0':'')+m+'">'+(m<10?'0':'')+m+'</option>';
+    openModal('Add New Credit Card For Stripe','<div class="fg"><label for="m_cn">Name on Card <b class="rq">*</b></label><input type="text" id="m_cn" placeholder="Enter name on card"><div class="em">Required.</div></div><div class="fg"><label for="m_cc">Card Number <b class="rq">*</b></label><input type="text" id="m_cc" inputmode="numeric" placeholder="Enter card number"><div class="em">Enter a valid card number.</div></div><div class="fg"><label for="m_cv">Card CVV <b class="rq">*</b></label><input type="text" id="m_cv" inputmode="numeric" maxlength="4" placeholder="0000"><div class="em">Enter 3 or 4 digits.</div></div><div class="fg"><label for="m_mm">Expiration (MM)</label><select id="m_mm">'+ms+'</select></div><div class="fg"><label for="m_yy">Expiration (YYYY)</label><select id="m_yy">'+ys+'</select></div>',{onSave:function(b){
+      mclear(b); var bad=0, num=mval(b,'m_cc').replace(/\s/g,'');
+      if(!mval(b,'m_cn')){ mbad(b,'m_cn'); bad++; } if(!/^\d{13,19}$/.test(num)){ mbad(b,'m_cc'); bad++; } if(!/^\d{3,4}$/.test(mval(b,'m_cv'))){ mbad(b,'m_cv'); bad++; }
+      if(bad) return false;
+      cards.push({name:mval(b,'m_cn'),last:num.slice(-4),exp:$('#m_mm',b).value+'/'+$('#m_yy',b).value.slice(-2)}); renderPay(); toast('Card added.');
+    }});
+  }
+  $$('input[name=a_ptype]').forEach(function(r){ r.addEventListener('change',renderPay); });
+  renderWell(); renderPay();
+
+  // club pricing
+  var ranges=[[500,2.5,2.25],[1000,2.25,2],[1500,2,1.75],[2000,1.75,1.5],[5000,1.5,1],[100000,1,1]];
+  function renderRanges(){
+    var tb=$('#a_rows'); tb.innerHTML='';
+    ranges.forEach(function(r,i){
+      var start=i===0?1:ranges[i-1][0]+1, tr=document.createElement('tr');
+      tr.innerHTML='<td><input type="text" value="'+start+'" readonly aria-label="Start range"></td><td><input type="number" value="'+r[0]+'" data-k="0" aria-label="End range"></td><td><input type="number" step="0.01" value="'+r[1].toFixed(2)+'" data-k="1" aria-label="Start price"></td><td><input type="number" step="0.01" value="'+r[2].toFixed(2)+'" data-k="2" aria-label="End price"></td><td class="c"><button type="button" class="btn danger" style="padding:5px 12px">Delete</button></td>';
+      $$('input[data-k]',tr).forEach(function(inp){ inp.addEventListener('change',function(){
+        var k=+inp.dataset.k, v=parseFloat(inp.value);
+        if(isNaN(v)||v<0){ inp.value=r[k]; return; }
+        if(k===0){ var lo=start; if(v<lo){ toast('End range must be at least '+lo+'.',true); inp.value=r[0]; return; } if(i<ranges.length-1 && v>=ranges[i+1][0]){ toast('End range overlaps the next range.',true); inp.value=r[0]; return; } }
+        r[k]=v; renderRanges();
+      }); });
+      $('.btn',tr).onclick=function(){ if(ranges.length<2){ toast('At least one range is required.',true); return; } ranges.splice(i,1); renderRanges(); };
+      tb.appendChild(tr);
+    });
+  }
+  $('#a_addrow').addEventListener('click',function(){ var last=ranges[ranges.length-1]; ranges.push([last[0]+1000,last[2],last[2]]); renderRanges(); });
+  renderRanges();
+  $$('input[name=a_calc]').forEach(function(r){ r.addEventListener('change',function(){ var flat=$('input[name=a_calc]:checked').value==='flat'; $('#a_flat').hidden=!flat; $('#a_range').hidden=flat; }); });
+  // additional services
+  var services=[{d:'card services',a:10}];
+  function renderServices(){
+    var tb=$('#a_svc tbody'); tb.innerHTML='';
+    services.forEach(function(s,i){
+      var tr=document.createElement('tr');
+      tr.innerHTML='<td>'+esc(s.d)+'</td><td class="r">'+money(s.a)+'</td><td class="c"><div class="acts"><button type="button" class="ib" title="Edit" data-e>'+IC.edit+'</button><button type="button" class="ib del" title="Delete" data-d>'+IC.del+'</button></div></td>';
+      $('[data-e]',tr).onclick=function(){ serviceModal(i); };
+      $('[data-d]',tr).onclick=function(){ confirmModal('Delete service','Delete <b>'+esc(s.d)+'</b>?','Delete',function(){ services.splice(i,1); renderServices(); toast('Service deleted.'); }); };
+      tb.appendChild(tr);
+    });
+    if(!services.length) tb.innerHTML='<tr><td colspan="3" class="empty">No additional services yet.</td></tr>';
+  }
+  function serviceModal(idx){
+    var s=idx==null?{d:'',a:''}:services[idx];
+    openModal(idx==null?'Add New Service':'Edit Service','<div class="fg"><label for="m_sd">Description <b class="rq">*</b></label><textarea id="m_sd" rows="2" placeholder="Enter service description">'+esc(s.d)+'</textarea><div class="em">Description is required.</div></div><div class="fg"><label for="m_sa">Amount <b class="rq">*</b></label><input type="number" id="m_sa" min="0" step="0.01" placeholder="Enter service charge" value="'+esc(s.a)+'"><div class="em">Enter an amount greater than 0.</div></div>',{onSave:function(b){
+      mclear(b); var bad=0, amt=parseFloat($('#m_sa',b).value);
+      if(!mval(b,'m_sd')){ mbad(b,'m_sd'); bad++; } if(!(amt>0)){ mbad(b,'m_sa'); bad++; }
+      if(bad) return false;
+      var rec={d:mval(b,'m_sd'),a:amt}; if(idx==null) services.push(rec); else services[idx]=rec; renderServices(); toast('Service saved.');
+    }});
+  }
+  $('#a_addsvcHead').addEventListener('click',function(){ serviceModal(null); });
+  renderServices();
+
+  /* ================= INVOICE HISTORY ================= */
+  var TODAY=new Date(2026,9,13);
+  var CLUB='Allen Kiwanis', PROC='Shreyansh Test';
+  var invoices=[
+    {no:12363,date:'10-01-2026',amt:290,status:'unpaid',pmt:'-',sent:1,gen:'System',refunds:[]},
+    {no:12317,date:'09-01-2026',amt:311,status:'past_due',pmt:'-',sent:2,gen:'System',refunds:[]},
+    {no:12312,date:'07-01-2026',amt:287,status:'paid',pmt:'ACH',sent:1,gen:'Manual',refunds:[]},
+    {no:12311,date:'07-21-2026',amt:287,status:'paid',pmt:'ACH',sent:1,gen:'Manual',refunds:[]},
+    {no:12310,date:'07-10-2026',amt:287,status:'paid',pmt:'ACH',sent:1,gen:'Manual',refunds:[]},
+    {no:12264,date:'07-01-2026',amt:312,status:'paid',pmt:'ACH',sent:2,gen:'System',refunds:[]},
+    {no:12217,date:'05-01-2026',amt:296,status:'paid',pmt:'ACH',sent:2,gen:'System',refunds:[]},
+    {no:12215,date:'04-23-2026',amt:260,status:'refunded',pmt:'ACH',sent:1,gen:'Manual',refunds:[{when:'04-23-2026 10:12 AM',by:'SuperUser',status:'Succeeded',amount:260}]},
+    {no:12214,date:'02-27-2026',amt:257,status:'paid',pmt:'ACH',sent:2,gen:'Manual',refunds:[]},
+    {no:12213,date:'02-25-2026',amt:257,status:'paid',pmt:'ACH',sent:2,gen:'Manual',refunds:[]}
+  ];
+  var STAT={paid:'Paid',unpaid:'Pending',past_due:'Past Due',in_process:'Processing',partially_refunded:'Partially Refunded',refunded:'Refunded'};
+  var flt={status:['all'],q:null}, sortKey='no', sortDir='desc';
+  function pd(s){ var a=s.split('-'); return new Date(+a[2],+a[0]-1,+a[1]); }
+  function pdate(d){ return String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')+'-'+d.getFullYear(); }
+  function refundedSum(v){ return v.refunds.reduce(function(a,r){ return a+r.amount; },0); }
+  function inMonth(v,off){ var d=pd(v.date), t=new Date(TODAY.getFullYear(),TODAY.getMonth()+off,1); return d.getMonth()===t.getMonth() && d.getFullYear()===t.getFullYear(); }
+  function filtered(){
+    var s=$('#i_search').value, club=$('#i_club').value, from=$('#i_from').value, to=$('#i_to').value, type=$('#i_type').value;
+    return invoices.filter(function(v){
+      if(s && String(v.no)!==s) return false;
+      if(club && club!==CLUB) return false;
+      if(type==='A' && v.gen!=='System') return false;
+      if(type==='M' && v.gen!=='Manual') return false;
+      var d=pd(v.date);
+      if(from && d<new Date(from+'T00:00:00')) return false;
+      if(to && d>new Date(to+'T00:00:00')) return false;
+      if(flt.status.indexOf('all')<0 && flt.status.indexOf(v.status)<0) return false;
+      if(flt.q==='month' && !inMonth(v,0)) return false;
+      if(flt.q==='last' && !inMonth(v,-1)) return false;
+      if(flt.q==='year' && pd(v.date).getFullYear()!==TODAY.getFullYear()) return false;
+      return true;
+    });
+  }
+  function renderInvoices(){
+    var list=filtered().slice().sort(function(a,b){
+      var x,y; if(sortKey==='date'){ x=pd(a.date); y=pd(b.date); } else if(sortKey==='club'){ x=y=0; } else if(sortKey==='type'){ x=a.gen; y=b.gen; } else { x=a[sortKey]; y=b[sortKey]; }
+      return (x<y?-1:x>y?1:0)*(sortDir==='asc'?1:-1);
+    });
+    $$('#i_table th[data-sort]').forEach(function(th){ var on=th.dataset.sort===sortKey; $('.srt',th).className='srt'+(on?' on':''); $('.srt',th).textContent=on?(sortDir==='asc'?'▲':'▼'):'⇅'; });
+    var tb=$('#i_table tbody'); tb.innerHTML='';
+    list.forEach(function(v){
+      var tr=document.createElement('tr'); if(v.status==='unpaid'||v.status==='past_due') tr.className='red';
+      var ref=refundedSum(v), canRefund=(v.status==='paid'||v.status==='partially_refunded') && ref<v.amt;
+      var acts='<button type="button" class="ib" title="View Invoice" data-a="view">'+IC.eye+'</button>';
+      if(v.status==='unpaid'||v.status==='past_due') acts+='<button type="button" class="ib" title="Edit Invoice" data-a="edit">'+IC.edit+'</button>';
+      acts+='<button type="button" class="ib" title="Download Invoice" data-a="pdf"><span class="pdfi">PDF</span></button>';
+      if(v.status==='unpaid'||v.status==='past_due') acts+='<button type="button" class="ib dollar" title="Charge Club" data-a="charge">$</button>';
+      acts+='<button type="button" class="ib" title="Send Invoice Mail" data-a="mail">'+IC.mail+'</button>';
+      if(canRefund) acts+='<button type="button" class="rf ok" title="Refund Invoice" data-a="refund">Refund</button>';
+      if(v.refunds.length) acts+='<button type="button" class="rf hist" title="Refund Details" data-a="hist">Refund History</button>';
+      if(v.status==='unpaid'||v.status==='past_due') acts+='<button type="button" class="ib del" title="Delete Invoice" data-a="del">'+IC.del+'</button>';
+      tr.innerHTML='<td class="c"><span class="mbadge" title="'+(v.gen==='System'?'Automatic':'Manual')+'">M</span></td><td><a>'+CLUB+'</a><small>💳 '+PROC+'</small></td><td class="c">'+v.no+'</td><td class="c">'+v.date+'</td><td class="c">'+money(v.amt)+'</td><td class="c">'+STAT[v.status]+'</td><td class="c">'+esc(v.pmt)+'</td><td class="c">'+v.sent+'</td><td class="c">-</td><td class="c">'+v.gen+'</td><td><div class="acts">'+acts+'</div></td>';
+      $$('[data-a]',tr).forEach(function(b){ b.onclick=function(){ invoiceAction(v,b.dataset.a); }; });
+      tb.appendChild(tr);
+    });
+    if(!list.length) tb.innerHTML='<tr><td colspan="11" class="empty">No invoices match these filters.</td></tr>';
+    $('#i_count').textContent=list.length?'Showing 1 to '+list.length+' of '+list.length+' entries':'Showing 0 entries';
+    $('#i_total').textContent=money(list.reduce(function(a,v){ return a+v.amt; },0));
+    $('#q_month').textContent=invoices.filter(function(v){ return inMonth(v,0); }).length;
+    $('#q_last').textContent=invoices.filter(function(v){ return inMonth(v,-1); }).length;
+    $('#q_year').textContent=invoices.filter(function(v){ return pd(v.date).getFullYear()===TODAY.getFullYear(); }).length;
+    $$('.qf').forEach(function(q){ q.classList.toggle('on',flt.q===q.dataset.q); });
+    var sel=$('#i_search'), cur=sel.value; sel.innerHTML='<option value="">Search Invoice ID</option>'+invoices.map(function(v){ return '<option>'+v.no+'</option>'; }).join(''); sel.value=cur;
+  }
+  function invoiceAction(v,a){
+    if(a==='view'||a==='pdf') toast((a==='pdf'?'Downloading':'Opening')+' invoice #'+v.no+' (demo).');
+    else if(a==='mail'){ v.sent++; renderInvoices(); toast('Invoice #'+v.no+' emailed.'); }
+    else if(a==='del') confirmModal('Delete Invoice','Delete invoice <b>#'+v.no+'</b>? This cannot be undone.','Delete',function(){ invoices.splice(invoices.indexOf(v),1); renderInvoices(); toast('Invoice deleted.'); });
+    else if(a==='edit') toast('Edit invoice #'+v.no+' (demo).');
+    else if(a==='charge') chargeModal(v);
+    else if(a==='refund') refundModal(v);
+    else if(a==='hist') historyModal(v);
+  }
+  function chargeModal(v){
+    openModal('Charge Club','<div class="info"><div>Invoice #: <b>'+v.no+'</b></div><div>Invoiced Amount: <b>'+money(v.amt)+'</b></div></div><div class="fg"><span class="lbl2">Payment Type:</span><div class="rads"><label><input type="radio" name="m_pt" value="Cash" checked><span>Cash</span></label><label><input type="radio" name="m_pt" value="Check"><span>Check</span></label><label><input type="radio" name="m_pt" value="ACH"><span>eCheck</span></label><label><input type="radio" name="m_pt" value="Card"><span>Card</span></label></div></div><div class="fg" id="m_chkbox" hidden><label for="m_chk">Check Number</label><input type="text" id="m_chk" placeholder="Check Number"><div class="em">Enter the check number.</div></div>',{save:'Make Payment',onOpen:function(b){ $$('input[name=m_pt]',b).forEach(function(r){ r.addEventListener('change',function(){ $('#m_chkbox',b).hidden=$('input[name=m_pt]:checked',b).value!=='Check'; }); }); },onSave:function(b){
+      var pt=$('input[name=m_pt]:checked',b).value; mclear(b);
+      if(pt==='Check' && !mval(b,'m_chk')){ mbad(b,'m_chk'); return false; }
+      v.status='paid'; v.pmt=pt; renderInvoices(); toast('Payment recorded for invoice #'+v.no+'.');
+    }});
+  }
+  function refundModal(v){
+    var done=refundedSum(v), left=v.amt-done;
+    openModal('Refund Invoice','<div class="info"><div>Club: <b>'+CLUB+'</b></div><div>Invoice #: <b>'+v.no+'</b></div><div>Invoice Amount: <b>'+money(v.amt)+'</b></div><div>Payment Type: <b>'+esc(v.pmt)+'</b></div><div>Payment Processor: <b>'+PROC+'</b></div><div>Already Refunded: <b>'+money(done)+'</b></div><div>Remaining Refundable: <b>'+money(left)+'</b></div></div><div class="fg"><span class="lbl2">Refund Type:</span><div class="rads"><label><input type="radio" name="m_rt" value="full" checked><span>Full Refund</span></label><label><input type="radio" name="m_rt" value="partial"><span>Partial Refund</span></label></div></div><div class="fg" id="m_ramtbox" hidden><label for="m_ramt">Refund Amount <b class="rq">*</b></label><input type="number" id="m_ramt" min="0.01" step="0.01" placeholder="Enter refund amount"><div class="em">Enter an amount between $0.01 and '+money(left)+'.</div></div><div class="fg"><label for="m_rr">Reason</label><textarea id="m_rr" rows="2" placeholder="Enter refund reason (optional)"></textarea></div>',{save:'Process Refund',onOpen:function(b){ $$('input[name=m_rt]',b).forEach(function(r){ r.addEventListener('change',function(){ $('#m_ramtbox',b).hidden=$('input[name=m_rt]:checked',b).value!=='partial'; }); }); },onSave:function(b){
+      var full=$('input[name=m_rt]:checked',b).value==='full', amt=full?left:parseFloat($('#m_ramt',b).value); mclear(b);
+      if(!(amt>0) || amt>left+0.001){ mbad(b,'m_ramt'); return false; }
+      v.refunds.push({when:pdate(TODAY)+' '+new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'}),by:'SuperUser',status:'Succeeded',amount:amt});
+      v.status=(refundedSum(v)>=v.amt-0.001)?'refunded':'partially_refunded'; renderInvoices(); toast('Refund of '+money(amt)+' processed.');
+    }});
+  }
+  function historyModal(v){
+    var rows=v.refunds.map(function(r){ return '<tr><td>'+esc(r.when)+'</td><td>'+esc(r.by)+'</td><td>'+esc(r.status)+'</td><td style="text-align:right">'+money(r.amount)+'</td></tr>'; }).join('');
+    openModal('Refund History','<div class="info"><div>Club: <b>'+CLUB+'</b></div><div>Invoice #: <b>'+v.no+'</b></div><div>Invoice Total: <b>'+money(v.amt)+'</b></div><div>Total Refunded: <b>'+money(refundedSum(v))+'</b></div></div><table><thead><tr><th>Date &amp; Time</th><th>Refunded By</th><th>Status</th><th style="text-align:right">Amount</th></tr></thead><tbody>'+rows+'</tbody></table>',{save:false,cancel:'Close'});
+  }
+  function addInvoiceModal(){
+    openModal('Add Invoice','<div class="fg"><label for="m_ic">Select Club:</label><select id="m_ic"><option value="">Select Club</option><option>'+CLUB+'</option></select><div class="em">Select a club.</div></div><div class="fg"><label for="m_id">Invoice Date <b class="rq">*</b></label><input type="date" id="m_id"><div class="em">Select an invoice date.</div></div><div class="fg"><label for="m_ids">Invoice Description</label><textarea id="m_ids" rows="2" placeholder="Enter invoice description"></textarea></div><h4 style="margin:16px 0 8px">Invoice Table Content</h4><div id="m_lines"></div><button type="button" class="link" id="m_addln">Add More ＋</button><div class="fg"><label for="m_note">Customer Note</label><textarea id="m_note" rows="2" placeholder="Enter customer note"></textarea></div><div class="sum"><div><span>Subtotal Amount</span><span id="m_sub">$0.00</span></div><div><b>Total Amount</b><b id="m_tot">$0.00</b></div></div>',{onOpen:function(b){
+      var lines=[{d:'',f:'',r:''}];
+      function draw(){
+        var box=$('#m_lines',b); box.innerHTML='<div class="li" style="font-weight:700"><span>Details</span><span>Flags</span><span>Cost</span><span>Amount</span><span></span></div>';
+        lines.forEach(function(l,i){
+          var row=document.createElement('div'); row.className='li';
+          row.innerHTML='<div class="fg"><input type="text" value="'+esc(l.d)+'" data-k="d" aria-label="Details"></div><div class="fg"><input type="number" min="0" value="'+esc(l.f)+'" data-k="f" aria-label="Flags"></div><div class="fg"><input type="number" min="0" step="0.01" value="'+esc(l.r)+'" data-k="r" aria-label="Cost"></div><div class="fg"><input type="text" readonly value="'+money((parseFloat(l.f)||0)*(parseFloat(l.r)||0))+'" aria-label="Amount"></div><button type="button" class="ib del" style="color:#e53935;background:none;border:0;cursor:pointer" aria-label="Delete line">'+IC.del+'</button>';
+          $$('input[data-k]',row).forEach(function(inp){ inp.addEventListener('input',function(){ l[inp.dataset.k]=inp.value; var a=$('input[readonly]',row); a.value=money((parseFloat(l.f)||0)*(parseFloat(l.r)||0)); totals(); }); });
+          $('button',row).onclick=function(){ if(lines.length>1){ lines.splice(i,1); draw(); } };
+          box.appendChild(row);
+        });
+        totals();
+      }
+      function totals(){ var t=lines.reduce(function(a,l){ return a+(parseFloat(l.f)||0)*(parseFloat(l.r)||0); },0); $('#m_sub',b).textContent=money(t); $('#m_tot',b).textContent=money(t); b._total=t; b._lines=lines; }
+      $('#m_addln',b).onclick=function(){ lines.push({d:'',f:'',r:''}); draw(); };
+      draw();
+    },onSave:function(b){
+      mclear(b); var bad=0;
+      if(!$('#m_ic',b).value){ mbad(b,'m_ic'); bad++; } if(!$('#m_id',b).value){ mbad(b,'m_id'); bad++; }
+      if(!(b._total>0)){ toast('Add at least one line item with flags and cost.',true); bad++; }
+      if(bad) return false;
+      var d=new Date($('#m_id',b).value+'T00:00:00'), next=Math.max.apply(null,invoices.map(function(v){ return v.no; }))+1;
+      invoices.unshift({no:next,date:pdate(d),amt:b._total,status:'unpaid',pmt:'-',sent:0,gen:'Manual',refunds:[]}); renderInvoices(); toast('Invoice #'+next+' created.');
+    }});
+  }
+  $('#i_add').addEventListener('click',addInvoiceModal);
+  // filters
+  $$('#i_status input').forEach(function(c){ c.addEventListener('change',function(){
+    var boxes=$$('#i_status input');
+    if(c.value==='all'){ if(c.checked) boxes.forEach(function(x){ if(x!==c) x.checked=false; }); else c.checked=true; }
+    else { if(c.checked) boxes[0].checked=false; if(!boxes.some(function(x){ return x.checked; })) boxes[0].checked=true; }
+  }); });
+  $('#i_apply').addEventListener('click',function(){ flt.status=$$('#i_status input').filter(function(x){ return x.checked; }).map(function(x){ return x.value; }); flt.q=null; renderInvoices(); });
+  $('#i_reset').addEventListener('click',function(){ ['i_search','i_club','i_type','i_from','i_to'].forEach(function(id){ $('#'+id).value=''; }); $$('#i_status input').forEach(function(x,i){ x.checked=i===0; }); flt={status:['all'],q:null}; renderInvoices(); });
+  $$('.qf').forEach(function(q){ q.addEventListener('click',function(){ flt.q=(flt.q===q.dataset.q)?null:q.dataset.q; renderInvoices(); }); });
+  $$('#i_table th[data-sort]').forEach(function(th){ th.addEventListener('click',function(){ var k=th.dataset.sort; if(sortKey===k) sortDir=sortDir==='asc'?'desc':'asc'; else { sortKey=k; sortDir='asc'; } renderInvoices(); }); });
+  ['i_search','i_club','i_type'].forEach(function(id){ $('#'+id).addEventListener('change',renderInvoices); });
+  renderInvoices();
+
 
   updateAll();
 })();
