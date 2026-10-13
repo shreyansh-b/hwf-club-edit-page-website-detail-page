@@ -459,6 +459,229 @@ main{padding:10px 14px 40px 16px}
 .sys .stbl.inv td:nth-child(2){white-space:nowrap}
 .sys .stbl.inv .acts{flex-wrap:nowrap}
 .sys .stbl.inv td:last-child{white-space:nowrap}
+
+
+/* ================================================================
+   Webpage Detail refresh: compact, modern, HWF indigo theme
+   Scoped exclusively to the Webpage Detail tab.
+   ================================================================ */
+.panel[data-panel="web"]{
+  --web-indigo:#3f51b5;--web-indigo-dark:#283593;--web-tint:#f4f6ff;
+  --web-border:#e1e5f0;--web-muted:#68718a;
+  color:#252b3b;
+}
+.panel[data-panel="web"] .wd{display:block;width:100%;max-width:none;margin:0;min-width:0}
+.panel[data-panel="web"] .jump{
+  position:sticky;top:64px;z-index:18;display:flex;gap:6px;flex-wrap:nowrap;
+  overflow-x:auto;padding:8px;margin:0 0 14px;background:rgba(255,255,255,.96);
+  border:1px solid var(--web-border);border-radius:12px;box-shadow:0 4px 14px rgba(31,45,95,.06);
+  scrollbar-width:thin;backdrop-filter:blur(8px)
+}
+.panel[data-panel="web"] .jump a{
+  flex:0 0 auto;padding:7px 11px;border:1px solid transparent;border-radius:8px;
+  background:transparent;color:#505b7a;font-size:12px;font-weight:700;white-space:nowrap;
+  transition:background .15s,color .15s,border-color .15s
+}
+.panel[data-panel="web"] .jump a:hover,
+.panel[data-panel="web"] .jump a:focus-visible{background:#e9edff;border-color:#d8defd;color:var(--web-indigo-dark)}
+.panel[data-panel="web"] .card{
+  margin:0 0 14px;border:1px solid var(--web-border);border-radius:12px;
+  box-shadow:0 2px 8px rgba(30,42,90,.035);overflow:clip;scroll-margin-top:132px;
+  transition:border-color .18s,box-shadow .18s
+}
+.panel[data-panel="web"] .card:focus-within{border-color:#b8c3fa;box-shadow:0 4px 16px rgba(63,81,181,.08)}
+.panel[data-panel="web"] .card>header{
+  display:flex;gap:11px;align-items:center;padding:12px 16px;
+  background:linear-gradient(100deg,#f7f8ff 0%,#fff 78%);
+  border:0;border-bottom:1px solid #e9ecf5;border-left:3px solid var(--web-indigo)
+}
+.panel[data-panel="web"] .card>header .ci{
+  width:34px;height:34px;flex:0 0 34px;border-radius:9px;background:#e8ecff;
+  color:var(--web-indigo);font-size:17px;display:grid;place-items:center
+}
+.panel[data-panel="web"] .card>header .ci svg{width:20px;height:20px;display:block;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.panel[data-panel="web"] .jump a{display:inline-flex;align-items:center;gap:7px}
+.panel[data-panel="web"] .jump a:before{content:"";width:7px;height:7px;border:1.7px solid currentColor;border-radius:2px;display:inline-block;opacity:.8}
+.panel[data-panel="web"] .card>header h2{font-size:15px;line-height:1.3;font-weight:750;letter-spacing:-.15px;color:#28345d}
+.panel[data-panel="web"] .card>header p{margin-top:2px;font-size:11.5px;line-height:1.4;color:var(--web-muted)}
+.panel[data-panel="web"] .card .body{
+  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px 18px;padding:16px;
+}
+.panel[data-panel="web"] .full{grid-column:1/-1}
+.panel[data-panel="web"] label.lbl,
+.panel[data-panel="web"] .lbl{font-size:12px;line-height:1.35;font-weight:700;color:#39415a;margin-bottom:5px}
+.panel[data-panel="web"] .req{color:#d83b4b}
+.panel[data-panel="web"] .help{margin-top:4px;font-size:11px;line-height:1.4;color:#778099}
+.panel[data-panel="web"] .field input[type=text],
+.panel[data-panel="web"] .field input[type=url],
+.panel[data-panel="web"] .field select{
+  min-height:38px;padding:8px 11px;border:1px solid #dce1ee;border-radius:7px;
+  background:#fbfcff;color:#242b40;font-size:13px;box-shadow:none;transition:border-color .15s,box-shadow .15s,background .15s
+}
+.panel[data-panel="web"] .field input:hover,
+.panel[data-panel="web"] .field select:hover{border-color:#aeb9e8}
+.panel[data-panel="web"] .field input:focus,
+.panel[data-panel="web"] .field select:focus{outline:0;border-color:var(--web-indigo);background:#fff;box-shadow:0 0 0 3px rgba(63,81,181,.11)}
+.panel[data-panel="web"] .seg{padding:3px;border:1px solid #e0e4ef;border-radius:8px;background:#f7f8fc}
+.panel[data-panel="web"] .seg span{padding:7px 17px;border-radius:6px;font-size:12px;font-weight:700}
+.panel[data-panel="web"] .seg input:checked+span{background:var(--web-indigo);box-shadow:0 2px 5px rgba(63,81,181,.18)}
+.panel[data-panel="web"] .drop{min-height:112px;padding:12px;border-radius:9px;border:1.5px dashed #aab6ef;background:#f8f9ff}
+.panel[data-panel="web"] .drop.wide{min-height:145px}
+.panel[data-panel="web"] .drop:hover{background:#f0f3ff;border-color:var(--web-indigo)}
+.panel[data-panel="web"] .dz-empty .up{width:34px;height:34px;margin-bottom:7px;border-radius:9px;background:#e7ebff;color:var(--web-indigo);font-size:17px}
+.panel[data-panel="web"] .dz-empty strong{font-size:12px;color:#3547a1}
+.panel[data-panel="web"] .dz-empty small{font-size:10.5px}
+.panel[data-panel="web"] .drop.filled{padding:10px;border-radius:8px;border-color:#dfe3ee;background:#fff}
+.panel[data-panel="web"] .thumb{min-height:64px;padding:8px;background:#f7f8fc}
+.panel[data-panel="web"] .thumb img{max-height:88px}
+.panel[data-panel="web"] .drop.wide .thumb img{max-height:150px}
+.panel[data-panel="web"] .meta{gap:6px;font-size:11px}
+.panel[data-panel="web"] .meta .nm{max-width:180px}
+.panel[data-panel="web"] .mini{padding:5px 9px;border-radius:6px;font-size:11px}
+.panel[data-panel="web"] .rules{gap:4px;margin-top:6px}
+.panel[data-panel="web"] .rules span{padding:3px 7px;border-radius:5px;font-size:10px}
+.panel[data-panel="web"] .editor-wrap{border:1px solid #dce1ee;border-radius:8px;background:#fff;overflow:hidden}
+.panel[data-panel="web"] .editor-wrap:focus-within{border-color:var(--web-indigo);box-shadow:0 0 0 3px rgba(63,81,181,.1)}
+.panel[data-panel="web"] .tb{gap:3px;padding:5px 7px;background:#f7f8fc;border-bottom:1px solid #e7eaf3}
+.panel[data-panel="web"] .tb button{width:28px;height:27px;border-radius:5px;font-size:12px}
+.panel[data-panel="web"] .tb select{height:27px;font-size:11px}
+.panel[data-panel="web"] .editor{min-height:100px;max-height:260px;padding:10px 12px;font-size:13px;line-height:1.55}
+.panel[data-panel="web"] .editor h1{font-size:21px}.panel[data-panel="web"] .editor h2{font-size:18px}.panel[data-panel="web"] .editor h3{font-size:15px}
+.panel[data-panel="web"] .sub-grid{gap:13px 18px}
+.panel[data-panel="web"] .note{font-size:12px;line-height:1.5}
+.panel[data-panel="web"] .info{background:var(--web-indigo)}
+.panel[data-panel="web"] .savebar{
+  position:sticky;bottom:0;z-index:16;display:flex;gap:9px;align-items:center;
+  margin:12px 0 0;padding:10px 12px;border:1px solid var(--web-border);border-radius:10px;
+  background:rgba(255,255,255,.96);box-shadow:0 -3px 14px rgba(30,42,90,.06);backdrop-filter:blur(8px)
+}
+.panel[data-panel="web"] .savebar .st{padding:0;margin-right:auto;font-size:11.5px;color:#69728b}
+.panel[data-panel="web"] .savebar .btn{padding:8px 13px;border-radius:7px;font-size:12px;font-weight:700}
+.panel[data-panel="web"] .savebar .btn.primary{background:var(--web-indigo)}
+.panel[data-panel="web"] .savebar .btn.ghost{border:1px solid #d8def0;background:#fff;color:#4b5680}
+.panel[data-panel="web"] .err-msg{font-size:11px}
+.panel[data-panel="web"] .notice,.panel[data-panel="web"] .guide{border-radius:7px}
+@media(max-width:900px){
+  .panel[data-panel="web"] .jump{top:56px}
+  .panel[data-panel="web"] .card .body{gap:12px;padding:13px}
+  .panel[data-panel="web"] .card>header{padding:11px 13px}
+}
+@media(max-width:640px){
+  .panel[data-panel="web"] .jump{top:54px;margin-bottom:10px;padding:6px}
+  .panel[data-panel="web"] .jump a{padding:7px 9px;font-size:11px}
+  .panel[data-panel="web"] .card{margin-bottom:10px;border-radius:10px}
+  .panel[data-panel="web"] .card .body{grid-template-columns:minmax(0,1fr);gap:12px;padding:12px}
+  .panel[data-panel="web"] .full{grid-column:auto}
+  .panel[data-panel="web"] .card>header .ci{width:30px;height:30px;flex-basis:30px;font-size:15px}
+  .panel[data-panel="web"] .card>header .ci svg{width:20px;height:20px;display:block;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.panel[data-panel="web"] .jump a{display:inline-flex;align-items:center;gap:7px}
+.panel[data-panel="web"] .jump a:before{content:"";width:7px;height:7px;border:1.7px solid currentColor;border-radius:2px;display:inline-block;opacity:.8}
+.panel[data-panel="web"] .card>header h2{font-size:14px}
+  .panel[data-panel="web"] .card>header p{font-size:10.5px}
+  .panel[data-panel="web"] .savebar{gap:7px;padding:9px;flex-wrap:wrap}
+  .panel[data-panel="web"] .savebar .st{display:block;flex-basis:100%;font-size:11px}
+  .panel[data-panel="web"] .savebar .btn{flex:1;justify-content:center}
+}
+
+
+/* Webpage Detail — refreshed settings-workspace layout */
+.panel[data-panel="web"]{background:#f5f7fc;padding:16px 18px 20px;border-radius:0 0 12px 12px}
+.panel[data-panel="web"] .wd{width:100%;max-width:none;margin:0;display:block}
+.panel[data-panel="web"] .wd>div{display:grid;grid-template-columns:204px minmax(0,1fr);gap:0 18px;align-items:start;width:100%}
+.panel[data-panel="web"] .wd>div:before{content:"WEBPAGE SETTINGS";grid-column:1/-1;display:block;margin:0 0 5px;color:#6b7591;font-size:10px;font-weight:800;letter-spacing:1.6px}
+.panel[data-panel="web"] .wd>div:after{content:"Manage your club website content, branding and customer-facing options in one place.";grid-column:1/-1;grid-row:2;margin:0 0 16px;color:#5d6680;font-size:13px;line-height:1.5}
+.panel[data-panel="web"] .jump{grid-column:1;grid-row:3 / span 20;position:sticky;top:78px;display:flex;flex-direction:column;gap:4px;overflow:visible;padding:9px;background:#fff;border:1px solid #e1e6f2;border-radius:13px;box-shadow:0 5px 18px rgba(35,49,94,.045);margin:0}
+.panel[data-panel="web"] .jump:before{content:"SECTIONS";padding:7px 10px 9px;color:#8a93aa;font-size:10px;font-weight:800;letter-spacing:1.1px}
+.panel[data-panel="web"] .jump a{display:flex;align-items:center;gap:9px;padding:10px 11px;border:1px solid transparent;border-radius:8px;color:#56617d;font-size:12px;font-weight:700;white-space:normal;line-height:1.35;transition:all .16s ease}
+.panel[data-panel="web"] .jump a:before{content:"";width:6px;height:6px;flex:0 0 6px;border-radius:50%;background:#c5cce0}
+.panel[data-panel="web"] .jump a:hover,.panel[data-panel="web"] .jump a:focus-visible{background:#f0f3ff;border-color:#dfe5ff;color:#303f98;transform:translateX(2px)}
+.panel[data-panel="web"] .jump a:hover:before,.panel[data-panel="web"] .jump a:focus-visible:before{background:#3f51b5}
+.panel[data-panel="web"] .card{grid-column:2;margin:0 0 13px;min-width:0;border:1px solid #e0e5f0;border-radius:12px;background:#fff;box-shadow:0 3px 12px rgba(32,46,91,.035);overflow:hidden;scroll-margin-top:90px}
+.panel[data-panel="web"] .card>header{padding:13px 17px;background:#fff;border:0;border-bottom:1px solid #edf0f6;border-left:4px solid #3f51b5;gap:12px}
+.panel[data-panel="web"] .card>header .ci{width:36px;height:36px;flex-basis:36px;border-radius:10px;background:#eef1ff;color:#3f51b5;font-size:17px}
+.panel[data-panel="web"] .card>header .ci svg{width:20px;height:20px;display:block;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.panel[data-panel="web"] .jump a{display:inline-flex;align-items:center;gap:7px}
+.panel[data-panel="web"] .jump a:before{content:"";width:7px;height:7px;border:1.7px solid currentColor;border-radius:2px;display:inline-block;opacity:.8}
+.panel[data-panel="web"] .card>header h2{font-size:14px;font-weight:800;color:#273253;letter-spacing:-.2px}
+.panel[data-panel="web"] .card>header p{font-size:11px;color:#7a849c;margin-top:3px}
+.panel[data-panel="web"] .card .body{gap:13px 18px;padding:16px 18px;grid-template-columns:repeat(2,minmax(0,1fr))}
+.panel[data-panel="web"] .field input[type=text],.panel[data-panel="web"] .field input[type=url],.panel[data-panel="web"] .field select{width:100%;min-width:0;min-height:39px;border:1px solid #dce2ef;border-radius:8px;background:#fbfcff;padding:9px 11px;font-size:13px}
+.panel[data-panel="web"] .field input:focus,.panel[data-panel="web"] .field select:focus{border-color:#3f51b5;background:#fff;box-shadow:0 0 0 3px rgba(63,81,181,.1)}
+.panel[data-panel="web"] .lbl{font-size:11px;font-weight:800;letter-spacing:.1px;color:#47516c}
+.panel[data-panel="web"] .help{font-size:11px;color:#7c869e}
+.panel[data-panel="web"] .seg{display:inline-flex;max-width:100%;gap:3px;border:1px solid #e1e5f0;border-radius:9px;background:#f5f6fb;padding:4px}
+.panel[data-panel="web"] .seg label{margin:0}
+.panel[data-panel="web"] .seg span{display:block;padding:7px 14px;border-radius:6px;color:#626d88;font-size:11px}
+.panel[data-panel="web"] .seg input:checked+span{background:#3f51b5;color:#fff;box-shadow:0 2px 5px rgba(63,81,181,.2)}
+.panel[data-panel="web"] .drop{border:1px dashed #bac5ef;border-radius:10px;background:#f8f9ff}
+.panel[data-panel="web"] .drop:hover{border-color:#3f51b5;background:#f0f3ff}
+.panel[data-panel="web"] .editor-wrap{border-radius:9px;border-color:#dce2ef}
+.panel[data-panel="web"] .tb{background:#f7f8fc}
+.panel[data-panel="web"] .savebar{position:sticky;bottom:10px;z-index:22;margin:8px 0 0 222px;padding:10px 12px;border:1px solid #dfe4f0;border-radius:11px;background:rgba(255,255,255,.96);box-shadow:0 8px 24px rgba(35,49,94,.1)}
+.panel[data-panel="web"] .savebar .btn.primary{background:#3f51b5}
+.panel[data-panel="web"] .savebar .btn.primary:hover{background:#303f9f}
+@media(max-width:1050px){.panel[data-panel="web"] .wd>div{grid-template-columns:174px minmax(0,1fr);gap:0 12px}.panel[data-panel="web"] .jump{padding:6px}.panel[data-panel="web"] .jump a{padding:9px 8px;font-size:11px}.panel[data-panel="web"] .card .body{padding:13px;gap:12px}.panel[data-panel="web"] .savebar{margin-left:186px}}
+@media(max-width:760px){.panel[data-panel="web"]{padding:12px 10px 16px}.panel[data-panel="web"] .wd>div{display:flex;flex-direction:column;gap:0}.panel[data-panel="web"] .wd>div:before{align-self:flex-start}.panel[data-panel="web"] .wd>div:after{margin-bottom:12px}.panel[data-panel="web"] .jump{position:relative;top:auto;width:100%;flex-direction:row;overflow-x:auto;gap:4px;margin:0 0 12px;padding:7px;scrollbar-width:thin}.panel[data-panel="web"] .jump:before{display:none}.panel[data-panel="web"] .jump a{flex:0 0 auto;white-space:nowrap;padding:8px 10px}.panel[data-panel="web"] .card{width:100%;margin-bottom:10px}.panel[data-panel="web"] .card .body{grid-template-columns:minmax(0,1fr);padding:12px;gap:12px}.panel[data-panel="web"] .full{grid-column:auto}.panel[data-panel="web"] .savebar{margin:8px 0 0;bottom:6px;flex-wrap:wrap}.panel[data-panel="web"] .savebar .st{flex-basis:100%}}
+
+
+/* Webpage Detail navigation revision: replace the disliked side menu with a full-width horizontal section bar */
+.panel[data-panel="web"] .wd>div{
+  display:block;
+  width:100%;
+  min-width:0;
+}
+.panel[data-panel="web"] .wd>div:before{display:block;margin:0 0 4px}
+.panel[data-panel="web"] .wd>div:after{display:block;margin:0 0 14px}
+.panel[data-panel="web"] .jump{
+  position:relative;
+  top:auto;
+  display:flex;
+  flex-direction:row;
+  flex-wrap:wrap;
+  align-items:center;
+  gap:6px;
+  width:100%;
+  margin:0 0 16px;
+  padding:8px;
+  overflow:visible;
+  background:#fff;
+  border:1px solid #e1e6f2;
+  border-radius:10px;
+  box-shadow:0 2px 8px rgba(35,49,94,.035);
+}
+.panel[data-panel="web"] .jump:before{display:none}
+.panel[data-panel="web"] .jump a{
+  flex:0 0 auto;
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  padding:8px 12px;
+  border:1px solid #e4e8f3;
+  border-radius:7px;
+  background:#f7f8fc;
+  color:#53607d;
+  font-size:12px;
+  line-height:1.25;
+  white-space:nowrap;
+  transform:none;
+}
+.panel[data-panel="web"] .jump a:before{width:6px;height:6px;flex:0 0 6px;background:#aeb8d3}
+.panel[data-panel="web"] .jump a:hover,
+.panel[data-panel="web"] .jump a:focus-visible{
+  background:#eef1ff;
+  border-color:#cbd3fb;
+  color:#303f9f;
+  transform:none;
+}
+.panel[data-panel="web"] .jump a:hover:before,
+.panel[data-panel="web"] .jump a:focus-visible:before{background:#3f51b5}
+.panel[data-panel="web"] .card{width:100%;margin:0 0 12px;scroll-margin-top:90px}
+.panel[data-panel="web"] .savebar{margin:8px 0 0}
+@media(max-width:760px){
+  .panel[data-panel="web"] .jump{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:thin}
+  .panel[data-panel="web"] .jump a{flex:0 0 auto}
+}
+
 </style>
 </head>
 <body>
@@ -702,7 +925,7 @@ main{padding:10px 14px 40px 16px}
 
           <!-- Website -->
           <section class="card" id="sec-site">
-            <header><div class="ci">🌐</div><div><h2>Website</h2><p>Where the club lives online and how it is named.</p></div></header>
+            <header><div class="ci"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a15 15 0 0 1 0 18M12 3a15 15 0 0 0 0 18"/></svg></div><div><h2>Website</h2><p>Where the club lives online and how it is named.</p></div></header>
             <div class="body">
               <div class="field full" data-f="link">
                 <label class="lbl" for="websiteLink">Website link<span class="req">*</span></label>
@@ -723,13 +946,13 @@ main{padding:10px 14px 40px 16px}
 
           <!-- Logos -->
           <section class="card" id="sec-brand">
-            <header><div class="ci">🖼️</div><div><h2>Logos</h2><p>Drop a file onto a box, or click it to browse.</p></div></header>
+            <header><div class="ci"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="8.5" cy="9" r="1.5"/><path d="m21 15-5-5L5 20"/></svg></div><div><h2>Logos</h2><p>Drop a file onto a box, or click it to browse.</p></div></header>
             <div class="body" id="logoGrid"></div>
           </section>
 
           <!-- Homepage -->
           <section class="card" id="sec-home">
-            <header><div class="ci">🏠</div><div><h2>Homepage</h2><p>What customers see first.</p></div></header>
+            <header><div class="ci"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z"/></svg></div><div><h2>Homepage</h2><p>What customers see first.</p></div></header>
             <div class="body">
               <div class="full" id="bgSlot"></div>
               <div class="field full" data-f="desc">
@@ -742,7 +965,7 @@ main{padding:10px 14px 40px 16px}
 
           <!-- Contact -->
           <section class="card" id="sec-contact">
-            <header><div class="ci">☎️</div><div><h2>Contact &amp; display</h2><p>Choose what appears on the customer side.</p></div></header>
+            <header><div class="ci"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3H4a1 1 0 0 0-1 1c0 9.4 7.6 17 17 17a1 1 0 0 0 1-1v-3l-5-2-2 3a14 14 0 0 1-7-7l3-2z"/></svg></div><div><h2>Contact &amp; display</h2><p>Choose what appears on the customer side.</p></div></header>
             <div class="body">
               <div class="field full" data-f="contact">
                 <label class="lbl" for="contactHeading">Contact heading<span class="req">*</span></label>
@@ -779,7 +1002,7 @@ main{padding:10px 14px 40px 16px}
 
           <!-- Location & OTP -->
           <section class="card" id="sec-loc">
-            <header><div class="ci">📍</div><div><h2>Location map &amp; OTP</h2><p>Map details, a note for customers and where one-time codes are sent.</p></div></header>
+            <header><div class="ci"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></svg></div><div><h2>Location map &amp; OTP</h2><p>Map details, a note for customers and where one-time codes are sent.</p></div></header>
             <div class="body">
               <div class="full">
                 <span class="lbl" id="l-map">Has location map</span>
@@ -810,7 +1033,7 @@ main{padding:10px 14px 40px 16px}
 
           <!-- Donation -->
           <section class="card" id="sec-don">
-            <header><div class="ci">💝</div><div><h2>Additional donation</h2><p>Shown on the shopping cart page and in the shopping cart backend console.</p></div></header>
+            <header><div class="ci"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.8 8.8c0 5.2-8.8 11-8.8 11S3.2 14 3.2 8.8A4.8 4.8 0 0 1 12 6a4.8 4.8 0 0 1 8.8 2.8Z"/><path d="M12 8v6m-3-3h6"/></svg></div><div><h2>Additional donation</h2><p>Shown on the shopping cart page and in the shopping cart backend console.</p></div></header>
             <div class="body">
               <p class="full note">Customize the donation module title, description and invoice line-item text. These appear on the shopping cart page of the customer website and in the shopping cart backend console.</p>
               <div class="field">
@@ -828,7 +1051,7 @@ main{padding:10px 14px 40px 16px}
 
           <!-- Subscription guide -->
           <section class="card" id="sec-guide">
-            <header><div class="ci">🔒</div><div><h2>Customer portal subscription guide</h2><p>Show a guidance message to customers above the product list and Cart &amp; Payment section on the customer portal.</p></div></header>
+            <header><div class="ci"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3M12 14v3"/></svg></div><div><h2>Customer portal subscription guide</h2><p>Show a guidance message to customers above the product list and Cart &amp; Payment section on the customer portal.</p></div></header>
             <div class="body">
               <div class="full">
                 <span class="lbl" id="l-guide">Display subscription guide on customer portal</span>
@@ -852,7 +1075,7 @@ main{padding:10px 14px 40px 16px}
 
           <!-- Validation & video -->
           <section class="card" id="sec-misc">
-            <header><div class="ci">🛠️</div><div><h2>Validation &amp; video</h2><p>Address checking and a welcome video for customers.</p></div></header>
+            <header><div class="ci"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 7a5 5 0 0 0-6.5 6.5L3 18l3 3 4.5-4.5A5 5 0 0 0 17 10l-3 3-3-3z"/><path d="m14 4 6 6"/></svg></div><div><h2>Validation &amp; video</h2><p>Address checking and a welcome video for customers.</p></div></header>
             <div class="body">
               <div>
                 <span class="lbl" id="l-street">Street validation setting</span>
