@@ -1306,14 +1306,14 @@ main{min-width:0;padding:6px 12px 24px}
     var tb=$('#a_rows'); tb.innerHTML='';
     ranges.forEach(function(r,i){
       var start=i===0?1:ranges[i-1][0]+1, tr=document.createElement('tr');
-      tr.innerHTML='<td><input type="text" value="'+start+'" readonly aria-label="Start range"></td><td><input type="number" value="'+r[0]+'" data-k="0" aria-label="End range"></td><td><input type="number" step="0.01" value="'+r[1].toFixed(2)+'" data-k="1" aria-label="Start price"></td><td><input type="number" step="0.01" value="'+r[2].toFixed(2)+'" data-k="2" aria-label="End price"></td><td class="c"><button type="button" class="btn danger" style="padding:5px 12px">Delete</button></td>';
+      tr.innerHTML='<td><input type="text" value="'+start+'" readonly aria-label="Start range"></td><td><input type="number" value="'+r[0]+'" data-k="0" aria-label="End range"></td><td><input type="number" step="0.01" value="'+r[1].toFixed(2)+'" data-k="1" aria-label="Start price"></td><td><input type="number" step="0.01" value="'+r[2].toFixed(2)+'" data-k="2" aria-label="End price"></td><td class="c"><div class="acts"><button type="button" class="ib del" title="Delete Range" aria-label="Delete range">'+IC.del+'</button></div></td>';
       $$('input[data-k]',tr).forEach(function(inp){ inp.addEventListener('change',function(){
         var k=+inp.dataset.k, v=parseFloat(inp.value);
         if(isNaN(v)||v<0){ inp.value=r[k]; return; }
         if(k===0){ var lo=start; if(v<lo){ toast('End range must be at least '+lo+'.',true); inp.value=r[0]; return; } if(i<ranges.length-1 && v>=ranges[i+1][0]){ toast('End range overlaps the next range.',true); inp.value=r[0]; return; } }
         r[k]=v; renderRanges();
       }); });
-      $('.btn',tr).onclick=function(){ if(ranges.length<2){ toast('At least one range is required.',true); return; } ranges.splice(i,1); renderRanges(); };
+      $('.ib.del',tr).onclick=function(){ if(ranges.length<2){ toast('At least one range is required.',true); return; } ranges.splice(i,1); renderRanges(); };
       tb.appendChild(tr);
     });
   }
