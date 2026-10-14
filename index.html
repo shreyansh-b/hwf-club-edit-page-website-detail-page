@@ -657,6 +657,20 @@ main{padding:6px 12px 24px}
 .thumb{background:#fff!important;border:0}
 .topbar .logoblock{background:transparent;padding:0 12px}
 .topbar .logoblock img{max-width:100%;max-height:40px;width:auto;height:auto;display:block}
+
+/* compact uploaded-file preview: image left, details right; indigo backdrop so white logo text is visible */
+.drop.filled{padding:10px 12px;min-height:0}
+.drop.filled .dz-file{display:grid;grid-template-columns:minmax(120px,44%) 1fr;grid-template-areas:"t m" "t w" "t a";gap:6px 16px;align-items:center;justify-items:start;text-align:left;width:100%}
+.drop.filled .dz-file>.thumb{grid-area:t;width:100%;min-height:0;padding:8px 10px;border-radius:8px}
+.drop.filled .dz-file>.meta{grid-area:m;justify-content:flex-start;padding:0}
+.drop.filled .dz-file>.meta+.meta{grid-area:w}
+.drop.filled .dz-file>.actions{grid-area:a}
+.drop.filled .thumb img{max-height:56px}
+.drop.wide.filled .thumb img{max-height:96px}
+.drop:not(.wide) .thumb:not(.pdfbox){background:#3f51b5!important}
+.drop.filled .thumb.pdfbox{min-height:56px;font-size:28px;padding:8px;background:#f1f3ff!important}
+.drop.filled .mini{padding:4px 12px}
+@media (max-width:560px){.drop.filled .dz-file{grid-template-columns:1fr;grid-template-areas:"t" "m" "w" "a"}}
 </style>
 </head>
 <body>
