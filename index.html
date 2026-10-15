@@ -345,7 +345,7 @@ main{min-width:0;padding:6px 12px 24px}
 /* ---------- save bar + toast ---------- */
 .savebar{display:flex;align-items:center;justify-content:flex-end;gap:12px;margin-top:6px;padding:16px 0 0;border-top:1px solid var(--border)}
 .savebar .st{margin-right:auto;font-size:13px;color:var(--muted)}
-.toast{position:fixed;left:50%;bottom:30px;z-index:120;max-width:92vw;padding:12px 18px;transform:translate(-50%,20px);border-radius:10px;background:#283593;color:#fff;font-size:14px;font-weight:600;opacity:0;pointer-events:none;transition:opacity .25s ease,transform .25s ease}
+.toast{position:fixed;left:50%;top:24px;z-index:200;max-width:92vw;padding:12px 18px;transform:translate(-50%,-20px);border-radius:10px;background:#283593;color:#fff;font-size:14px;font-weight:600;opacity:0;pointer-events:none;transition:opacity .25s ease,transform .25s ease}
 .toast.show{opacity:1;transform:translate(-50%,0)}
 .toast.bad{background:var(--danger-icon)}
 
@@ -1456,9 +1456,18 @@ main{min-width:0;padding:6px 12px 24px}
     {no:12214,date:'02-27-2026',amt:257,status:'paid',pmt:'ACH',sent:2,gen:'Manual',refunds:[]},
     {no:12213,date:'02-25-2026',amt:257,status:'paid',pmt:'ACH',sent:2,gen:'Manual',refunds:[]}
   ];
+  (function(){
+    var no=12212, y=2026, m=1, k;
+    for(k=0;k<32;k++){
+      var d=1+(k*7)%27, st=k%9===4?'refunded':k%11===6?'partially_refunded':'paid', amt=240+(k*13)%90;
+      invoices.push({no:no--,date:String(m).padStart(2,'0')+'-'+String(d).padStart(2,'0')+'-'+y,amt:amt,status:st,pmt:'ACH',sent:1+k%2,gen:k%3?'System':'Manual',
+        refunds:st==='refunded'?[{when:'01-15-'+y+' 10:00 AM',by:'SuperUser',status:'Succeeded',amount:amt}]:st==='partially_refunded'?[{when:'01-15-'+y+' 10:00 AM',by:'SuperUser',status:'Succeeded',amount:50}]:[]});
+      m--; if(m<1){ m=12; y--; }
+    }
+  })();
   function pill(k){ var c=k==='paid'?'paid':(k==='unpaid'||k==='past_due')?'pending':'neutral'; return '<span class="cl-pill cl-pill-'+c+'">'+STAT[k]+'</span>'; }
   var STAT={paid:'Paid',unpaid:'Pending',past_due:'Past Due',in_process:'Processing',partially_refunded:'Partially Refunded',refunded:'Refunded'};
-  var flt={status:['all'],q:null}, sortKey='no', sortDir='desc', page=1, PER=5, lastSig='';
+  var flt={status:['all'],q:null}, sortKey='no', sortDir='desc', page=1, PER=10, lastSig='';
   function pd(s){ var a=s.split('-'); return new Date(+a[2],+a[0]-1,+a[1]); }
   function pdate(d){ return String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')+'-'+d.getFullYear(); }
   function refundedSum(v){ return v.refunds.reduce(function(a,r){ return a+r.amount; },0); }
@@ -1624,7 +1633,7 @@ main{min-width:0;padding:6px 12px 24px}
       if(!(b._total>0)){ toast('Add at least one line item with flags and cost.',true); bad++; }
       if(bad) return false;
       var d=new Date($('#m_id',b).dataset.iso+'T00:00:00'), next=Math.max.apply(null,invoices.map(function(v){ return v.no; }))+1;
-      invoices.unshift({no:next,date:pdate(d),amt:b._total,status:'unpaid',pmt:'-',sent:0,gen:'Manual',refunds:[]}); renderInvoices(); toast('Invoice #'+next+' created.');
+      invoices.unshift({no:next,date:pdate(d),amt:b._total,status:'unpaid',pmt:'-',sent:0,gen:'Manual',refunds:[]}); sortKey='no'; sortDir='desc'; page=1; renderInvoices(); toast('Invoice #'+next+' created.');
     }});
   }
   $('#i_add').addEventListener('click',addInvoiceModal);
