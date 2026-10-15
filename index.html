@@ -264,7 +264,8 @@ main{min-width:0;padding:6px 12px 24px}
 .drop:not(.wide) .thumb:not(.pdfbox){background:var(--primary)}
 .thumb img{display:block;max-width:100%;max-height:56px;object-fit:contain}
 .drop.wide .thumb img{max-height:96px}
-.thumb.pdfbox{background:var(--soft);color:var(--danger-icon);font-size:28px}
+.thumb.pdfbox{justify-self:center;width:72px;min-height:64px;padding:0;border:1px solid var(--outline);border-radius:12px;background:#fff;color:var(--danger-icon);font-size:28px;box-shadow:0 2px 6px rgba(63,81,181,.15);cursor:pointer;transition:background-color .15s ease,border-color .15s ease,box-shadow .15s ease}
+.thumb.pdfbox:hover{border-color:var(--primary);background:var(--soft);box-shadow:0 2px 8px rgba(63,81,181,.3)}
 .meta{grid-area:m;display:flex;flex-wrap:wrap;align-items:center;gap:8px;max-width:100%;font-size:13px;color:var(--text-2)}
 .meta+.meta{grid-area:w}
 .meta .nm{max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:700;color:var(--text)}
@@ -302,6 +303,15 @@ main{min-width:0;padding:6px 12px 24px}
 .pop{position:absolute;z-index:5;display:grid;grid-template-columns:repeat(8,1fr);gap:2px;padding:6px;border:1px solid var(--border);border-radius:12px;background:#fff;box-shadow:0 10px 24px rgba(63,81,181,.18)}
 .pop button{width:30px;height:30px;border:0;border-radius:8px;background:transparent;font-size:17px;cursor:pointer}
 .pop button:hover{background:var(--soft)}
+
+/* ---------- image lightbox ---------- */
+.thumb img{cursor:zoom-in}
+.lb-back{position:fixed;inset:0;z-index:130;display:flex;align-items:center;justify-content:center;padding:48px 24px;background:rgba(43,47,74,.75)}
+.lb-img{display:block;width:auto;height:auto;max-width:calc(100vw - 96px);max-height:calc(100vh - 96px);border-radius:8px;background:var(--primary);box-shadow:0 8px 30px rgba(0,0,0,.4)}
+.lb-pdf{display:block;width:min(900px,calc(100vw - 96px));height:calc(100vh - 96px);border:0;border-radius:8px;background:#fff;box-shadow:0 8px 30px rgba(0,0,0,.4)}
+.lb-box{position:relative;display:inline-block;line-height:0}
+.lb-x{position:absolute;top:-10px;right:-10px;display:grid;place-items:center;width:30px;height:30px;padding:0;border:0;border-radius:50%;background:#fff;color:var(--primary);font-size:16px;cursor:pointer;box-shadow:0 2px 6px rgba(0,0,0,.3)}
+.lb-x:hover{background:var(--soft)}
 
 /* ---------- save bar + toast ---------- */
 .savebar{display:flex;align-items:center;justify-content:flex-end;gap:12px;margin-top:6px;padding:16px 0 0;border-top:1px solid var(--border)}
@@ -986,7 +996,7 @@ main{min-width:0;padding:6px 12px 24px}
       var warn = s.warn ? '<span class="chip warn" title="'+s.warn+'">Size differs</span>' : '<span class="chip ok">Ready</span>';
       zone.innerHTML =
         '<div class="dz-file">'+
-          (d.kind==='pdf' ? '<div class="thumb pdfbox" style="background:none">'+'<i class="fa fa-file-pdf-o" aria-hidden="true"></i>'+'</div>' : '<div class="thumb"><img src="'+s.url+'" alt="Preview of '+s.name.replace(/"/g,'')+'"></div>')+
+          (d.kind==='pdf' ? '<div class="thumb pdfbox" role="button" tabindex="0" title="Preview PDF" data-pdf="'+s.url+'" data-name="'+s.name.replace(/"/g,'')+'"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></div>' : '<div class="thumb"><img src="'+s.url+'" alt="Preview of '+s.name.replace(/"/g,'')+'"></div>')+
           '<div class="meta"><span class="nm" title="'+s.name.replace(/"/g,'')+'">'+s.name.replace(/</g,'&lt;')+'</span><span>'+fmtSize(s.size)+'</span>'+(s.w?'<span>'+s.w+'×'+s.h+' px</span>':'')+warn+'</div>'+
           (s.warn?'<div class="meta" style="color:var(--warn)">'+s.warn+'</div>':'')+
           '<div class="actions"><button type="button" class="mini" data-replace>Replace</button><button type="button" class="mini rm" data-remove>Remove</button></div>'+
@@ -1056,6 +1066,39 @@ main{min-width:0;padding:6px 12px 24px}
   // stop browser from opening a file dropped outside the zones
   ['dragover','drop'].forEach(function(ev){ window.addEventListener(ev,function(e){ e.preventDefault(); }); });
   $('[data-def="bg"]').addEventListener('click',function(e){ e.preventDefault(); clear(defs[4]); toast('Using the default homepage background.'); });
+
+  /* ---------- Image lightbox ---------- */
+  function closeLightbox(){ var l=$('#lbBack'); if(l) l.remove(); }
+  function openLightbox(src,alt){
+    closeLightbox();
+    var l=document.createElement('div'); l.className='lb-back'; l.id='lbBack';
+    l.innerHTML='<div class="lb-box"><img class="lb-img" alt=""><button type="button" class="lb-x" aria-label="Close image"><i class="fa fa-times" aria-hidden="true"></i></button></div>';
+    var im=$('.lb-img',l); im.src=src; im.alt=alt||'';
+    l.addEventListener('mousedown',function(e){ if(e.target===l) closeLightbox(); });
+    $('.lb-x',l).addEventListener('click',closeLightbox);
+    document.body.appendChild(l);
+    $('.lb-x',l).focus();
+  }
+  function openPdf(src,name){
+    closeLightbox();
+    var l=document.createElement('div'); l.className='lb-back'; l.id='lbBack';
+    l.innerHTML='<div class="lb-box"><iframe class="lb-pdf" title=""></iframe><button type="button" class="lb-x" aria-label="Close PDF"><i class="fa fa-times" aria-hidden="true"></i></button></div>';
+    var fr=$('.lb-pdf',l); fr.title=name||'PDF preview'; fr.src=src;
+    l.addEventListener('mousedown',function(e){ if(e.target===l) closeLightbox(); });
+    $('.lb-x',l).addEventListener('click',closeLightbox);
+    document.body.appendChild(l);
+    $('.lb-x',l).focus();
+  }
+  document.addEventListener('click',function(e){
+    var im=e.target.closest&&e.target.closest('.thumb img');
+    if(im){ openLightbox(im.src,im.alt); return; }
+    var pf=e.target.closest&&e.target.closest('.thumb.pdfbox');
+    if(pf) openPdf(pf.dataset.pdf,pf.dataset.name);
+  });
+  document.addEventListener('keydown',function(e){
+    if((e.key==='Enter'||e.key===' ')&&e.target.matches&&e.target.matches('.thumb.pdfbox')){ e.preventDefault(); openPdf(e.target.dataset.pdf,e.target.dataset.name); }
+  });
+  document.addEventListener('keydown',function(e){ if(e.key==='Escape') closeLightbox(); });
 
   /* ---------- Conditional sections ---------- */
   function updateAll(){
