@@ -242,7 +242,12 @@ main{min-width:0;padding:6px 12px 24px}
 .sys .bcard .x{position:absolute;top:10px;right:10px;width:24px;height:24px;border:0;border-radius:50%;background:#fff;color:var(--danger-icon);font-weight:700;line-height:1;cursor:pointer}
 .sys .bcard .ed{position:absolute;top:10px;right:42px;width:24px;height:24px;border:0;border-radius:50%;background:#fff;color:var(--primary);font-size:12px;line-height:1;cursor:pointer}
 .sys .bcard .ed:hover,.sys .bcard .x:hover{background:var(--soft)}
-.sys .bcard.alt{background:linear-gradient(135deg,#283593,#5c6bc0)}
+.sys .bcard.alt{background:linear-gradient(135deg,rgba(255,255,255,.1) 25%,transparent 25%) -40px 0/80px 80px,linear-gradient(225deg,rgba(255,255,255,.1) 25%,transparent 25%) -40px 0/80px 80px,linear-gradient(135deg,#1a237e 0%,#1e88e5 55%,#00c6ff 100%)}
+.sys .bcard.alt .bg{background:rgba(255,255,255,.85);font-weight:600}
+.sys .bcard.alt .num{margin:10px 0 0;font-size:15px;letter-spacing:1px;font-weight:400}
+.sys .bcard.alt .hold{position:absolute;left:14px;bottom:52px;margin:0;font-size:18px;font-weight:700;letter-spacing:.5px}
+.sys .bcard.alt .exp{position:absolute;left:14px;bottom:14px;font-size:14px;letter-spacing:.5px}
+.sys .bcard.alt .brand{position:absolute;right:16px;bottom:10px;font-size:26px;font-weight:700;font-style:italic;letter-spacing:1px}
 .sys .bcard .hold{margin-top:30px;font-size:15px}
 .sys .bcard h5{margin:6px 0 2px;font-size:15px;letter-spacing:.4px}
 .sys .bcard .ico{position:absolute;right:16px;bottom:12px;font-size:28px;opacity:.85}
@@ -1295,13 +1300,14 @@ main{min-width:0;padding:6px 12px 24px}
   var procNow='58';
   function renderWell(){ var p=procs[procNow]||procs['']; $('#a_well').innerHTML='<b>Processor:</b> '+esc(p.name)+'<br><b>Type:</b> '+esc(p.type)+'<br><b>Status:</b> <span class="'+(p.on?'badge-ok':'badge-off')+'">'+(p.on?'ACTIVE':'NONE')+'</span>'; }
   var bank={holder:'Shreyansh Bhimani',bankName:'STRIPE TEST BANK',last:'6789',routing:'110000000',type:'Saving',signed:true};
-  var cards=[];
+  var cards=[{name:'Testgh',last:'1111',brand:'VISA',mm:'11',yy:'2029'}];
   $('#a_proc').addEventListener('change',function(){
     var sel=this, nv=sel.value;
     confirmModalKeep('Change processor?','Changing the payment gateway removes previously stored Card and ACH details. Continue?','Yes, change',function(){ procNow=nv; bank=null; cards=[]; renderWell(); renderPay(); toast('Processor changed. Stored card and bank details were removed.'); },function(){ sel.value=procNow; });
   });
   function confirmModalKeep(title,text,yes,ok,cancel){ openModal(title,'<p>'+text+'</p>',{save:yes,danger:true,noFocus:true,onSave:function(){ ok(); },onCancel:cancel}); }
   function brandOf(n){ return /^4/.test(n)?'VISA':/^(5[1-5]|2[2-7])/.test(n)?'MASTERCARD':/^3[47]/.test(n)?'AMEX':/^6/.test(n)?'DISCOVER':'CARD'; }
+  var TEST_CARDS=['4242424242424242','4111111111111111','4000056655665556','5555555555554444','2223003122003222','5200828282828210','378282246310005','6011111111111117'];
   function luhn(n){ var t=0,alt=false; for(var i=n.length-1;i>=0;i--){ var d=+n[i]; if(alt){ d*=2; if(d>9) d-=9; } t+=d; alt=!alt; } return t%10===0; }
   function renderPay(){
     var t=$('input[name=a_ptype]:checked').value;
@@ -1318,15 +1324,17 @@ main{min-width:0;padding:6px 12px 24px}
     }
     ach.appendChild(wrap);
     var cc=$('#a_cc'); cc.innerHTML=''; var w2=document.createElement('div'); w2.className='bcard-wrap';
+    cc.appendChild(w2);
     cards.forEach(function(c,i){
       var d=document.createElement('div'); d.className='bcard alt';
-      d.innerHTML='<button type="button" class="ed" aria-label="Edit card" title="Edit card" data-ec><i class="fa fa-pencil" aria-hidden="true"></i></button><button type="button" class="x" aria-label="Remove card" title="Remove card" data-rc>×</button><span class="bg">'+esc(c.brand)+'</span><div class="num">XXXX XXXX XXXX '+esc(c.last)+'</div><div class="hold">'+esc(c.name)+'</div><div>Expires '+esc(c.mm)+'/'+esc(c.yy.slice(-2))+'</div><div class="ico">💳</div>';
+      d.innerHTML='<button type="button" class="ed" aria-label="Edit card" title="Edit card" data-ec><i class="fa fa-pencil" aria-hidden="true"></i></button><button type="button" class="x" aria-label="Remove card" title="Remove card" data-rc>×</button><span class="bg">Stripe</span><div class="num">XXXX XXXX XXXX '+esc(c.last)+'</div><div class="hold">'+esc(c.name)+'</div><div class="exp">'+esc(c.mm)+' / '+esc(c.yy)+'</div><div class="brand">'+esc(c.brand)+'</div>';
       $('[data-ec]',d).onclick=function(){ cardModal(i); };
       $('[data-rc]',d).onclick=function(){ confirmModal('Remove card','Remove the card ending in <b>'+esc(c.last)+'</b>?','Remove',function(){ cards.splice(i,1); renderPay(); toast('Card removed.'); }); };
       w2.appendChild(d);
     });
+    if(cards.length) return;
     var add=document.createElement('div'); add.className='addcard'; add.innerHTML='<div><div class="big">＋</div><div class="big-ico">'+ICO('card')+'</div><p style="margin:8px 0 12px">Add a payment card</p><button type="button" class="btn primary" data-ac>Add Credit Card</button></div>';
-    $('[data-ac]',add).onclick=function(){ cardModal(null); }; w2.appendChild(add); cc.appendChild(w2);
+    $('[data-ac]',add).onclick=function(){ cardModal(null); }; w2.appendChild(add);
   }
   function bankModal(edit){
     var b0=edit&&bank?bank:{holder:'',bankName:'',routing:'',type:'Saving',last:''};
@@ -1345,10 +1353,10 @@ main{min-width:0;padding:6px 12px 24px}
     var edit=idx!=null, c0=edit?cards[idx]:{name:'',last:'',mm:'',yy:''};
     var yr=new Date().getFullYear(), ys='<option value="">YYYY</option>'; for(var y=yr;y<yr+12;y++) ys+='<option'+(String(y)===c0.yy?' selected':'')+'>'+y+'</option>';
     var ms='<option value="">MM</option>'; for(var m=1;m<=12;m++){ var mm=(m<10?'0':'')+m; ms+='<option value="'+mm+'"'+(mm===c0.mm?' selected':'')+'>'+mm+'</option>'; }
-    openModal(edit?'Edit Card For Stripe':'Add New Credit Card For Stripe','<div class="fg"><label for="m_cn">Name on Card <b class="rq">*</b></label><input type="text" id="m_cn" placeholder="Enter name on card" value="'+esc(c0.name)+'"><div class="em">Required.</div></div><div class="fg"><label for="m_cc">Card Number <b class="rq">*</b></label><input type="text" id="m_cc" inputmode="numeric" autocomplete="off" placeholder="'+(edit?'Leave blank to keep card ending '+esc(c0.last):'Enter card number')+'"><div class="em">Enter a valid card number.</div></div><div class="g2"><div class="fg"><label for="m_mm">Expiration (MM) <b class="rq">*</b></label><select id="m_mm">'+ms+'</select></div><div class="fg"><label for="m_yy">Expiration (YYYY) <b class="rq">*</b></label><select id="m_yy">'+ys+'</select><div class="em">Choose a valid, non-expired date.</div></div></div>'+(edit?'':'<div class="fg"><label for="m_cv">Card CVV <b class="rq">*</b></label><input type="text" id="m_cv" inputmode="numeric" maxlength="4" placeholder="0000" autocomplete="off"><div class="em">Enter 3 or 4 digits.</div></div>'),{save:edit?'Update Card':'Save Card',onOpen:function(bx){ $('#m_cc',bx).addEventListener('input',function(){ this.value=this.value.replace(/\D/g,'').slice(0,19).replace(/(.{4})/g,'$1 ').trim(); }); },onSave:function(b){
+    openModal(edit?'Edit Card For Stripe':'Add New Credit Card For Stripe','<div class="fg"><label for="m_cn">Name on Card <b class="rq">*</b></label><input type="text" id="m_cn" placeholder="Enter name on card" value="'+esc(c0.name)+'"><div class="em">Required.</div></div><div class="fg"><label for="m_cc">Card Number <b class="rq">*</b></label><input type="text" id="m_cc" inputmode="numeric" autocomplete="off" placeholder="'+(edit?'Leave blank to keep card ending '+esc(c0.last):'Enter card number')+'"><div class="em">Only Stripe test cards are allowed.</div><small class="note">Demo: use a Stripe test number such as 4242 4242 4242 4242 or 4111 1111 1111 1111.</small></div><div class="g2"><div class="fg"><label for="m_mm">Expiration (MM) <b class="rq">*</b></label><select id="m_mm">'+ms+'</select></div><div class="fg"><label for="m_yy">Expiration (YYYY) <b class="rq">*</b></label><select id="m_yy">'+ys+'</select><div class="em">Choose a valid, non-expired date.</div></div></div>'+(edit?'':'<div class="fg"><label for="m_cv">Card CVV <b class="rq">*</b></label><input type="text" id="m_cv" inputmode="numeric" maxlength="4" placeholder="0000" autocomplete="off"><div class="em">Enter 3 or 4 digits.</div></div>'),{save:edit?'Update Card':'Save Card',onOpen:function(bx){ $('#m_cc',bx).addEventListener('input',function(){ this.value=this.value.replace(/\D/g,'').slice(0,16).replace(/(.{4})/g,'$1 ').trim(); }); },onSave:function(b){
       mclear(b); var bad=0, num=mval(b,'m_cc').replace(/\s/g,''), mm=$('#m_mm',b).value, yy=$('#m_yy',b).value, now=new Date();
       if(!mval(b,'m_cn')){ mbad(b,'m_cn'); bad++; }
-      if(!(edit&&!num) && !(/^\d{13,19}$/.test(num)&&luhn(num))){ mbad(b,'m_cc'); bad++; }
+      if(!(edit&&!num) && TEST_CARDS.indexOf(num)<0){ mbad(b,'m_cc','Only Stripe test cards are allowed, e.g. 4242 4242 4242 4242.'); bad++; }
       if(!mm||!yy||(+yy===now.getFullYear()&&+mm<now.getMonth()+1)){ mbad(b,'m_yy'); bad++; }
       if(!edit && !/^\d{3,4}$/.test(mval(b,'m_cv'))){ mbad(b,'m_cv'); bad++; }
       if(bad) return false;
