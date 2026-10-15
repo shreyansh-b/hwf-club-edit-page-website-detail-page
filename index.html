@@ -382,6 +382,9 @@ main{min-width:0;padding:6px 12px 24px}
 .cl-date-wrap .cl-date-input:focus{border-color:var(--primary);box-shadow:var(--ring)}
 .cl-date-wrap .cl-date-icon{position:absolute;top:50%;right:12px;transform:translateY(-50%);font-size:15px;color:var(--primary);cursor:pointer}
 .drp{position:absolute;top:calc(100% + 6px);left:0;z-index:50;width:max-content;max-width:calc(100vw - 32px);background:#fff;border:1px solid var(--border);border-radius:12px;box-shadow:0 10px 24px rgba(63,81,181,.18)}
+.drp.dpf{position:fixed;z-index:140;width:262px}
+.drp.dpf .drp-cals{padding:12px}
+.mdl .cl-date-wrap .cl-date-input{height:40px;padding:0 36px 0 12px;cursor:pointer}
 .drp-main{display:flex}
 .drp-presets{display:flex;flex-direction:column;gap:4px;min-width:130px;padding:10px;border-right:1px solid var(--row-line)}
 .drp-presets button{padding:8px 12px;border:0;border-radius:8px;background:transparent;color:var(--text);font-size:13px;text-align:left;cursor:pointer}
@@ -389,6 +392,8 @@ main{min-width:0;padding:6px 12px 24px}
 .drp-cals{display:flex;gap:16px;padding:12px}
 .drp-cal{width:238px}
 .drp-head{display:flex;align-items:center;justify-content:space-between;height:30px;margin-bottom:6px;font-size:14px;color:var(--text)}
+.drp-sels{display:flex;gap:4px;align-items:center}
+.drp .drp-sels select,.sys .fg .drp .drp-sels select{width:auto;height:28px;padding:0 6px;border:1px solid var(--field-border);border-radius:8px;background:#fff;font-size:13px;font-weight:600;color:var(--text);cursor:pointer}
 .drp-nav{display:grid;place-items:center;width:28px;height:28px;border:0;border-radius:8px;background:var(--soft);color:var(--primary);cursor:pointer}
 .drp-nav:hover{background:var(--soft-hover)}
 .drp-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;text-align:center}
@@ -708,7 +713,7 @@ main{min-width:0;padding:6px 12px 24px}
             <th class="c">Invoiced</th><th class="c">Status</th><th class="c">Pmt. Type</th>
             <th class="c" data-sort="sent">Sent <i class="srt fa fa-sort"></i></th>
             <th class="c">Signed</th><th class="c">Generated Type</th><th class="c">Action</th></tr></thead><tbody></tbody></table></div>
-          <div class="pgbar"><span id="i_count"></span><ul class="pg"><li class="off">«</li><li class="on">1</li><li data-demo>2</li><li data-demo>3</li><li data-demo>»</li></ul></div>
+          <div class="pgbar"><span id="i_count"></span><ul class="pg" id="i_pg"></ul></div>
         </div>
       </section>
       <div class="btnrow"><button type="button" class="btn ghost" data-goto="web">Previous</button></div>
@@ -1453,7 +1458,7 @@ main{min-width:0;padding:6px 12px 24px}
   ];
   function pill(k){ var c=k==='paid'?'paid':(k==='unpaid'||k==='past_due')?'pending':'neutral'; return '<span class="cl-pill cl-pill-'+c+'">'+STAT[k]+'</span>'; }
   var STAT={paid:'Paid',unpaid:'Pending',past_due:'Past Due',in_process:'Processing',partially_refunded:'Partially Refunded',refunded:'Refunded'};
-  var flt={status:['all'],q:null}, sortKey='no', sortDir='desc';
+  var flt={status:['all'],q:null}, sortKey='no', sortDir='desc', page=1, PER=5, lastSig='';
   function pd(s){ var a=s.split('-'); return new Date(+a[2],+a[0]-1,+a[1]); }
   function pdate(d){ return String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')+'-'+d.getFullYear(); }
   function refundedSum(v){ return v.refunds.reduce(function(a,r){ return a+r.amount; },0); }
@@ -1476,10 +1481,18 @@ main{min-width:0;padding:6px 12px 24px}
     });
   }
   function renderInvoices(){
-    var list=filtered().slice().sort(function(a,b){
+    var all=filtered().slice().sort(function(a,b){
       var x,y; if(sortKey==='date'){ x=pd(a.date); y=pd(b.date); } else if(sortKey==='club'){ x=y=0; } else if(sortKey==='type'){ x=a.gen; y=b.gen; } else { x=a[sortKey]; y=b[sortKey]; }
       return (x<y?-1:x>y?1:0)*(sortDir==='asc'?1:-1);
     });
+    var sig=JSON.stringify([flt,$('#i_search').value,$('#i_club').value,$('#i_from').value,$('#i_to').value,$('#i_type').value]);
+    if(sig!==lastSig){ page=1; lastSig=sig; }
+    var pages=Math.max(1,Math.ceil(all.length/PER)); if(page>pages) page=pages;
+    var list=all.slice((page-1)*PER,page*PER);
+    var pg='<li class="'+(page===1?'off':'')+'" data-pg="'+(page-1)+'">«</li>';
+    for(var n=1;n<=pages;n++) pg+='<li class="'+(n===page?'on':'')+'" data-pg="'+n+'">'+n+'</li>';
+    pg+='<li class="'+(page===pages?'off':'')+'" data-pg="'+(page+1)+'">»</li>';
+    $('#i_pg').innerHTML=pg;
     $$('#i_table th[data-sort]').forEach(function(th){ var on=th.dataset.sort===sortKey; $('.srt',th).className='srt fa '+(on?(sortDir==='asc'?'fa-sort-asc on':'fa-sort-desc on'):'fa-sort'); });
     var tb=$('#i_table tbody'); tb.innerHTML='';
     list.forEach(function(v){
@@ -1498,8 +1511,8 @@ main{min-width:0;padding:6px 12px 24px}
       tb.appendChild(tr);
     });
     if(!list.length) tb.innerHTML='<tr><td colspan="11" class="empty">No invoices match these filters.</td></tr>';
-    $('#i_count').textContent=list.length?'Showing 1 to '+list.length+' of '+list.length+' entries':'Showing 0 entries';
-    $('#i_total').textContent=money(list.reduce(function(a,v){ return a+v.amt; },0));
+    $('#i_count').textContent=all.length?'Showing '+((page-1)*PER+1)+' to '+((page-1)*PER+list.length)+' of '+all.length+' entries':'Showing 0 entries';
+    $('#i_total').textContent=money(all.reduce(function(a,v){ return a+v.amt; },0));
     $('#q_month').textContent=invoices.filter(function(v){ return inMonth(v,0); }).length;
     $('#q_last').textContent=invoices.filter(function(v){ return inMonth(v,-1); }).length;
     $('#q_year').textContent=invoices.filter(function(v){ return pd(v.date).getFullYear()===TODAY.getFullYear(); }).length;
@@ -1535,8 +1548,61 @@ main{min-width:0;padding:6px 12px 24px}
     var rows=v.refunds.map(function(r){ return '<tr><td>'+esc(r.when)+'</td><td>'+esc(r.by)+'</td><td>'+esc(r.status)+'</td><td style="text-align:right">'+money(r.amount)+'</td></tr>'; }).join('');
     openModal('Refund History','<div class="info"><div>Club: <b>'+CLUB+'</b></div><div>Invoice #: <b>'+v.no+'</b></div><div>Invoice Total: <b>'+money(v.amt)+'</b></div><div>Total Refunded: <b>'+money(refundedSum(v))+'</b></div></div><table><thead><tr><th>Date &amp; Time</th><th>Refunded By</th><th>Status</th><th style="text-align:right">Amount</th></tr></thead><tbody>'+rows+'</tbody></table>',{save:false,cancel:'Close'});
   }
+  function headSel(y,m){
+    var MNS=['January','February','March','April','May','June','July','August','September','October','November','December'];
+    var h='<select data-m aria-label="Month">';
+    MNS.forEach(function(n,k){ h+='<option value="'+k+'"'+(k===m?' selected':'')+'>'+n+'</option>'; });
+    h+='</select><select data-y aria-label="Year">';
+    var a=Math.min(y,TODAY.getFullYear()-15), z=Math.max(y,TODAY.getFullYear()+5);
+    for(var i=a;i<=z;i++) h+='<option'+(i===y?' selected':'')+'>'+i+'</option>';
+    return h+'</select>';
+  }
+  /* single-date picker (same look as the range picker); input stays read-only */
+  function initDatePicker(inp){
+    var MN=['January','February','March','April','May','June','July','August','September','October','November','December'], pop=null, view=null;
+    function iso(d){ return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
+    function picked(){ return inp.dataset.iso?new Date(inp.dataset.iso+'T00:00:00'):null; }
+    function close(){ if(pop){ pop.remove(); pop=null; } document.removeEventListener('mousedown',outside); window.removeEventListener('resize',close); }
+    function outside(e){ if(pop && !pop.contains(e.target) && e.target!==inp && !e.target.classList.contains('cl-date-icon')) close(); }
+    function set(d){ inp.dataset.iso=d?iso(d):''; inp.value=d?pdate(d):''; var fg=inp.closest('.fg'); if(fg) fg.classList.remove('bad'); close(); }
+    function draw(){
+      var sel=picked(), f=view, n=new Date(f.getFullYear(),f.getMonth()+1,0).getDate();
+      var h='<div class="drp-cals"><div class="drp-cal"><div class="drp-head"><button type="button" class="drp-nav" data-n="-1" aria-label="Previous month"><i class="fa fa-chevron-left"></i></button><span class="drp-sels">'+headSel(f.getFullYear(),f.getMonth())+'</span><button type="button" class="drp-nav" data-n="1" aria-label="Next month"><i class="fa fa-chevron-right"></i></button></div><div class="drp-grid">';
+      ['Su','Mo','Tu','We','Th','Fr','Sa'].forEach(function(w){ h+='<i class="drp-w">'+w+'</i>'; });
+      for(var i=0;i<f.getDay();i++) h+='<span></span>';
+      for(var d=1;d<=n;d++){
+        var c=new Date(f.getFullYear(),f.getMonth(),d), cl='drp-d';
+        if(sel&&c.getTime()===sel.getTime()) cl+=' on';
+        if(c.getTime()===TODAY.getTime()) cl+=' today';
+        h+='<button type="button" class="'+cl+'" data-d="'+iso(c)+'">'+d+'</button>';
+      }
+      pop.innerHTML=h+'</div></div></div><div class="drp-foot"><button type="button" class="btn ghost sm" data-clear>Clear</button><button type="button" class="btn primary sm" data-today>Today</button></div>';
+    }
+    function open(){
+      close(); var sel=picked(), base=sel||TODAY;
+      view=new Date(base.getFullYear(),base.getMonth(),1);
+      pop=document.createElement('div'); pop.className='drp dpf'; pop.setAttribute('role','dialog'); document.body.appendChild(pop); draw();
+      var r=inp.getBoundingClientRect(), h=pop.offsetHeight;
+      pop.style.left=Math.max(8,Math.min(r.left,window.innerWidth-pop.offsetWidth-8))+'px';
+      pop.style.top=((r.bottom+6+h>window.innerHeight && r.top-6-h>0)?r.top-6-h:r.bottom+6)+'px';
+      pop.addEventListener('click',function(e){
+        var n=e.target.closest('[data-n]'), d=e.target.closest('[data-d]');
+        if(n){ view=new Date(view.getFullYear(),view.getMonth()+(+n.dataset.n),1); draw(); }
+        else if(d) set(new Date(d.dataset.d+'T00:00:00'));
+        else if(e.target.closest('[data-today]')) set(new Date(TODAY));
+        else if(e.target.closest('[data-clear]')) set(null);
+      });
+      pop.addEventListener('change',function(e){ if(e.target.matches('[data-y],[data-m]')){ view=new Date(+$('[data-y]',pop).value,+$('[data-m]',pop).value,1); draw(); } });
+      document.addEventListener('mousedown',outside); window.addEventListener('resize',close);
+    }
+    function toggle(){ pop?close():open(); }
+    inp.addEventListener('click',toggle);
+    inp.addEventListener('keydown',function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); toggle(); } });
+    var ic=inp.parentNode.querySelector('.cl-date-icon'); if(ic) ic.addEventListener('click',toggle);
+  }
   function addInvoiceModal(){
-    openModal('Add Invoice','<div class="fg"><label for="m_ic">Select Club:</label><select id="m_ic"><option value="">Select Club</option><option selected>'+CLUB+'</option></select><div class="em">Select a club.</div></div><div class="fg"><label for="m_id">Invoice Date <b class="rq">*</b></label><input type="date" id="m_id"><div class="em">Select an invoice date.</div></div><div class="fg"><label for="m_ids">Invoice Description</label><textarea id="m_ids" rows="2" placeholder="Enter invoice description"></textarea></div><h4 style="margin:16px 0 8px">Invoice Table Content</h4><div id="m_lines"></div><button type="button" class="link" id="m_addln">Add More ＋</button><div class="fg"><label for="m_note">Customer Note</label><textarea id="m_note" rows="2" placeholder="Enter customer note"></textarea></div><div class="sum"><div><span>Subtotal Amount</span><span id="m_sub">$0.00</span></div><div><b>Total Amount</b><b id="m_tot">$0.00</b></div></div>',{onOpen:function(b){
+    openModal('Add Invoice','<div class="fg"><label for="m_ic">Select Club:</label><select id="m_ic"><option value="">Select Club</option><option selected>'+CLUB+'</option></select><div class="em">Select a club.</div></div><div class="fg"><label for="m_id">Invoice Date <b class="rq">*</b></label><div class="cl-date-wrap"><input type="text" id="m_id" class="cl-date-input" readonly placeholder="Select invoice date" aria-haspopup="dialog"><i class="fa fa-calendar cl-date-icon" aria-hidden="true"></i></div><div class="em">Select an invoice date.</div></div><div class="fg"><label for="m_ids">Invoice Description</label><textarea id="m_ids" rows="2" placeholder="Enter invoice description"></textarea></div><h4 style="margin:16px 0 8px">Invoice Table Content</h4><div id="m_lines"></div><button type="button" class="link" id="m_addln">Add More ＋</button><div class="fg"><label for="m_note">Customer Note</label><textarea id="m_note" rows="2" placeholder="Enter customer note"></textarea></div><div class="sum"><div><span>Subtotal Amount</span><span id="m_sub">$0.00</span></div><div><b>Total Amount</b><b id="m_tot">$0.00</b></div></div>',{onOpen:function(b){
+      initDatePicker($('#m_id',b));
       var lines=[{d:'',f:'',r:''}];
       function draw(){
         var box=$('#m_lines',b); box.innerHTML='<div class="li" style="font-weight:700"><span>Details</span><span>Flags</span><span>Cost</span><span>Amount</span><span></span></div>';
@@ -1554,10 +1620,10 @@ main{min-width:0;padding:6px 12px 24px}
       draw();
     },onSave:function(b){
       mclear(b); var bad=0;
-      if(!$('#m_ic',b).value){ mbad(b,'m_ic'); bad++; } if(!$('#m_id',b).value){ mbad(b,'m_id'); bad++; }
+      if(!$('#m_ic',b).value){ mbad(b,'m_ic'); bad++; } if(!$('#m_id',b).dataset.iso){ mbad(b,'m_id'); bad++; }
       if(!(b._total>0)){ toast('Add at least one line item with flags and cost.',true); bad++; }
       if(bad) return false;
-      var d=new Date($('#m_id',b).value+'T00:00:00'), next=Math.max.apply(null,invoices.map(function(v){ return v.no; }))+1;
+      var d=new Date($('#m_id',b).dataset.iso+'T00:00:00'), next=Math.max.apply(null,invoices.map(function(v){ return v.no; }))+1;
       invoices.unshift({no:next,date:pdate(d),amt:b._total,status:'unpaid',pmt:'-',sent:0,gen:'Manual',refunds:[]}); renderInvoices(); toast('Invoice #'+next+' created.');
     }});
   }
@@ -1583,7 +1649,7 @@ main{min-width:0;padding:6px 12px 24px}
     function label(){ return a?(pdate(a)+(b?' – '+pdate(b):' – …')):''; }
     function month(off){
       var f=new Date(view.getFullYear(),view.getMonth()+off,1), n=new Date(f.getFullYear(),f.getMonth()+1,0).getDate();
-      var h='<div class="drp-head">'+(off===0?'<button type="button" class="drp-nav" data-n="-1" aria-label="Previous month"><i class="fa fa-chevron-left"></i></button>':'<span></span>')+'<b>'+MN[f.getMonth()]+' '+f.getFullYear()+'</b>'+(off===1?'<button type="button" class="drp-nav" data-n="1" aria-label="Next month"><i class="fa fa-chevron-right"></i></button>':'<span></span>')+'</div><div class="drp-grid">';
+      var h='<div class="drp-head">'+(off===0?'<button type="button" class="drp-nav" data-n="-1" aria-label="Previous month"><i class="fa fa-chevron-left"></i></button>':'<span></span>')+'<span class="drp-sels">'+headSel(f.getFullYear(),f.getMonth())+'</span>'+(off===1?'<button type="button" class="drp-nav" data-n="1" aria-label="Next month"><i class="fa fa-chevron-right"></i></button>':'<span></span>')+'</div><div class="drp-grid">';
       ['Su','Mo','Tu','We','Th','Fr','Sa'].forEach(function(w){ h+='<i class="drp-w">'+w+'</i>'; });
       for(var i=0;i<f.getDay();i++) h+='<span></span>';
       for(var d=1;d<=n;d++){
@@ -1623,6 +1689,11 @@ main{min-width:0;padding:6px 12px 24px}
         draw();
       }
     });
+    pop.addEventListener('change',function(e){
+      var sel=e.target.closest('[data-y],[data-m]'); if(!sel) return;
+      var cal=sel.closest('.drp-cal'), off=$$('.drp-cal',pop).indexOf(cal);
+      view=new Date(+$('[data-y]',cal).value,+$('[data-m]',cal).value-off,1); draw();
+    });
     $('#drpApply').addEventListener('click',apply);
     $('#drpCancel').addEventListener('click',close);
     document.addEventListener('mousedown',function(e){ if(!pop.hidden && !wrap.contains(e.target)) close(); });
@@ -1631,6 +1702,7 @@ main{min-width:0;padding:6px 12px 24px}
   $$('.qf').forEach(function(q){ q.addEventListener('click',function(){ flt.q=(flt.q===q.dataset.q)?null:q.dataset.q; renderInvoices(); }); });
   $$('#i_table th[data-sort]').forEach(function(th){ th.addEventListener('click',function(){ var k=th.dataset.sort; if(sortKey===k) sortDir=sortDir==='asc'?'desc':'asc'; else { sortKey=k; sortDir='asc'; } renderInvoices(); }); });
   ['i_search','i_club','i_type'].forEach(function(id){ $('#'+id).addEventListener('change',renderInvoices); });
+  $('#i_pg').addEventListener('click',function(e){ var li=e.target.closest('[data-pg]'); if(!li||li.classList.contains('off')||li.classList.contains('on')) return; page=+li.dataset.pg; renderInvoices(); });
   renderInvoices();
 
 
