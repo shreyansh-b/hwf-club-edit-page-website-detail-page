@@ -1467,13 +1467,14 @@ main{min-width:0;padding:6px 12px 24px}
   })();
   function pill(k){ var c=k==='paid'?'paid':(k==='unpaid'||k==='past_due')?'pending':'neutral'; return '<span class="cl-pill cl-pill-'+c+'">'+STAT[k]+'</span>'; }
   var STAT={paid:'Paid',unpaid:'Pending',past_due:'Past Due',in_process:'Processing',partially_refunded:'Partially Refunded',refunded:'Refunded'};
+  var ap={search:'',club:'',from:'',to:'',type:''};
   var flt={status:['all'],q:null}, sortKey='no', sortDir='desc', page=1, PER=10, lastSig='';
   function pd(s){ var a=s.split('-'); return new Date(+a[2],+a[0]-1,+a[1]); }
   function pdate(d){ return String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')+'-'+d.getFullYear(); }
   function refundedSum(v){ return v.refunds.reduce(function(a,r){ return a+r.amount; },0); }
   function inMonth(v,off){ var d=pd(v.date), t=new Date(TODAY.getFullYear(),TODAY.getMonth()+off,1); return d.getMonth()===t.getMonth() && d.getFullYear()===t.getFullYear(); }
   function filtered(){
-    var s=$('#i_search').value, club=$('#i_club').value, from=$('#i_from').value, to=$('#i_to').value, type=$('#i_type').value;
+    var s=ap.search, club=ap.club, from=ap.from, to=ap.to, type=ap.type;
     return invoices.filter(function(v){
       if(s && String(v.no)!==s) return false;
       if(club && club!==CLUB) return false;
@@ -1494,7 +1495,7 @@ main{min-width:0;padding:6px 12px 24px}
       var x,y; if(sortKey==='date'){ x=pd(a.date); y=pd(b.date); } else if(sortKey==='club'){ x=y=0; } else if(sortKey==='type'){ x=a.gen; y=b.gen; } else { x=a[sortKey]; y=b[sortKey]; }
       return (x<y?-1:x>y?1:0)*(sortDir==='asc'?1:-1);
     });
-    var sig=JSON.stringify([flt,$('#i_search').value,$('#i_club').value,$('#i_from').value,$('#i_to').value,$('#i_type').value]);
+    var sig=JSON.stringify([flt,ap]);
     if(sig!==lastSig){ page=1; lastSig=sig; }
     var pages=Math.max(1,Math.ceil(all.length/PER)); if(page>pages) page=pages;
     var list=all.slice((page-1)*PER,page*PER);
@@ -1646,7 +1647,7 @@ main{min-width:0;padding:6px 12px 24px}
     else syncAll();
   }); });
   statusBoxes().forEach(function(x){ x.checked=true; });
-  $('#i_apply').addEventListener('click',function(){ flt.status=statusBoxes().slice(1).filter(function(x){ return x.checked; }).map(function(x){ return x.value; }); if(!flt.status.length||flt.status.length===statusBoxes().length-1) flt.status=['all']; flt.q=null; renderInvoices(); });
+  $('#i_apply').addEventListener('click',function(){ flt.status=statusBoxes().slice(1).filter(function(x){ return x.checked; }).map(function(x){ return x.value; }); if(!flt.status.length||flt.status.length===statusBoxes().length-1) flt.status=['all']; flt.q=null; ap={search:$('#i_search').value,club:$('#i_club').value,from:$('#i_from').value,to:$('#i_to').value,type:$('#i_type').value}; renderInvoices(); });
 
   /* ---------- date range picker (single field, like the Customers filter) ---------- */
   (function(){
@@ -1678,7 +1679,7 @@ main{min-width:0;padding:6px 12px 24px}
     function apply(){
       fromEl.value=a?iso(a):''; toEl.value=b?iso(b):(a?iso(a):'');
       inp.value=a?(pdate(a)+' – '+pdate(b||a)):'';
-      close(); renderInvoices();
+      close();
     }
     inp.addEventListener('click',function(){ pop.hidden?open():close(); });
     inp.addEventListener('keydown',function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); pop.hidden?open():close(); } if(e.key==='Escape') close(); });
@@ -1707,10 +1708,9 @@ main{min-width:0;padding:6px 12px 24px}
     $('#drpCancel').addEventListener('click',close);
     document.addEventListener('mousedown',function(e){ if(!pop.hidden && !wrap.contains(e.target)) close(); });
   })();
-  $('#i_reset').addEventListener('click',function(){ ['i_search','i_club','i_type','i_from','i_to','i_range'].forEach(function(id){ $('#'+id).value=''; }); statusBoxes().forEach(function(x){ x.checked=true; }); flt={status:['all'],q:null}; renderInvoices(); });
+  $('#i_reset').addEventListener('click',function(){ ['i_search','i_club','i_type','i_from','i_to','i_range'].forEach(function(id){ $('#'+id).value=''; }); statusBoxes().forEach(function(x){ x.checked=true; }); flt={status:['all'],q:null}; ap={search:'',club:'',from:'',to:'',type:''}; renderInvoices(); });
   $$('.qf').forEach(function(q){ q.addEventListener('click',function(){ flt.q=(flt.q===q.dataset.q)?null:q.dataset.q; renderInvoices(); }); });
   $$('#i_table th[data-sort]').forEach(function(th){ th.addEventListener('click',function(){ var k=th.dataset.sort; if(sortKey===k) sortDir=sortDir==='asc'?'desc':'asc'; else { sortKey=k; sortDir='asc'; } renderInvoices(); }); });
-  ['i_search','i_club','i_type'].forEach(function(id){ $('#'+id).addEventListener('change',renderInvoices); });
   $('#i_pg').addEventListener('click',function(e){ var li=e.target.closest('[data-pg]'); if(!li||li.classList.contains('off')||li.classList.contains('on')) return; page=+li.dataset.pg; renderInvoices(); });
   renderInvoices();
 
