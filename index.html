@@ -1540,12 +1540,15 @@ main{min-width:0;padding:6px 12px 24px}
   }
   $('#i_add').addEventListener('click',addInvoiceModal);
   // filters
-  $$('#i_status input').forEach(function(c){ c.addEventListener('change',function(){
-    var boxes=$$('#i_status input');
-    if(c.value==='all'){ if(c.checked) boxes.forEach(function(x){ if(x!==c) x.checked=false; }); else c.checked=true; }
-    else { if(c.checked) boxes[0].checked=false; if(!boxes.some(function(x){ return x.checked; })) boxes[0].checked=true; }
+  function statusBoxes(){ return $$('#i_status input'); }
+  function syncAll(){ var bx=statusBoxes(), all=bx[0], rest=bx.slice(1); all.checked=rest.every(function(x){ return x.checked; }); }
+  statusBoxes().forEach(function(c,i){ c.addEventListener('change',function(){
+    var bx=statusBoxes();
+    if(i===0){ bx.forEach(function(x){ x.checked=c.checked; }); }
+    else syncAll();
   }); });
-  $('#i_apply').addEventListener('click',function(){ flt.status=$$('#i_status input').filter(function(x){ return x.checked; }).map(function(x){ return x.value; }); flt.q=null; renderInvoices(); });
+  statusBoxes().forEach(function(x){ x.checked=true; });
+  $('#i_apply').addEventListener('click',function(){ flt.status=statusBoxes().slice(1).filter(function(x){ return x.checked; }).map(function(x){ return x.value; }); if(!flt.status.length||flt.status.length===statusBoxes().length-1) flt.status=['all']; flt.q=null; renderInvoices(); });
 
   /* ---------- date range picker (single field, like the Customers filter) ---------- */
   (function(){
@@ -1601,7 +1604,7 @@ main{min-width:0;padding:6px 12px 24px}
     $('#drpCancel').addEventListener('click',close);
     document.addEventListener('mousedown',function(e){ if(!pop.hidden && !wrap.contains(e.target)) close(); });
   })();
-  $('#i_reset').addEventListener('click',function(){ ['i_search','i_club','i_type','i_from','i_to','i_range'].forEach(function(id){ $('#'+id).value=''; }); $$('#i_status input').forEach(function(x,i){ x.checked=i===0; }); flt={status:['all'],q:null}; renderInvoices(); });
+  $('#i_reset').addEventListener('click',function(){ ['i_search','i_club','i_type','i_from','i_to','i_range'].forEach(function(id){ $('#'+id).value=''; }); statusBoxes().forEach(function(x){ x.checked=true; }); flt={status:['all'],q:null}; renderInvoices(); });
   $$('.qf').forEach(function(q){ q.addEventListener('click',function(){ flt.q=(flt.q===q.dataset.q)?null:q.dataset.q; renderInvoices(); }); });
   $$('#i_table th[data-sort]').forEach(function(th){ th.addEventListener('click',function(){ var k=th.dataset.sort; if(sortKey===k) sortDir=sortDir==='asc'?'desc':'asc'; else { sortKey=k; sortDir='asc'; } renderInvoices(); }); });
   ['i_search','i_club','i_type'].forEach(function(id){ $('#'+id).addEventListener('change',renderInvoices); });
