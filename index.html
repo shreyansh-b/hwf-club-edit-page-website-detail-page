@@ -242,6 +242,27 @@ main{min-width:0;padding:6px 12px 24px}
 .sys .bcard .x{position:absolute;top:10px;right:10px;width:24px;height:24px;border:0;border-radius:50%;background:#fff;color:var(--danger-icon);font-weight:700;line-height:1;cursor:pointer}
 .sys .bcard .ed{position:absolute;top:10px;right:42px;width:24px;height:24px;border:0;border-radius:50%;background:#fff;color:var(--primary);font-size:12px;line-height:1;cursor:pointer}
 .sys .bcard .ed:hover,.sys .bcard .x:hover{background:var(--soft)}
+.sys .bcard .ed.p2{right:74px}.sys .bcard .ed.p3{right:106px}
+.sys .bcard .ed.ok{color:var(--ok)}
+.sys .bcol{display:flex;flex-wrap:nowrap;align-items:flex-start;gap:14px}
+.sys .bcol .bcard{flex:0 1 440px;width:440px;min-width:300px;min-height:226px}
+.sys .bcol .bsuccess{flex:none;min-height:0;align-self:center}
+.sys .bcol .verified{flex:none;white-space:nowrap}
+.sys .bcol .verified{padding:8px 14px;border-radius:4px;background:#5cb85c;color:#fff;font-size:13px}
+.sys .bcard.bank{background:linear-gradient(135deg,rgba(255,255,255,.08) 25%,transparent 25%) -40px 0/80px 80px,linear-gradient(225deg,rgba(255,255,255,.08) 25%,transparent 25%) -40px 0/80px 80px,linear-gradient(90deg,#616161 0%,#8d6e63 55%,#d9784a 100%)}
+.sys .bcard.bank .bg{background:rgba(255,255,255,.85);font-weight:600}
+.sys .bcard.bank .num{font-weight:400}
+.sys .bcard.bank .hold{margin-top:24px;font-size:15px;font-weight:400}
+.sys .bcard.bank h5{font-size:18px;text-transform:uppercase}
+.sys .bcol .verified.proc{background:#f0ad4e;color:#fff}
+.sys .bcol .verified.fail{background:#d9534f;color:#fff}
+.sys .bsuccess{display:grid;place-items:center;align-content:center;min-height:200px;flex:1 1 180px;text-align:center;color:var(--ok);font-weight:700}
+.sys .bsuccess .fa{margin-bottom:8px;font-size:40px}
+.sys .bnone{display:grid;place-items:center;align-content:center;min-height:200px;flex:1 1 180px;text-align:center;color:var(--muted)}
+.sys .bnone .fa{margin-bottom:6px;font-size:22px;color:var(--primary)}
+.sys .bnone b{display:block;color:var(--text)}
+.sys .ach-title{display:flex;align-items:center;gap:8px;margin:0 0 6px;font-size:17px;font-weight:700;color:var(--primary)}
+.sys .ach-hint{margin:6px 0 0;text-align:center;font-size:13px;color:var(--muted)}
 .sys .bcard.alt{background:linear-gradient(135deg,rgba(255,255,255,.1) 25%,transparent 25%) -40px 0/80px 80px,linear-gradient(225deg,rgba(255,255,255,.1) 25%,transparent 25%) -40px 0/80px 80px,linear-gradient(135deg,#1a237e 0%,#1e88e5 55%,#00c6ff 100%)}
 .sys .bcard.alt .bg{background:rgba(255,255,255,.85);font-weight:600}
 .sys .bcard.alt .num{margin:10px 0 0;font-size:15px;letter-spacing:1px;font-weight:400}
@@ -1299,7 +1320,7 @@ main{min-width:0;padding:6px 12px 24px}
   var procs={'':{name:'None assigned',type:'-',on:false},'54':{name:'Flag Heroes',type:'Stripe',on:true},'58':{name:'Shreyansh Test',type:'Stripe',on:true}};
   var procNow='58';
   function renderWell(){ var p=procs[procNow]||procs['']; $('#a_well').innerHTML='<b>Processor:</b> '+esc(p.name)+'<br><b>Type:</b> '+esc(p.type)+'<br><b>Status:</b> <span class="'+(p.on?'badge-ok':'badge-off')+'">'+(p.on?'ACTIVE':'NONE')+'</span>'; }
-  var bank={holder:'Shreyansh Bhimani',bankName:'STRIPE TEST BANK',last:'6789',routing:'110000000',type:'Saving',signed:true};
+  var bank={holder:'Shreyansh Bhimani',bankName:'STRIPE TEST BANK',last:'6789',routing:'110000000',verified:'yes'}, bankJust=false, bankTimer=null;
   var cards=[{name:'Testgh',last:'1111',brand:'VISA',mm:'11',yy:'2029'}];
   $('#a_proc').addEventListener('change',function(){
     var sel=this, nv=sel.value;
@@ -1315,12 +1336,14 @@ main{min-width:0;padding:6px 12px 24px}
     var ach=$('#a_ach'); ach.innerHTML='';
     var wrap=document.createElement('div'); wrap.className='bcard-wrap';
     if(bank){
-      wrap.innerHTML='<div class="bcard"><button type="button" class="ed" aria-label="Edit bank account" title="Edit bank account" data-eb><i class="fa fa-pencil" aria-hidden="true"></i></button><button type="button" class="x" aria-label="Remove bank account" title="Remove bank account" data-rb>×</button><span class="bg">stripe</span><div class="num">XXXX XXXX XXXX '+esc(bank.last)+'</div><div class="hold">'+esc(bank.holder)+'</div><h5>'+esc(bank.bankName)+'</h5><div><b>Routing No. :</b> '+esc(bank.routing)+' &nbsp;·&nbsp; <b>'+esc(bank.type)+'</b></div><div class="ico">🏛</div></div><div class="verified">Verified Account</div>';
-      $('[data-eb]',wrap).onclick=function(){ bankModal(true); };
-      $('[data-rb]',wrap).onclick=function(){ confirmModal('Remove bank account','Remove the stored bank account?','Remove',function(){ bank=null; renderPay(); toast('Bank account removed.'); }); };
+      var pend=bank.verified==='pending', st=bank.verified==='yes'?'<div class="verified"><strong>Verified Account</strong></div>':pend?'<div class="verified proc"><strong>Verification in Progress</strong></div>':'<div class="verified fail"><strong>Failed Verification &middot; Delete Account and try again</strong></div>';
+      wrap.innerHTML='<div class="bcol"><div class="bcard bank"><button type="button" class="x" aria-label="Remove bank account" title="Un-link and remove bank account." data-rb>×</button>'+(pend?'<button type="button" class="ed" aria-label="Copy verification link" title="Copy verification link" data-cp><i class="fa fa-copy" aria-hidden="true"></i></button><button type="button" class="ed p2 ok" aria-label="Send verification email" title="Send verification email" data-sd><i class="fa fa-paper-plane" aria-hidden="true"></i></button><button type="button" class="ed p3" aria-label="Micro Deposit Verification is Pending!" title="Micro Deposit Verification is Pending!"><i class="fa fa-info" aria-hidden="true"></i></button>':'')+'<span class="bg">Stripe</span><div class="num">XXXX XXXX XXXX '+esc(bank.last)+'</div><div class="hold">'+esc(bank.holder)+'</div><h5>'+esc(bank.bankName)+'</h5><div><b>Routing No. :</b> '+esc(bank.routing)+'</div><div class="ico"><i class="fa fa-university" aria-hidden="true"></i></div></div>'+st+'</div>'+(bankJust?'<div class="bsuccess"><i class="fa fa-check-circle" aria-hidden="true"></i><div>Success !</div><div>Bank is connected</div></div>':'');
+      $('[data-rb]',wrap).onclick=function(){ confirmModal('Remove bank account','Are you sure? You want to remove The Bank account!','Remove',function(){ bank=null; bankJust=false; renderPay(); toast('Bank account removed.'); }); };
+      var cp=$('[data-cp]',wrap); if(cp) cp.onclick=function(){ toast('Link Copied Successfully.'); };
+      var sd=$('[data-sd]',wrap); if(sd) sd.onclick=function(){ toast('Micro-deposit verification email sent.'); };
     } else {
-      wrap.innerHTML='<div class="addcard"><div><div class="big">＋</div><div class="big-ico">'+ICO('bank')+'</div><p style="margin:8px 0 12px">No bank account on file</p><button type="button" class="btn primary" data-ab>Add Bank</button></div></div>';
-      $('[data-ab]',wrap).onclick=function(){ bankModal(false); };
+      wrap.innerHTML='<div class="addcard"><div><div class="big">＋</div><div class="big-ico">'+ICO('bank')+'</div><p style="margin:8px 0 12px">Add a bank account</p><button type="button" class="btn primary" data-ab>Add Bank</button></div></div><div class="bnone"><div><i class="fa fa-info-circle" aria-hidden="true"></i><b>No Bank Added</b><i>Please add a bank account to proceed</i></div></div>';
+      $('[data-ab]',wrap).onclick=function(){ bankModal(); };
     }
     ach.appendChild(wrap);
     var cc=$('#a_cc'); cc.innerHTML=''; var w2=document.createElement('div'); w2.className='bcard-wrap';
@@ -1336,17 +1359,17 @@ main{min-width:0;padding:6px 12px 24px}
     var add=document.createElement('div'); add.className='addcard'; add.innerHTML='<div><div class="big">＋</div><div class="big-ico">'+ICO('card')+'</div><p style="margin:8px 0 12px">Add a payment card</p><button type="button" class="btn primary" data-ac>Add Credit Card</button></div>';
     $('[data-ac]',add).onclick=function(){ cardModal(null); }; w2.appendChild(add);
   }
-  function bankModal(edit){
-    var b0=edit&&bank?bank:{holder:'',bankName:'',routing:'',type:'Saving',last:''};
-    var keep=edit?' (leave blank to keep ending '+esc(b0.last)+')':'';
-    openModal(edit?'Edit Bank Account (ACH)':'Add Bank Account (ACH)','<div class="fg"><label for="m_nm">Name On Account <b class="rq">*</b></label><input type="text" id="m_nm" placeholder="Enter name on bank account" value="'+esc(b0.holder)+'"><div class="em">Required.</div></div><div class="fg"><label for="m_bk">Name Of Bank <b class="rq">*</b></label><input type="text" id="m_bk" placeholder="Enter name of bank" value="'+esc(edit?b0.bankName:'')+'"><div class="em">Required.</div></div><div class="fg"><label for="m_ac">Account Number <b class="rq">*</b></label><input type="password" id="m_ac" autocomplete="new-password" placeholder="Enter account number'+keep+'"><div class="em">Enter 4 to 17 digits.</div></div><div class="fg"><span class="lbl2">Select Account Type:</span><div class="rads"><label><input type="radio" name="m_aty" value="Saving"'+(b0.type!=='Checking'?' checked':'')+'><span>Saving</span></label><label><input type="radio" name="m_aty" value="Checking"'+(b0.type==='Checking'?' checked':'')+'><span>Checking</span></label></div></div><div class="fg"><label for="m_rt">Routing Number <b class="rq">*</b></label><input type="text" id="m_rt" inputmode="numeric" maxlength="9" placeholder="Enter routing number" value="'+esc(b0.routing)+'"><div class="em">Enter a 9 digit routing number.</div></div><div class="fg"><span class="lbl2">ACH Authorization Agreement Signed</span><div class="rads"><label><input type="radio" name="m_sig" value="yes"'+(b0.signed?' checked':'')+'><span>Yes</span></label><label><input type="radio" name="m_sig" value="no"'+(b0.signed?'':' checked')+'><span>No</span></label></div></div>',{save:edit?'Update Bank':'Save Bank',onSave:function(b){
-      mclear(b); var bad=0, ac=mval(b,'m_ac');
+  function bankModal(){
+    openModal('Add Bank Account (ACH)','<div class="alert-info"><i class="fa fa-info-circle" aria-hidden="true"></i> <span>Demo: use routing <b>110000000</b> with account <b>000123456789</b> (verified), <b>000000000009</b> (micro-deposit pending) or <b>000111111113</b> (verification fails).</span></div><div style="height:14px"></div><div class="fg"><label for="m_nm">Name On Account <b class="rq">*</b></label><input type="text" id="m_nm" placeholder="Enter name on bank account"><div class="em">Required.</div></div><div class="fg"><label for="m_bk">Name Of Bank <b class="rq">*</b></label><input type="text" id="m_bk" placeholder="Enter name of bank"><div class="em">Required.</div></div><div class="fg"><label for="m_rt">Routing Number <b class="rq">*</b></label><input type="text" id="m_rt" inputmode="numeric" maxlength="9" placeholder="Enter routing number" autocomplete="off"><div class="em">Enter the 9 digit test routing number 110000000.</div></div><div class="fg"><label for="m_ac">Account Number <b class="rq">*</b></label><input type="password" id="m_ac" autocomplete="new-password" placeholder="Enter account number"><div class="em">Enter a valid Stripe test account number.</div></div><div class="fg"><label for="m_ac2">Re-enter Account Number <b class="rq">*</b></label><input type="password" id="m_ac2" autocomplete="new-password" placeholder="Re-enter account number"><div class="em">Account numbers do not match.</div></div>',{save:'Save',onSave:function(b){
+      mclear(b); var bad=0, ac=mval(b,'m_ac'), ok={'000123456789':'yes','000000000009':'pending','000111111113':'failed'};
       if(!mval(b,'m_nm')){ mbad(b,'m_nm'); bad++; } if(!mval(b,'m_bk')){ mbad(b,'m_bk'); bad++; }
-      if(!(edit&&!ac) && !/^\d{4,17}$/.test(ac)){ mbad(b,'m_ac'); bad++; }
-      if(!/^\d{9}$/.test(mval(b,'m_rt'))){ mbad(b,'m_rt'); bad++; }
+      if(mval(b,'m_rt')!=='110000000'){ mbad(b,'m_rt'); bad++; }
+      if(!ok[ac]){ mbad(b,'m_ac'); bad++; }
+      if($('#m_ac2',b).value!==$('#m_ac',b).value||!ok[ac]){ mbad(b,'m_ac2'); bad++; }
       if(bad) return false;
-      bank={holder:mval(b,'m_nm'),bankName:mval(b,'m_bk').toUpperCase(),last:ac?ac.slice(-4):b0.last,routing:mval(b,'m_rt'),type:$('input[name=m_aty]:checked',b).value,signed:$('input[name=m_sig]:checked',b).value==='yes'};
-      renderPay(); toast(edit?'Bank account updated.':'Bank account added.');
+      bank={holder:mval(b,'m_nm'),bankName:mval(b,'m_bk').toUpperCase(),last:ac.slice(-4),routing:mval(b,'m_rt'),verified:ok[ac]};
+      bankJust=ok[ac]==='yes'; clearTimeout(bankTimer); if(bankJust) bankTimer=setTimeout(function(){ bankJust=false; renderPay(); },5000);
+      renderPay(); toast(ok[ac]==='yes'?'Bank account added and verified.':ok[ac]==='pending'?'Bank added. Micro-deposit verification is pending.':'Bank added, but verification failed.');
     }});
   }
   function cardModal(idx){
