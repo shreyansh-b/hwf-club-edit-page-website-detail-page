@@ -702,17 +702,17 @@ main{min-width:0;padding:6px 12px 24px}
             <div class="body">
               <div class="field full" data-f="link">
                 <label class="lbl" for="websiteLink">Website link<span class="req">*</span></label>
-                <input type="url" id="websiteLink" value="https://friendsoffairview.org">
+                <input type="url" id="websiteLink" value="https://allenkiwanis.org">
                 <div class="err-msg">Enter a website link that starts with https://</div>
               </div>
               <div class="field" data-f="title">
                 <label class="lbl" for="websiteTitle">Website title<span class="req">*</span></label>
-                <input type="text" id="websiteTitle" value="Fairview&#39;s Stars &amp; Stripes Holiday Flags">
+                <input type="text" id="websiteTitle" value="Allen Kiwanis Stars &amp; Stripes Holiday Flags">
                 <div class="err-msg">Website title is required.</div>
               </div>
               <div class="field">
                 <label class="lbl" for="group">Group<span class="req">*</span></label>
-                <select id="group"><option>HWF Club FOF</option><option>HWF Club Rotary</option><option>HWF Club Lions</option><option>HWF Club Kiwanis</option></select>
+                <select id="group"><option>HWF Club FOF</option><option>HWF Club Rotary</option><option>HWF Club Lions</option><option selected>HWF Club Kiwanis</option></select>
               </div>
             </div>
           </section>
@@ -798,7 +798,7 @@ main{min-width:0;padding:6px 12px 24px}
               </div>
               <div class="field full" data-f="otp">
                 <label class="lbl" for="otpEmail">OTP email address<span class="req">*</span></label>
-                <input type="text" inputmode="email" id="otpEmail" value="admin@fairviewrotary.org">
+                <input type="text" inputmode="email" id="otpEmail" value="admin@allenkiwanis.org">
                 <div class="err-msg">Enter a valid email address, like name@club.org</div>
               </div>
             </div>
@@ -886,8 +886,8 @@ main{min-width:0;padding:6px 12px 24px}
 
   /* ---------- Rich text editors ---------- */
   var rteSeed = {
-    desc:'<p>Fairview Rotary brings neighbors together to serve our community. Join us for weekly meetings, flag programs and local projects.</p><ul><li>Community outreach</li><li>Youth scholarships</li><li>Rotary Foundation</li></ul>',
-    contactDetail:'<p><b>CLUB CONTACT</b></p><p>Jane Smith<br>555-010-0142</p><p><u>FLAG SUPPORT CONTACT</u></p><p>support@example.com</p><p><b><u>Mailing address</u></b></p><p>Fairview Rotary Club<br>123 Main Street<br>Fairview, Texas | 75069</p>',
+    desc:'<p>Allen Kiwanis brings neighbors together to serve our community. Join us for weekly meetings, flag programs and local projects.</p><ul><li>Community outreach</li><li>Youth scholarships</li><li>Kiwanis Children\'s Fund</li></ul>',
+    contactDetail:'<p><b>CLUB CONTACT</b></p><p>Jane Smith<br>555-010-0142</p><p><u>FLAG SUPPORT CONTACT</u></p><p>support@example.com</p><p><b><u>Mailing address</u></b></p><p>Allen Kiwanis Club<br>123 Main Street<br>Allen, Texas | 75013</p>',
     instrNote:'<h2>Don\'t miss out! Sign up now.</h2>',
     stopMsg:'<p>test</p>',
     guideDesc:''
@@ -1513,7 +1513,7 @@ main{min-width:0;padding:6px 12px 24px}
     openModal('Refund History','<div class="info"><div>Club: <b>'+CLUB+'</b></div><div>Invoice #: <b>'+v.no+'</b></div><div>Invoice Total: <b>'+money(v.amt)+'</b></div><div>Total Refunded: <b>'+money(refundedSum(v))+'</b></div></div><table><thead><tr><th>Date &amp; Time</th><th>Refunded By</th><th>Status</th><th style="text-align:right">Amount</th></tr></thead><tbody>'+rows+'</tbody></table>',{save:false,cancel:'Close'});
   }
   function addInvoiceModal(){
-    openModal('Add Invoice','<div class="fg"><label for="m_ic">Select Club:</label><select id="m_ic"><option value="">Select Club</option><option>'+CLUB+'</option></select><div class="em">Select a club.</div></div><div class="fg"><label for="m_id">Invoice Date <b class="rq">*</b></label><input type="date" id="m_id"><div class="em">Select an invoice date.</div></div><div class="fg"><label for="m_ids">Invoice Description</label><textarea id="m_ids" rows="2" placeholder="Enter invoice description"></textarea></div><h4 style="margin:16px 0 8px">Invoice Table Content</h4><div id="m_lines"></div><button type="button" class="link" id="m_addln">Add More ＋</button><div class="fg"><label for="m_note">Customer Note</label><textarea id="m_note" rows="2" placeholder="Enter customer note"></textarea></div><div class="sum"><div><span>Subtotal Amount</span><span id="m_sub">$0.00</span></div><div><b>Total Amount</b><b id="m_tot">$0.00</b></div></div>',{onOpen:function(b){
+    openModal('Add Invoice','<div class="fg"><label for="m_ic">Select Club:</label><select id="m_ic"><option value="">Select Club</option><option selected>'+CLUB+'</option></select><div class="em">Select a club.</div></div><div class="fg"><label for="m_id">Invoice Date <b class="rq">*</b></label><input type="date" id="m_id"><div class="em">Select an invoice date.</div></div><div class="fg"><label for="m_ids">Invoice Description</label><textarea id="m_ids" rows="2" placeholder="Enter invoice description"></textarea></div><h4 style="margin:16px 0 8px">Invoice Table Content</h4><div id="m_lines"></div><button type="button" class="link" id="m_addln">Add More ＋</button><div class="fg"><label for="m_note">Customer Note</label><textarea id="m_note" rows="2" placeholder="Enter customer note"></textarea></div><div class="sum"><div><span>Subtotal Amount</span><span id="m_sub">$0.00</span></div><div><b>Total Amount</b><b id="m_tot">$0.00</b></div></div>',{onOpen:function(b){
       var lines=[{d:'',f:'',r:''}];
       function draw(){
         var box=$('#m_lines',b); box.innerHTML='<div class="li" style="font-weight:700"><span>Details</span><span>Flags</span><span>Cost</span><span>Amount</span><span></span></div>';
