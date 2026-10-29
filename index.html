@@ -469,6 +469,7 @@ main{min-width:0;padding:6px 12px 24px}
       <button class="tab" role="tab" aria-selected="true" data-tab="profile">Profile</button>
       <button class="tab" role="tab" aria-selected="false" data-tab="payment">App Payment</button>
       <button class="tab" role="tab" aria-selected="false" data-tab="web">Webpage Detail</button>
+      <button class="tab" role="tab" aria-selected="false" data-tab="sitebuilder">Homepage Design</button>
       <button class="tab" role="tab" aria-selected="false" data-tab="invoice">Invoice History</button>
     </div>
 
@@ -754,11 +755,6 @@ main{min-width:0;padding:6px 12px 24px}
             <header><div class="ci"><i class="fa fa-home" aria-hidden="true"></i></div><div><h2>Homepage</h2><p>What customers see first.</p></div></header>
             <div class="body">
               <div class="full" id="bgSlot"></div>
-              <div class="field full" data-f="desc">
-                <span class="lbl">Club home page description<span class="req">*</span></span>
-                <div class="rte" data-id="desc" data-h="150"></div>
-                <div class="err-msg">Add a short description for the club home page.</div>
-              </div>
             </div>
           </section>
 
@@ -899,6 +895,25 @@ main{min-width:0;padding:6px 12px 24px}
         <button class="btn primary" type="button" id="saveBtn">Save changes</button>
       </div>
     </section>
+
+    <section class="panel" data-panel="sitebuilder" hidden>
+      <section class="scard">
+        <header><span class="si-t"><i class="fa fa-magic" aria-hidden="true"></i></span><h2>Site Builder</h2></header>
+        <div class="sb">
+          <p class="note">Pick a starting point. Photos, layout and fonts are prebuilt. Click any text on the preview to edit it, and click any photo to swap it.</p>
+          <div class="sb-tpl" id="sb-tpl"></div>
+          <div class="sb-ed">
+            <div class="sb-tools" id="sb-tools"></div>
+            <div class="sb-stage">
+              <div class="sb-frame" id="sb-frame">
+                <div class="sb-chrome"><i></i><i></i><i></i><span>Preview</span></div>
+                <div id="sb-site"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </section>
     </div>
   </main>
 </div>
@@ -912,7 +927,6 @@ main{min-width:0;padding:6px 12px 24px}
 
   /* ---------- Rich text editors ---------- */
   var rteSeed = {
-    desc:'<p>Allen Kiwanis brings neighbors together to serve our community. Join us for weekly meetings, flag programs and local projects.</p><ul><li>Community outreach</li><li>Youth scholarships</li><li>Kiwanis Children\'s Fund</li></ul>',
     contactDetail:'<p><b>CLUB CONTACT</b></p><p>Jane Smith<br>555-010-0142</p><p><u>FLAG SUPPORT CONTACT</u></p><p>support@example.com</p><p><b><u>Mailing address</u></b></p><p>Allen Kiwanis Club<br>123 Main Street<br>Allen, Texas | 75013</p>',
     instrNote:'<h2>Don\'t miss out! Sign up now.</h2>',
     stopMsg:'<p>test</p>',
@@ -1163,7 +1177,6 @@ main{min-width:0;padding:6px 12px 24px}
     if(!/^https?:\/\/.+\..+/.test(link)) flag($('[data-f=link]'));
     if(!$('#websiteTitle').value.trim()) flag($('[data-f=title]'));
     if(!$('#contactHeading').value.trim()) flag($('[data-f=contact]'));
-    if(!strip($('#desc').innerHTML)) flag($('[data-f=desc]'));
     if(!strip($('#contactDetail').innerHTML)) flag($('[data-f=contactDetail]'));
     if(!/^\S+@\S+\.\S+$/.test($('#otpEmail').value.trim())) flag($('[data-f=otp]'));
     var ml=$('#mapLink').value.trim(); if(ml && !/^https?:\/\//.test(ml)) flag($('[data-f=mapLink]'));
@@ -1178,7 +1191,7 @@ main{min-width:0;padding:6px 12px 24px}
   $$('.tab').forEach(function(t){ t.addEventListener('click',function(){
     $$('.tab').forEach(function(x){ x.setAttribute('aria-selected', x===t?'true':'false'); });
     $$('.panel').forEach(function(p){ p.hidden = p.dataset.panel!==t.dataset.tab; });
-    $('.savebar').style.display = t.dataset.tab==='web' ? '' : 'none';
+    $('.savebar').style.display = (t.dataset.tab==='web'||t.dataset.tab==='sitebuilder') ? '' : 'none';
   }); });
   $('.savebar').style.display='none';
   $('#menuBtn').onclick=function(){ if(window.innerWidth>860) document.body.classList.toggle('nav-off'); else $('#side').classList.toggle('open'); };
