@@ -1729,6 +1729,328 @@ main{min-width:0;padding:6px 12px 24px}
 
 
   updateAll();
+
+  // ---- Site Builder (SB) ----
+  var SB = window.SB = {};
+
+  const DEFS = `<defs><filter id="bl" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="5"/></filter><filter id="b2" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="16"/></filter>
+<filter id="wv" x="-10%" y="-20%" width="125%" height="140%"><feTurbulence type="turbulence" baseFrequency=".008 .026" numOctaves="2" seed="4" result="t"/><feDisplacementMap in="SourceGraphic" in2="t" scale="22"/></filter>
+<filter id="ws" x="-10%" y="-20%" width="125%" height="140%"><feTurbulence type="turbulence" baseFrequency=".03 .08" numOctaves="2" seed="4" result="t"/><feDisplacementMap in="SourceGraphic" in2="t" scale="7"/></filter>
+<filter id="gr"><feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="2" stitchTiles="stitch"/><feColorMatrix values="0 0 0 0 .5 0 0 0 0 .5 0 0 0 0 .5 0 0 0 .13 0"/></filter>
+<radialGradient id="vg" cx=".5" cy=".5" r=".72"><stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".5"/></radialGradient>
+<radialGradient id="sun"><stop offset="0" stop-color="#fff4cc"/><stop offset=".4" stop-color="#ffd48f" stop-opacity=".55"/><stop offset="1" stop-color="#ffb066" stop-opacity="0"/></radialGradient>
+<linearGradient id="sh" x1="0" x2="1"><stop offset="0" stop-color="#000" stop-opacity=".28"/><stop offset=".2" stop-color="#fff" stop-opacity=".2"/><stop offset=".42" stop-color="#000" stop-opacity=".25"/><stop offset=".65" stop-color="#fff" stop-opacity=".18"/><stop offset="1" stop-color="#000" stop-opacity=".32"/></linearGradient>
+<linearGradient id="mt" x1="0" x2="1"><stop offset="0" stop-color="#777"/><stop offset=".45" stop-color="#f4f4f4"/><stop offset="1" stop-color="#666"/></linearGradient>
+<linearGradient id="lw" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#79b563"/><stop offset="1" stop-color="#2f6c35"/></linearGradient>
+<linearGradient id="rf" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#93463e"/><stop offset="1" stop-color="#5d2724"/></linearGradient>
+<linearGradient id="rd" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e24848"/><stop offset=".6" stop-color="#b52424"/><stop offset="1" stop-color="#7d1414"/></linearGradient>
+<pattern id="bk" width="44" height="20" patternUnits="userSpaceOnUse"><rect width="44" height="20" fill="#93503f"/><path d="M0 10H44M22 0V10M0 10V20" stroke="#6c3427" stroke-width="2"/></pattern></defs>`;
+  const W = (x, y, w, h) => {
+    const u = h / 13;
+    let s = "";
+    for (let i = 0; i < 13; i++)
+      s += `<rect x="${x}" y="${y + i * u}" width="${w}" height="${u + 0.6}" fill="${i % 2 ? "#f6f6f4" : "#b22234"}"/>`;
+    s += `<rect x="${x}" y="${y}" width="${w * 0.4}" height="${u * 7}" fill="#2b2a66"/>`;
+    for (let r = 0; r < 5; r++)
+      for (let c = 0; c < 6; c++)
+        s += `<circle cx="${x + (w * 0.4 * (c + 0.5)) / 6}" cy="${y + (u * 7 * (r + 0.5)) / 5}" r="${Math.max(0.7, w * 0.0075)}" fill="#fff"/>`;
+    return `<g filter="url(#${w > 110 ? "wv" : "ws"})">${s}<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="url(#sh)"/></g>`;
+  };
+  const P = (x, y, h, w) =>
+    `<rect x="${x - 1.5}" y="${y}" width="${Math.max(2.5, h * 0.014)}" height="${h}" fill="url(#mt)"/><circle cx="${x}" cy="${y - 2}" r="${Math.max(2.5, h * 0.02)}" fill="#e6c46a"/>${W(x + 2, y + 3, w, w * 0.6)}`;
+  const sky = (a, b, x = "") =>
+    `<defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${a}"/><stop offset="1" stop-color="${b}"/></linearGradient></defs><rect width="800" height="500" fill="url(#g)"/>${x}`;
+  const cl = (x, y, s, o = 0.55) =>
+    `<g filter="url(#bl)" fill="#fff" opacity="${o}"><ellipse cx="${x}" cy="${y}" rx="${100 * s}" ry="${17 * s}"/><ellipse cx="${x + 55 * s}" cy="${y - 11 * s}" rx="${62 * s}" ry="${16 * s}"/><ellipse cx="${x - 50 * s}" cy="${y - 6 * s}" rx="${50 * s}" ry="${12 * s}"/></g>`;
+  const blades = (c1, c2) =>
+    `<g filter="url(#bl)">` +
+    Array.from({ length: 46 }, (_, i) => {
+      const x = i * 18 - 10,
+        h = 40 + ((i * 37) % 50);
+      return `<path d="M${x} 505Q${x + 4} ${505 - h * 0.6} ${x + 10 + (i % 3) * 5} ${505 - h}Q${x + 13} ${505 - h * 0.5} ${x + 18} 505Z" fill="${i % 2 ? c1 : c2}"/>`;
+    }).join("") +
+    `</g>`;
+  const crowd = (y, c) =>
+    Array.from({ length: 18 }, (_, i) => {
+      const x = i * 46 + 10 + (i % 3) * 8;
+      return `<circle cx="${x}" cy="${y - (i % 4) * 6}" r="${13 + (i % 3) * 2}" fill="${c}"/><rect x="${x - 18}" y="${y + 10 - (i % 4) * 6}" width="36" height="120" rx="16" fill="${c}"/>`;
+    }).join("");
+  const SC = {
+    yard: () =>
+      sky(
+        "#5f93d0",
+        "#fbc88c",
+        '<circle cx="470" cy="320" r="300" fill="url(#sun)"/>',
+      ) +
+      cl(150, 90, 1.2, 0.5) +
+      cl(600, 60, 1, 0.4) +
+      `<g filter="url(#bl)" fill="#51724c"><path d="M0 330Q200 270 400 320T800 300V360H0Z"/>${[40, 130, 700, 770].map((x, i) => `<circle cx="${x}" cy="${290 + (i % 2) * 14}" r="${52 + (i % 3) * 8}"/>`).join("")}</g><path d="M0 340Q400 318 800 345V500H0Z" fill="url(#lw)"/>` +
+      [0, 1, 2, 3, 4]
+        .map(
+          (i) =>
+            `<polygon points="${i * 170 - 40},500 ${i * 170 + 30},500 ${360 + i * 18},345 ${340 + i * 18},345" fill="#9fd27e" opacity=".14"/>`,
+        )
+        .join("") +
+      `<polygon points="180,352 540,352 590,372 130,372" fill="#1d3b1d" opacity=".3" filter="url(#bl)"/><rect x="190" y="220" width="340" height="132" fill="#f0e3cd"/>${Array.from({ length: 9 }, (_, i) => `<rect x="190" y="${232 + i * 14}" width="340" height="1.6" fill="#000" opacity=".1"/>`).join("")}<polygon points="165,225 360,130 555,225" fill="url(#rf)"/><rect x="450" y="140" width="28" height="55" fill="#7c4b3d"/><rect x="225" y="250" width="62" height="64" fill="#ffe2a2"/><rect x="223" y="248" width="66" height="68" fill="none" stroke="#fff" stroke-width="5"/><path d="M256 250V314M225 282H287" stroke="#fff" stroke-width="3"/><rect x="433" y="250" width="62" height="64" fill="#ffe2a2"/><rect x="431" y="248" width="66" height="68" fill="none" stroke="#fff" stroke-width="5"/><path d="M464 250V314M433 282H495" stroke="#fff" stroke-width="3"/><rect x="326" y="270" width="68" height="82" rx="3" fill="#5a3426"/><circle cx="384" cy="314" r="3" fill="#e6c46a"/><rect x="300" y="344" width="120" height="10" fill="#d9ccb6"/><g fill="#2f6a3a"><circle cx="215" cy="346" r="22"/><circle cx="250" cy="352" r="18"/><circle cx="470" cy="350" r="20"/><circle cx="505" cy="348" r="24"/></g><g fill="#e85d75"><circle cx="210" cy="342" r="3"/><circle cx="255" cy="350" r="3"/><circle cx="498" cy="342" r="3"/></g><polygon points="640,405 590,420 120,490 330,500 660,420" fill="#102410" opacity=".22" filter="url(#bl)"/>${P(640, 100, 310, 175)}` +
+      blades("#2c5a2e", "#3c7a3a"),
+    street: () =>
+      sky(
+        "#6a9bd6",
+        "#fcd2a0",
+        '<circle cx="400" cy="270" r="280" fill="url(#sun)"/>',
+      ) +
+      cl(180, 80, 1.1, 0.45) +
+      `<g filter="url(#bl)"><rect y="215" width="800" height="70" fill="#7b8a78"/>${[60, 190, 310, 500, 640, 740].map((x, i) => `<rect x="${x}" y="${200 + (i % 2) * 12}" width="90" height="70" fill="${["#c9b79c", "#a9b6c4", "#d7c2b0"][i % 3]}"/>`).join("")}${[20, 160, 260, 560, 700].map((x, i) => `<circle cx="${x}" cy="${215 + (i % 2) * 10}" r="${44 + (i % 3) * 8}" fill="#3f6b3e"/>`).join("")}</g><rect y="280" width="800" height="220" fill="#78a864"/><polygon points="385,280 415,280 800,500 0,500" fill="#595d63"/><polygon points="395,285 405,285 460,500 340,500" fill="#6b6f76" opacity=".6"/><polygon points="398,290 402,290 412,500 388,500" fill="#e9d777" opacity=".8"/><polygon points="385,280 360,280 0,430 0,500" fill="#a3a8a1"/><polygon points="415,280 440,280 800,430 800,500" fill="#a3a8a1"/>` +
+      [0.2, 0.32, 0.48, 0.68, 0.94]
+        .map((f) => {
+          const bx = (s) => 400 + s * -460 * f,
+            by = 280 + 220 * f * 0.82 + 10,
+            h = 30 + 260 * f,
+            w = h * 0.62;
+          return (
+            `<g>${P(bx(1) + 8, by - h, h, w)}</g>` +
+            `<g>${P(400 - (bx(1) - 400) + 0, by - h, h, w)}</g>`
+          );
+        })
+        .join("") +
+      blades("#28552b", "#3a7438"),
+    crew: () =>
+      sky(
+        "#ff7a52",
+        "#ffe2a8",
+        '<circle cx="400" cy="335" r="360" fill="url(#sun)"/><circle cx="400" cy="335" r="62" fill="#fff6d2"/>',
+      ) +
+      cl(160, 120, 1.2, 0.35) +
+      cl(640, 150, 1, 0.3) +
+      `<g filter="url(#bl)" fill="#5a4a3a"><path d="M0 360Q200 320 400 350T800 335V400H0Z"/></g><rect y="385" width="800" height="115" fill="#2d3f2c"/><rect y="385" width="800" height="14" fill="#ffb26b" opacity=".3"/>` +
+      [
+        [110, 1],
+        [260, 0],
+        [410, 1],
+        [560, 0],
+        [690, 1],
+      ]
+        .map(([x, t], i) => {
+          const y = 300 + (i % 2) * 14;
+          return (
+            `<g fill="#14182b"><circle cx="${x}" cy="${y}" r="21"/><rect x="${x - 28}" y="${y + 24}" width="56" height="${100}" rx="22"/><rect x="${x - 24}" y="${y + 110}" width="19" height="${90}" rx="6"/><rect x="${x + 5}" y="${y + 110}" width="19" height="${90}" rx="6"/></g><circle cx="${x + 10}" cy="${y - 4}" r="21" fill="#ffb26b" opacity=".18"/>` +
+            (t
+              ? `<rect x="${x + 30}" y="${y - 170}" width="4" height="320" fill="#222"/>${W(x + 34, y - 166, 130, 78)}`
+              : "")
+          );
+        })
+        .join("") +
+      `<g filter="url(#bl)" fill="#fff"><circle cx="520" cy="250" r="14" opacity=".25"/><circle cx="600" cy="205" r="26" opacity=".15"/><circle cx="300" cy="400" r="20" opacity=".14"/></g>`,
+    truck: () =>
+      sky("#6fa9e3", "#d9eafa") +
+      cl(600, 90, 1.2, 0.6) +
+      `<g filter="url(#bl)"><rect y="90" width="800" height="320" fill="url(#bk)"/><rect x="80" y="180" width="360" height="230" fill="#f2f2f0"/><path d="M80 210H440M80 250H440M80 290H440M80 330H440M80 370H440" stroke="#cfd2d6" stroke-width="3"/></g><rect y="400" width="800" height="100" fill="#53575f"/><rect y="400" width="800" height="6" fill="#80848c"/>${P(710, 70, 330, 200)}<ellipse cx="400" cy="408" rx="340" ry="14" fill="#000" opacity=".35" filter="url(#bl)"/><rect x="60" y="250" width="440" height="140" rx="10" fill="url(#rd)"/><rect x="480" y="215" width="190" height="175" rx="14" fill="url(#rd)"/><path d="M500 232h110q32 0 44 40v20H500Z" fill="#a9d4f5"/><path d="M500 232h60l-40 60H500Z" fill="#fff" opacity=".35"/><rect x="76" y="282" width="400" height="14" fill="#f5f5f2"/><rect x="76" y="300" width="400" height="5" fill="#f2c94c"/><g fill="#d6d9de"><rect x="100" y="212" width="360" height="9" rx="3"/>${Array.from({ length: 19 }, (_, i) => `<rect x="${106 + i * 19}" y="196" width="4" height="18"/>`).join("")}<rect x="100" y="192" width="360" height="5" rx="2"/></g><rect x="520" y="204" width="110" height="10" rx="4" fill="#ff5a4d"/><rect x="530" y="204" width="30" height="10" rx="4" fill="#4da3ff"/><rect x="40" y="368" width="640" height="14" rx="5" fill="url(#mt)"/><g>${[170, 570].map((x) => `<circle cx="${x}" cy="392" r="48" fill="#15161a"/><circle cx="${x}" cy="392" r="26" fill="url(#mt)"/><circle cx="${x}" cy="392" r="8" fill="#333"/>`).join("")}</g><rect x="60" y="250" width="440" height="140" rx="10" fill="url(#sh)" opacity=".4"/>`,
+    fire: () =>
+      sky("#050823", "#27306a") +
+      Array.from(
+        { length: 40 },
+        (_, i) =>
+          `<circle cx="${((i * 197) % 790) + 5}" cy="${((i * 83) % 250) + 5}" r="${0.8 + (i % 3) * 0.5}" fill="#fff" opacity=".7"/>`,
+      ).join("") +
+      [
+        [190, 200, "#ff5d5d"],
+        [590, 170, "#ffd24d"],
+        [390, 110, "#64b5ff"],
+        [470, 250, "#fff"],
+      ]
+        .map(
+          ([x, y, c]) =>
+            `<circle cx="${x}" cy="${y}" r="110" fill="${c}" opacity=".16" filter="url(#b2)"/>` +
+            Array.from({ length: 28 }, (_, i) => {
+              const a = (i / 28) * 6.283,
+                r = 60 + (i % 3) * 14;
+              return `<line x1="${x + Math.cos(a) * r * 0.35}" y1="${y + Math.sin(a) * r * 0.35}" x2="${x + Math.cos(a) * r}" y2="${y + Math.sin(a) * r}" stroke="${c}" stroke-width="3" stroke-linecap="round" opacity=".9"/><circle cx="${x + Math.cos(a) * r * 1.15}" cy="${y + Math.sin(a) * r * 1.15 + 8}" r="3" fill="${c}"/>`;
+            }).join(""),
+        )
+        .join("") +
+      `<path d="M0 400V360H60V330H110V370H190V340H250V380H340V350H420V385H520V335H590V370H700V345H760V380H800V500H0Z" fill="#0a0d26"/>${crowd(430, "#05061a")}${P(120, 300, 160, 95)}`,
+    dinner: () =>
+      sky("#2a1a22", "#8a5530") +
+      `<g filter="url(#b2)">${Array.from({ length: 14 }, (_, i) => `<circle cx="${i * 62 + 10}" cy="${70 + Math.sin((i / 13) * 3.14) * 70}" r="${22 + (i % 3) * 8}" fill="#ffd27a" opacity=".45"/>`).join("")}</g><path d="M0 80Q400 210 800 80" stroke="#222" fill="none" stroke-width="3"/>` +
+      Array.from({ length: 24 }, (_, i) => {
+        const x = i * 34 + 6,
+          y = 80 + Math.sin((i / 23) * Math.PI) * 65;
+        return `<circle cx="${x}" cy="${y + 6}" r="7" fill="#fff0b8"/><circle cx="${x}" cy="${y + 6}" r="16" fill="#ffd36a" opacity=".3"/>`;
+      }).join("") +
+      `<g filter="url(#bl)" opacity=".9">${W(250, 150, 300, 180)}</g><rect y="330" width="800" height="170" fill="#3a2418"/>` +
+      [
+        [140, 420, 1],
+        [400, 400, 0.9],
+        [660, 420, 1],
+      ]
+        .map(
+          ([x, y, s]) =>
+            `<ellipse cx="${x}" cy="${y + 50 * s}" rx="${130 * s}" ry="${20 * s}" fill="#000" opacity=".4" filter="url(#bl)"/><path d="M${x - 120 * s} ${y}Q${x} ${y + 130 * s} ${x + 120 * s} ${y}L${x + 100 * s} ${y + 80 * s}Q${x} ${y + 110 * s} ${x - 100 * s} ${y + 80 * s}Z" fill="#efe6d4"/><ellipse cx="${x}" cy="${y}" rx="${120 * s}" ry="${34 * s}" fill="#fbf6ea"/><ellipse cx="${x}" cy="${y}" rx="${70 * s}" ry="${18 * s}" fill="#fff" opacity=".8"/>${[-60, -20, 25, 62].map((d) => `<ellipse cx="${x + d * s}" cy="${y + 8 * s}" rx="${15 * s}" ry="${5 * s}" fill="#dcd3c0"/>`).join("")}<rect x="${x - 3}" y="${y - 46 * s}" width="6" height="${28 * s}" fill="#fff"/><circle cx="${x}" cy="${y - 52 * s}" r="22" fill="#ffb347" opacity=".35" filter="url(#bl)"/><circle cx="${x}" cy="${y - 52 * s}" r="4" fill="#ffd27a"/>`,
+        )
+        .join(""),
+    map: () =>
+      sky("#eef1e8", "#e3e8dc") +
+      `<path d="M-20 90C150 130 250 20 420 80S720 150 820 70V0H-20Z" fill="#a9d0ee"/><g fill="#bddba3"><ellipse cx="160" cy="400" rx="110" ry="60"/><ellipse cx="640" cy="330" rx="100" ry="70"/><ellipse cx="470" cy="440" rx="70" ry="40"/></g><g stroke="#fff" stroke-linecap="round" fill="none"><path d="M0 190H800M0 345H800M210 0V500M570 0V500" stroke-width="13"/><path d="M0 460L800 40" stroke-width="9"/><path d="M100 0V500M380 0V500M700 0V500M0 270H800M0 100H800M0 425H800" stroke-width="5"/></g><g stroke="#d4d9cc" fill="none" stroke-width="1.5"><path d="M0 190H800M0 345H800M210 0V500M570 0V500"/></g><path d="M160 130L530 95L660 255L590 420L250 430L135 275Z" fill="#d32f2f" opacity=".3" stroke="#c62828" stroke-width="4"/><g font-family="Arial" font-size="15" font-weight="700" fill="#58606a"><text x="300" y="180" opacity=".7">FAIRVIEW</text><text x="600" y="190" opacity=".6" font-size="12">STATE HWY 5</text></g><ellipse cx="400" cy="272" rx="14" ry="5" fill="#000" opacity=".25"/><path d="M400 268c-26-36-26-62 0-62s26 26 0 62z" fill="#c62828"/><circle cx="400" cy="236" r="9" fill="#fff"/>`,
+  };
+  const uri = (k) =>
+    "data:image/svg+xml;utf8," +
+    encodeURIComponent(
+      `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" preserveAspectRatio="xMidYMid slice">${DEFS}${SC[k]()}<rect width="800" height="500" filter="url(#gr)"/><rect width="800" height="500" fill="url(#vg)"/></svg>`,
+    );
+
+  SB.SLOTS=[['hero','Hero photo','yard'],['about','About photo','crew'],['g1','Gallery 1','street'],['g2','Gallery 2','truck'],['g3','Gallery 3','fire'],['g4','Gallery 4','yard'],['dinner','Donation image','dinner'],['map','Service area map','map']];
+  SB.IMG={}; SB.DEF={};
+  SB.SLOTS.forEach(function(s){ SB.DEF[s[0]]=SB.IMG[s[0]]=uri(s[2]); });
+
+  SB.state={tpl:'modern',brand:{modern:'#1f4e79',classic:'#1b2a4e'},dev:'d',hid:{},T:{}};
+
+  const SECS = [
+    ["hero", "Hero banner"],
+    ["about", "About the program"],
+    ["how", "How it works"],
+    ["plans", "Subscription plans"],
+    ["hol", "Holiday schedule"],
+    ["gal", "Image gallery"],
+    ["don", "Additional donation"],
+    ["say", "Testimonials"],
+    ["contact", "Contact & service map"],
+  ];
+  const e = (k, d, tag = "span") =>
+    `<${tag} contenteditable data-k="${k}">${SB.state.T[k] ?? d}</${tag}>`;
+  const ph = (k, cls = "") =>
+    `<div class="ph ${cls}" data-img="${k}" style="background-image:url('${SB.IMG[k]}')"></div>`;
+  const hdr = (k, ey, t, p, br) =>
+    `<div class="hd"><div class="ey">${e(k + "e", ey)}</div><h2>${e(k + "t", t)}</h2>${p ? `<p>${e(k + "p", p)}</p>` : ""}</div>`;
+  function secs(m) {
+    return {
+      hero: () =>
+        m
+          ? `<div class="hero"><div><div class="ey">${e("he", "Friends of Fairview · Fairview, TX")}</div><h1>${e("ht", "Flags on every holiday, placed by your neighbors.")}</h1><p class="l">${e("hp", "Volunteers place a full-size American flag at your home or business before each national holiday and collect it afterward. Every subscription supports Fairview’s first responders.")}</p><span class="sbtn">${e("hb", "Subscribe now")}</span><span class="sbtn o">${e("hb2", "Manage my subscription")}</span></div>${ph("hero")}</div>`
+          : `<div class="hero"><div class="tx"><div class="ey">${e("he", "Friends of Fairview · Stars & Stripes Flag Program")}</div><h1>${e("ht", "Fly the flag on every holiday that matters.")}</h1><p class="l">${e("hp", "Volunteers place a full-size American flag at your home or business before each national holiday and collect it afterward. Every subscription supports Fairview’s first responders.")}</p><span class="sbtn">${e("hb", "Subscribe now")}</span><span class="sbtn o">${e("hb2", "Manage my subscription")}</span></div>${ph("hero")}</div>`,
+      about: () =>
+        `<div class="s base"><div class="split rev">${ph("about")}<div><div class="ey">${e("ae", "About the program")}</div><h2 style="font-size:clamp(26px,4.4cqw,38px)">${e("at", "Fairview’s way to say thank you")}</h2><p>${e("ap", "Friends of Fairview Fire Fighters Association is a volunteer group that supports Fairview’s Police, Fire and EMS. The flag program brings red, white and blue to our streets and funds the community events that honor those who serve.")}</p></div></div></div>`,
+      how: () =>
+        `<div class="s sf">${hdr("w", "How it works", "We handle everything", "")}<div class="cols">${[
+          [
+            "Subscribe online",
+            "Choose a plan and tell us where to place your flag. Logging in never needs a password.",
+          ],
+          [
+            "We install before each holiday",
+            "Volunteers place a flag the day before every holiday.",
+          ],
+          [
+            "We collect it afterward",
+            "Flags come down the day after and are stored with care.",
+          ],
+        ]
+          .map(
+            ([a, b], i) =>
+              `<div class="card"><div class="n">${i + 1}</div><h3>${e("w" + i, a)}</h3><p>${e("wp" + i, b)}</p></div>`,
+          )
+          .join("")}</div></div>`,
+      plans: () =>
+        `<div class="s base"><span class="sync" style="margin-top:-40px">Synced from Product List</span>${hdr("p", "Subscription", "Choose your plan", "Renew, update or cancel from your account at any time.")}<div class="cols">${[
+          [
+            "Home",
+            "$65",
+            "/ year",
+            "One flag at your home on every holiday.",
+            "Subscribe",
+          ],
+          [
+            "Business & HOA",
+            "$58.50",
+            "/ flag",
+            "10% off when you order 4 or more flags.",
+            "Order flags",
+          ],
+          [
+            "Additional donation",
+            "Any",
+            "amount",
+            "Support the First Responders Appreciation Dinner.",
+            "Donate",
+          ],
+        ]
+          .map(
+            ([a, b, c, d, f], i) =>
+              `<div class="card"><h3>${a}</h3><div class="price">${b} <small>${c}</small></div><p style="margin:8px 0 16px">${d}</p><span class="sbtn" style="margin:0">${f}</span></div>`,
+          )
+          .join(
+            "",
+          )}</div><p class="who" style="margin-top:12px">Sample prices shown. Live prices come from your Product List.</p></div>`,
+      hol: () =>
+        `<div class="s tn"><span class="sync" style="margin-top:-40px">Synced from Holidays</span>${hdr("h", "Next 12 months", "Holidays we fly", "Flags go up the day before each holiday and come down the day after.")}<div style="max-width:640px;margin:${m ? "0" : "0 auto"}">${[
+          ["Veterans Day", "Wed, Nov 11, 2026"],
+          ["Presidents Day", "Mon, Feb 15, 2027"],
+          ["Memorial Day", "Mon, May 31, 2027"],
+          ["Independence Day", "Sun, Jul 4, 2027"],
+          ["Labor Day", "Mon, Sep 6, 2027"],
+        ]
+          .map(
+            ([a, b]) =>
+              `<div class="hol"><b>${a}</b><span>${b}</span></div>`,
+          )
+          .join("")}</div></div>`,
+      gal: () =>
+        `<div class="s sf">${hdr("gl", "Flag days", "Around Fairview", "")}<div class="gal">${["g1", "g2", "g3", "g4"].map((k) => ph(k)).join("")}</div></div>`,
+      don: () =>
+        `<div class="s br"><div class="split">${ph("dinner")}<div><div class="ey">${e("de", "Additional donation")}</div><h2 style="font-size:clamp(26px,4.4cqw,38px)">${e("dt", "First Responders Appreciation Dinner")}</h2><p>${e("dp", "Each year, we host an Appreciation Dinner to honor all of Fairview’s first responders (Police, Fire and EMS), and we’d be grateful for your support.")}</p><span class="sbtn">Donate</span><span class="sbtn o">Read more (PDF)</span></div></div></div>`,
+      say: () =>
+        `<div class="s base">${hdr("s", "Subscribers", "What neighbors say", "")}<div class="cols">${[
+          [
+            "I came home the night before Memorial Day and the flag was already up. My kids look for it every holiday now.",
+            "Dana R.",
+            "Fairview",
+          ],
+          [
+            "Our HOA lines the whole entrance with flags. One email and it is handled every year.",
+            "Marcus T.",
+            "Subscriber",
+          ],
+          [
+            "Knowing the money supports our first responders makes it an easy renewal.",
+            "Linda P.",
+            "Fairview",
+          ],
+        ]
+          .map(
+            ([q, n, p], i) =>
+              `<div class="card"><p class="q">“${e("q" + i, q)}”</p><div class="who"><b>${n}</b> · ${p}</div></div>`,
+          )
+          .join(
+            "",
+          )}</div><p class="who" style="margin-top:12px">Sample quotes. Replace with your own.</p></div>`,
+      contact: () =>
+        `<div class="s tn"><div class="split"><div><div class="ey">${e("ce", "Contact")}</div><h2 style="font-size:clamp(26px,4.4cqw,38px)">${e("ct", "Questions? We’re happy to help.")}</h2><p style="margin-bottom:14px">${e("cp", "Note: Please check the service map to verify we service your address.")}</p><p style="color:var(--ink);line-height:1.8"><b>Friends of Fairview</b><br>(469) 331-2520<br>SMS: (972) 968-8140. Text us, it’s faster and easier.<br>510 State HWY 5, Fairview, TX 75069<br>info@friendsoffairview.org</p></div>${ph("map", "map")}</div><p class="who" style="margin-top:12px;text-align:center">Friends of Fairview’s service area is highlighted in red.</p></div>`,
+    };
+  }
+
+  SB.render = function(){
+    const m = SB.state.tpl === 'modern', b = SB.state.brand[SB.state.tpl], f = secs(m);
+    $('#sb-site').className = 'sb-site ' + (SB.state.tpl === 'classic' ? 'sb-classic' : '');
+    $('#sb-site').style.setProperty('--brand', b);
+    $('#sb-site').innerHTML =
+      `<div class="nav"><b>${e("nb", "Friends of Fairview")}</b><span>Already subscribed? <u>Log in, no password needed</u></span></div>` +
+      SECS.filter(([k]) => !SB.state.hid[k])
+        .map(([k]) => {
+          const h = f[k]();
+          return k == "hero" || h.startsWith('<div class="s')
+            ? h
+            : `<div class="s base">${h}</div>`;
+        })
+        .join("") +
+      `<div class="ft s br" style="padding:36px 6cqw"><b>Friends of Fairview Fire Fighters Association</b><p>info@friendsoffairview.org · (469) 331-2520</p><p>Privacy policy · Terms of service · Recurring billing & cancellation · Donation refund policy</p><p>© 2026 Friends of Fairview · Powered by Helping With Flags</p></div>`;
+    $('#sb-site').querySelectorAll('[data-img]').forEach(function(el){
+      el.onclick = function(){ SB.pick(el.dataset.img); };
+    });
+    $('#sb-site').querySelectorAll('[data-k]').forEach(function(el){
+      el.oninput = function(){ SB.state.T[el.dataset.k] = el.innerText; };
+    });
+    SB.panel();
+  };
+
 })();
 </script>
 </body>
