@@ -407,6 +407,36 @@ main{min-width:0;padding:6px 12px 24px}
 .drp-sel{margin-right:auto;font-size:13px;color:var(--muted)}
 @media (max-width:640px){.drp-presets{display:none}.drp-cals{flex-direction:column}.drp{left:auto;right:0}}
 
+.hide{display:none}
+
+/* ---------- Site Builder ---------- */
+.sb-tpl{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
+.sb-ed{display:grid;grid-template-columns:270px 1fr;gap:14px;margin-top:14px;align-items:start}
+.sb-tools{border:1px solid var(--border);border-radius:8px;padding:12px;position:sticky;top:56px;max-height:calc(100vh - 70px);overflow:auto}
+.sb-tools h4{margin:14px 0 6px;font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted)}
+.sb-tools h4:first-child{margin-top:0}
+.sb-im{display:flex;align-items:center;gap:8px;padding:5px 0;font-size:12px}
+.sb-im img{width:44px;height:30px;object-fit:cover;border-radius:4px}
+.sb-im span{flex:1}
+.sb-im button{border:1px solid var(--border);background:none;color:var(--primary);border-radius:5px;padding:3px 8px;font-size:11px;cursor:pointer}
+.sb-dots{display:flex;gap:6px}
+.sb-dots i{width:22px;height:22px;border-radius:50%;cursor:pointer;border:2px solid #fff;box-shadow:0 0 0 1px rgba(0,0,0,.2)}
+.sb-dots i.on{box-shadow:0 0 0 2px var(--primary)}
+.sb-seg-dev{display:flex;background:var(--soft);border-radius:7px;padding:2px;margin-bottom:8px}
+.sb-seg-dev button{flex:1;border:0;background:none;padding:6px;border-radius:6px;font:500 12px Arial,sans-serif;color:var(--muted);cursor:pointer}
+.sb-seg-dev button.on{background:#fff;color:var(--text);box-shadow:0 1px 2px rgba(0,0,0,.2)}
+.sb-tg{display:flex;align-items:center;gap:8px;padding:10px 0;border-bottom:1px solid var(--border)}
+.sb-sw{width:34px;height:18px;border-radius:99px;background:#bbb;position:relative;cursor:pointer;flex:none}
+.sb-sw:after{content:"";position:absolute;top:2px;left:2px;width:14px;height:14px;border-radius:50%;background:#fff;transition:.15s}
+.sb-sw.on{background:var(--primary)}
+.sb-sw.on:after{left:18px}
+.sb-stage{background:#dfe2ea;border-radius:8px;padding:14px;overflow:auto;max-height:calc(100vh - 70px)}
+.sb-frame{margin:0 auto;background:#fff;border-radius:6px;overflow:hidden;box-shadow:0 6px 24px rgba(0,0,0,.2);transition:width .2s}
+.sb-chrome{background:#e8eaef;padding:7px 10px;font-size:11px;color:#667;display:flex;gap:5px;align-items:center}
+.sb-chrome i{width:8px;height:8px;border-radius:50%;background:#bbb}
+.sb-chrome span{margin-left:8px;background:#fff;border-radius:99px;padding:2px 12px}
+@media (max-width:900px){.sb-ed{grid-template-columns:1fr}.sb-tools{position:static;max-height:none}}
+
 /* ---------- responsive ---------- */
 @media (max-width:1000px){.sys .g3,.sys .g4{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (max-width:860px){
@@ -897,6 +927,7 @@ main{min-width:0;padding:6px 12px 24px}
         <div class="sb">
           <p class="note">Pick a starting point. Photos, layout and fonts are prebuilt. Click any text on the preview to edit it, and click any photo to swap it.</p>
           <div class="sb-tpl" id="sb-tpl"></div>
+          <input type="file" accept="image/*" id="sb-fi" class="hide">
           <div class="sb-ed">
             <div class="sb-tools" id="sb-tools"></div>
             <div class="sb-stage">
@@ -2026,6 +2057,38 @@ main{min-width:0;padding:6px 12px 24px}
         `<div class="s tn"><div class="split"><div><div class="ey">${e("ce", "Contact")}</div><h2 style="font-size:clamp(26px,4.4cqw,38px)">${e("ct", "Questions? We’re happy to help.")}</h2><p style="margin-bottom:14px">${e("cp", "Note: Please check the service map to verify we service your address.")}</p><p style="color:var(--ink);line-height:1.8"><b>Friends of Fairview</b><br>(469) 331-2520<br>SMS: (972) 968-8140. Text us, it’s faster and easier.<br>510 State HWY 5, Fairview, TX 75069<br>info@friendsoffairview.org</p></div>${ph("map", "map")}</div><p class="who" style="margin-top:12px;text-align:center">Friends of Fairview’s service area is highlighted in red.</p></div>`,
     };
   }
+
+  let sbPk = null;
+  SB.pick = function(k){
+    sbPk = k;
+    $('#sb-fi').click();
+  };
+  $('#sb-fi').onchange = function(ev){
+    const f = ev.target.files[0];
+    if (!f) return;
+    const r = new FileReader();
+    r.onload = function(){
+      SB.IMG[sbPk] = r.result;
+      SB.render();
+      toast('Image replaced');
+    };
+    r.readAsDataURL(f);
+    ev.target.value = '';
+  };
+  SB.panel = function(){
+    const m = SB.state.tpl === 'modern';
+    $('#sb-tools').innerHTML =
+      `<h4>Device</h4><div class="sb-seg-dev"><button class="${SB.state.dev === 'd' ? 'on' : ''}" onclick="SB.state.dev='d';SB.frame()">Desktop</button><button class="${SB.state.dev === 'm' ? 'on' : ''}" onclick="SB.state.dev='m';SB.frame()">Mobile</button></div>
+<h4>Brand color</h4><div class="sb-dots">${(m ? ['#1f4e79', '#2f5d50', '#7a3b2e', '#2b2b33'] : ['#1b2a4e', '#5e1f24', '#1f3b2c', '#2b2b2f']).map(function(c){ return `<i class="${SB.state.brand[SB.state.tpl] === c ? 'on' : ''}" style="background:${c}" onclick="SB.state.brand[SB.state.tpl]='${c}';SB.render()"></i>`; }).join('')}</div>
+<h4>Sections</h4>${SECS.map(function(s){ const k = s[0], l = s[1]; return `<div class="sb-tg" style="padding:6px 0"><div class="sb-sw ${SB.state.hid[k] ? '' : 'on'}" onclick="SB.state.hid['${k}']=!SB.state.hid['${k}'];SB.render()"></div><span>${l}</span></div>`; }).join('')}
+<h4>Images (prebuilt, swap any)</h4>${SB.SLOTS.map(function(s){ const k = s[0], l = s[1]; return `<div class="sb-im"><img src="${SB.IMG[k]}"><span>${l}</span><button onclick="SB.pick('${k}')">Replace</button>${SB.IMG[k] !== SB.DEF[k] ? `<button onclick="SB.IMG['${k}']=SB.DEF['${k}'];SB.render()">Reset</button>` : ''}</div>`; }).join('')}`;
+  };
+  SB.frame = function(){
+    const f = $('#sb-frame');
+    f.style.width = SB.state.dev === 'm' ? '390px' : '100%';
+    f.classList.toggle('m', SB.state.dev === 'm');
+    SB.panel();
+  };
 
   SB.render = function(){
     const m = SB.state.tpl === 'modern', b = SB.state.brand[SB.state.tpl], f = secs(m);
