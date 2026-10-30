@@ -4,6 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Edit Club – Webpage Detail (Redesign)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..700&family=Figtree:wght@400..700&family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400&family=Public+Sans:wght@400..700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 <style>
 /* =====================================================================
@@ -416,7 +419,7 @@ main{min-width:0;padding:6px 12px 24px}
 .sb-tc img{display:block;width:100%;aspect-ratio:16/9;object-fit:cover}
 .sb-tc div{padding:10px 12px}
 .sb-tc b{display:block;font-size:14px}
-.sb-ed{display:grid;grid-template-columns:270px 1fr;gap:14px;margin-top:14px;align-items:start}
+.sb-ed{display:grid;grid-template-columns:310px 1fr;gap:14px;margin-top:14px;align-items:start}
 .sb-tools{border:1px solid var(--border);border-radius:8px;padding:12px;position:sticky;top:56px;max-height:calc(100vh - 70px);overflow:auto}
 .sb-tools h4{margin:14px 0 6px;font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted)}
 .sb-tools h4:first-child{margin-top:0}
@@ -440,7 +443,246 @@ main{min-width:0;padding:6px 12px 24px}
 .sb-chrome{background:#e8eaef;padding:7px 10px;font-size:11px;color:#667;display:flex;gap:5px;align-items:center}
 .sb-chrome i{width:8px;height:8px;border-radius:50%;background:#bbb}
 .sb-chrome span{margin-left:8px;background:#fff;border-radius:99px;padding:2px 12px}
+.sb-live-badge{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:#2e7d32;background:#e8f5e9;padding:3px 10px;border-radius:99px;border:1px solid #c8e6c9}
+.sb-live-dot{width:7px;height:7px;border-radius:50%;background:#2e7d32;animation:sb-pulse 1.8s infinite}
+@keyframes sb-pulse{0%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(1.2)}100%{opacity:1;transform:scale(1)}}
+.sb-btn-view{display:inline-flex;align-items:center;gap:6px;background:#1b2a4e;color:#fff;text-decoration:none;font-weight:600;font-size:13px;padding:7px 14px;border-radius:6px;transition:all .15s}
+.sb-btn-view:hover{background:#2a3f70;color:#fff}
+.sb-btn-quick-save{display:inline-flex;align-items:center;gap:6px;background:var(--primary);color:#fff;border:0;font-weight:600;font-size:13px;padding:7px 14px;border-radius:6px;cursor:pointer;transition:all .15s}
+.sb-btn-quick-save:hover{opacity:.9}
+.sb-sec-list{display:flex;flex-direction:column;gap:8px;margin-bottom:12px}
+.sb-sec-row{display:flex;flex-direction:column;padding:10px;border:1px solid var(--border);border-radius:8px;background:#fff;gap:8px;box-shadow:0 1px 3px rgba(0,0,0,.03);transition:border-color .15s}
+.sb-sec-row:hover{border-color:#cbd5e1}
+.sb-sec-row-main{display:flex;align-items:center;gap:10px;width:100%}
+.sb-sec-name{font-size:13px;font-weight:600;color:var(--text);flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sb-sec-badge{font-size:10px;background:#e0e7ff;color:#4338ca;padding:2px 7px;border-radius:99px;font-weight:700;flex-shrink:0}
+.sb-sec-row-btns{display:flex;align-items:center;flex-wrap:wrap;gap:6px;width:100%;padding-top:8px;border-top:1px solid #f1f5f9}
+.sb-sec-btn-el{display:inline-flex;align-items:center;gap:4px;background:#f8fafc;color:#4f46e5;border:1px solid #e2e8f0;border-radius:5px;font-size:11px;font-weight:600;padding:4px 9px;cursor:pointer;transition:all .15s;flex-shrink:0}
+.sb-sec-btn-el:hover{background:#eef2ff;border-color:#c7d2fe;color:#4338ca}
+.sb-sec-btn-group{display:flex;align-items:center;flex-wrap:wrap;gap:4px}
+.sb-sec-btn-group button{border:1px solid var(--border);background:#f8f9fa;border-radius:5px;font-size:11px;line-height:1;width:26px;height:26px;padding:0;cursor:pointer;color:var(--muted);display:inline-flex;align-items:center;justify-content:center;transition:all .15s;flex-shrink:0}
+.sb-sec-btn-group button:hover{background:#fff;color:var(--text);border-color:#94a3b8}
+.sb-sec-btn-group button[disabled]{opacity:.3;cursor:not-allowed}
+.sb-sec-btn-group button.btn-del{color:#ef4444}
+.sb-sec-btn-group button.btn-del:hover{background:#fef2f2;border-color:#fca5a5;color:#dc2626}
+.sb-color-custom{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:50%;cursor:pointer;border:1px dashed var(--muted);position:relative;background:conic-gradient(red,yellow,lime,aqua,blue,magenta,red);vertical-align:middle}
+.sb-color-custom input{position:absolute;opacity:0;width:100%;height:100%;cursor:pointer;inset:0}
+.sb-reset-link{font-size:11px;color:var(--muted);text-decoration:underline;cursor:pointer;display:inline-block;margin-top:10px}
+.sb-reset-link:hover{color:var(--danger)}
 @media (max-width:900px){.sb-ed{grid-template-columns:1fr}.sb-tools{position:static;max-height:none}}
+
+/* Section Wrapper & Hover Toolbar */
+.sb-sec-wrap{position:relative;outline:2px dashed transparent;transition:outline .15s ease}
+.sb-sec-wrap:hover{outline-color:var(--primary)}
+.sb-sec-bar{position:absolute;top:8px;right:12px;z-index:60;display:none;align-items:center;gap:4px;background:#1e293b;color:#fff;padding:4px 8px;border-radius:6px;box-shadow:0 4px 16px rgba(0,0,0,.25);font-size:11px}
+.sb-sec-wrap:hover>.sb-sec-bar{display:flex}
+.sb-sec-tag{background:rgba(255,255,255,.15);padding:2px 7px;border-radius:4px;font-weight:700;font-size:10px;text-transform:uppercase;letter-spacing:.03em;margin-right:2px}
+.sb-sec-bar button{border:0;background:rgba(255,255,255,.12);color:#fff;padding:3px 7px;border-radius:4px;cursor:pointer;font-size:11px;display:inline-flex;align-items:center;gap:3px;transition:all .15s}
+.sb-sec-bar button:hover{background:rgba(255,255,255,.25)}
+.sb-sec-bar button.del:hover{background:#ef4444}
+
+/* Between-Sections Add Line */
+.sb-sec-add-line{position:relative;height:24px;margin:-12px 0;z-index:55;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .2s ease}
+.sb-sec-add-line:hover{opacity:1}
+.sb-sec-add-line::before{content:"";position:absolute;left:20px;right:20px;height:2px;background:var(--primary);border-radius:2px}
+.sb-sec-add-btn{position:relative;z-index:2;background:var(--primary);color:#fff;border:0;border-radius:99px;padding:3px 12px;font-size:11px;font-weight:700;cursor:pointer;box-shadow:0 2px 10px rgba(63,81,181,.4);display:inline-flex;align-items:center;gap:4px;transition:transform .15s}
+.sb-sec-add-btn:hover{transform:scale(1.05)}
+
+/* Item-level Delete and Add (Cards, Plans, Testimonials, Holidays, FAQs) */
+.sb-item-wrap{position:relative;outline:1.5px dashed transparent;transition:outline .15s ease}
+.sb-item-wrap:hover{outline-color:rgba(63,81,181,.5)}
+.sb-item-del{position:absolute;top:-8px;right:-8px;z-index:25;width:22px;height:22px;border-radius:50%;background:#ef4444;color:#fff;border:2px solid #fff;cursor:pointer;display:none;align-items:center;justify-content:center;font-size:11px;box-shadow:0 2px 6px rgba(0,0,0,.25);transition:transform .15s}
+.sb-item-del:hover{transform:scale(1.15);background:#dc2626}
+.sb-item-wrap:hover>.sb-item-del{display:flex}
+.sb-item-add-card{border:2px dashed var(--border);border-radius:var(--r);min-height:120px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;color:var(--primary);font-weight:600;font-size:13px;cursor:pointer;background:rgba(63,81,181,.02);transition:all .15s ease;padding:16px;text-align:center}
+.sb-item-add-card:hover{background:rgba(63,81,181,.06);border-color:var(--primary)}
+
+/* Section Components: FAQ & CTA */
+.sb-site .faq-list{max-width:760px;margin:0 auto;display:flex;flex-direction:column;gap:12px}
+.sb-site .faq-item{background:var(--sf);border:1px solid var(--ln);border-radius:var(--r);padding:18px 22px}
+.sb-site .s.sf .faq-item{background:var(--base)}
+.sb-site .faq-q{font-family:var(--d);font-size:18px;font-weight:var(--hw);color:var(--ink);margin-bottom:8px}
+.sb-site .faq-a{color:var(--mt);font-size:15px;line-height:1.6}
+.sb-site .cta-banner{text-align:center;max-width:780px;margin:0 auto;padding:20px 0}
+.sb-site .cta-banner h2{font-size:clamp(30px,5.5cqw,48px);margin-bottom:14px}
+.sb-site .cta-banner p{font-size:18px;opacity:.9;max-width:60ch;margin:0 auto 24px}
+
+/* Add Drawer & Modal System */
+.sb-drawer-backdrop{position:fixed;inset:0;background:rgba(15,23,42,.65);backdrop-filter:blur(5px);z-index:99999;display:flex;align-items:center;justify-content:center;padding:20px}
+.sb-drawer{background:#fff;width:100%;max-width:1080px;height:88vh;border-radius:16px;box-shadow:0 25px 60px rgba(0,0,0,.35);display:flex;flex-direction:column;overflow:hidden}
+.sb-drawer-head{padding:14px 22px;border-bottom:1px solid #e2e8f0;display:flex;justify-content:space-between;align-items:center;background:#fff}
+.sb-drawer-tabs{display:flex;gap:8px;align-items:center}
+.sb-tab-btn{background:#f1f5f9;border:1px solid transparent;color:#475569;padding:8px 18px;border-radius:99px;font-size:13px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:8px;transition:all .15s}
+.sb-tab-btn.active{background:#0f172a;color:#fff}
+.sb-tab-btn:hover:not(.active){background:#e2e8f0;color:#0f172a}
+.sb-drawer-close-btn{background:none;border:0;font-size:24px;color:#64748b;cursor:pointer;padding:4px 8px;border-radius:6px;line-height:1}
+.sb-drawer-close-btn:hover{background:#f1f5f9;color:#0f172a}
+.sb-drawer-search-bar{padding:10px 22px;background:#f8fafc;border-bottom:1px solid #e2e8f0;display:flex;align-items:center;gap:12px}
+.sb-drawer-search-box{flex:1;display:flex;align-items:center;gap:10px;background:#fff;border:1px solid #cbd5e1;border-radius:99px;padding:7px 16px;font-size:13px}
+.sb-drawer-search-box input{border:0;outline:none;width:100%;font-size:13px;background:transparent}
+.sb-drawer-target-badge{font-size:11px;font-weight:600;color:#64748b;background:#e2e8f0;padding:4px 10px;border-radius:99px;white-space:nowrap}
+.sb-drawer-body{display:flex;flex:1;min-height:0;overflow:hidden}
+.sb-drawer-sidebar{width:230px;background:#f8fafc;border-right:1px solid #e2e8f0;padding:14px 10px;overflow-y:auto;display:flex;flex-direction:column;gap:3px;flex-shrink:0}
+.sb-drawer-cat-item{display:flex;align-items:center;justify-content:space-between;padding:9px 12px;border-radius:8px;color:#475569;font-size:13px;font-weight:500;cursor:pointer;border:0;background:none;width:100%;text-align:left;transition:all .15s ease}
+.sb-drawer-cat-item:hover{background:#edf2f7;color:#0f172a}
+.sb-drawer-cat-item.active{background:#eff6ff;color:#2563eb;font-weight:700}
+.sb-drawer-cat-item.special{color:#2563eb;font-weight:700;border-bottom:1px solid #e2e8f0;padding-bottom:11px;margin-bottom:6px}
+.sb-drawer-cat-badge{font-size:11px;background:rgba(0,0,0,.06);padding:1px 6px;border-radius:99px;color:#64748b;font-weight:600}
+.sb-drawer-content-area{flex:1;overflow-y:auto;padding:22px;background:#fafafa;display:flex;flex-direction:column;gap:16px}
+.sb-drawer-cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:16px}
+.sb-drawer-card{background:#fff;border:1.5px solid #e2e8f0;border-radius:12px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.03);cursor:pointer;position:relative;transition:all .2s ease;display:flex;flex-direction:column}
+.sb-drawer-card:hover{border-color:#3b82f6;box-shadow:0 10px 25px rgba(59,130,246,.15);transform:translateY(-2px)}
+.sb-drawer-card-preview{height:145px;background:#f8fafc;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;padding:14px;border-bottom:1px solid #f1f5f9}
+.sb-drawer-card-overlay{position:absolute;inset:0;background:rgba(15,23,42,.5);backdrop-filter:blur(2px);display:none;align-items:center;justify-content:center;z-index:10}
+.sb-drawer-card:hover .sb-drawer-card-overlay{display:flex}
+.sb-drawer-card-overlay-btn{background:#2563eb;color:#fff;border:0;padding:9px 20px;border-radius:99px;font-weight:700;font-size:13px;box-shadow:0 4px 14px rgba(37,99,235,.4);cursor:pointer;transition:transform .15s}
+.sb-drawer-card-overlay-btn:hover{transform:scale(1.05);background:#1d4ed8}
+.sb-drawer-card-info{padding:12px 14px}
+.sb-drawer-card-info h4{margin:0 0 4px;font-size:14px;font-weight:700;color:#0f172a}
+.sb-drawer-card-info p{margin:0;font-size:12px;color:#64748b;line-height:1.4}
+
+/* Modular Elements Inside Sections */
+.sb-sec-elements{margin-top:32px;display:flex;flex-direction:column;gap:24px}
+.sb-el-wrap{position:relative;outline:1.5px dashed transparent;transition:outline .15s ease;border-radius:8px;padding:4px}
+.sb-el-wrap:hover{outline-color:#3b82f6}
+.sb-el-bar{position:absolute;top:-14px;right:10px;z-index:70;display:none;align-items:center;gap:4px;background:#0f172a;color:#fff;padding:2px 7px;border-radius:4px;font-size:11px;box-shadow:0 4px 12px rgba(0,0,0,.2)}
+.sb-el-wrap:hover>.sb-el-bar{display:flex}
+.sb-el-bar button{background:rgba(255,255,255,.15);border:0;color:#fff;padding:2px 6px;border-radius:3px;cursor:pointer;font-size:10px;transition:background .15s}
+.sb-el-bar button:hover{background:rgba(255,255,255,.3)}
+.sb-el-bar button.del:hover{background:#ef4444}
+.sb-sec-add-el-btn{display:inline-flex;align-items:center;gap:6px;background:rgba(59,130,246,.08);color:#2563eb;border:1.5px dashed rgba(59,130,246,.35);border-radius:8px;padding:7px 16px;font-size:12px;font-weight:700;cursor:pointer;margin:24px auto 0;transition:all .15s ease}
+.sb-sec-add-el-btn:hover{background:#2563eb;color:#fff;border-color:#2563eb;transform:scale(1.02)}
+
+/* 1. Newsletter Box */
+.sb-el-newsletter{max-width:580px;margin:0 auto;background:var(--sf);border:1px solid var(--ln);border-radius:var(--r);padding:28px 24px;text-align:center;box-shadow:0 6px 20px rgba(0,0,0,.03)}
+.sb-el-newsletter h3{font-family:var(--d);font-size:22px;margin-bottom:8px}
+.sb-el-newsletter p{font-size:14px;color:var(--mt);margin-bottom:18px;line-height:1.5}
+.sb-el-newsletter-row{display:flex;gap:8px;max-width:440px;margin:0 auto}
+.sb-el-newsletter-row input{flex:1;padding:11px 16px;border:1.5px solid var(--ln);border-radius:var(--br);font-size:14px;outline:none;background:#fff;color:var(--ink)}
+.sb-el-newsletter-row input:focus{border-color:var(--brand)}
+.sb-el-newsletter-row button{border:0;background:var(--brand);color:#fff;border-radius:var(--br);padding:11px 20px;font-weight:700;font-size:14px;cursor:pointer;white-space:nowrap;transition:opacity .15s}
+.sb-el-newsletter-row button:hover{opacity:.9}
+
+/* 2. Stats Grid */
+.sb-el-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:16px;max-width:860px;margin:0 auto}
+.sb-el-stat-box{background:var(--sf);border:1px solid var(--ln);border-radius:var(--r);padding:20px 16px;text-align:center;box-shadow:0 4px 12px rgba(0,0,0,.02)}
+.sb-el-stat-num{font-family:var(--d);font-size:clamp(28px,4.5cqw,40px);font-weight:800;color:var(--red);line-height:1.1;margin-bottom:6px}
+.sb-el-stat-lbl{font-size:13px;color:var(--mt);font-weight:600;text-transform:uppercase;letter-spacing:.04em}
+
+/* 3. Video Embed Box */
+.sb-el-video{max-width:760px;margin:0 auto;border-radius:var(--r);overflow:hidden;background:#0f172a;color:#fff;box-shadow:0 12px 36px rgba(0,0,0,.15);position:relative}
+.sb-el-video-preview{aspect-ratio:16/9;width:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;background:linear-gradient(135deg,#1e293b,#0f172a);position:relative;cursor:pointer}
+.sb-el-video-play-btn{width:68px;height:68px;border-radius:50%;background:#ef4444;color:#fff;display:flex;align-items:center;justify-content:center;font-size:26px;box-shadow:0 6px 20px rgba(239,68,68,.5);transition:transform .2s ease}
+.sb-el-video:hover .sb-el-video-play-btn{transform:scale(1.12)}
+.sb-el-video-meta{padding:14px 20px;background:rgba(15,23,42,.92);border-top:1px solid rgba(255,255,255,.1)}
+.sb-el-video-meta h4{margin:0 0 4px;font-size:15px;font-weight:700;color:#fff}
+.sb-el-video-meta p{margin:0;font-size:12px;color:#94a3b8}
+
+/* 4. Social Links Bar */
+.sb-el-social{display:flex;align-items:center;justify-content:center;gap:14px;padding:16px;flex-wrap:wrap}
+.sb-el-social-link{width:42px;height:42px;border-radius:50%;background:var(--brand);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:18px;text-decoration:none;transition:transform .15s,opacity .15s}
+.sb-el-social-link:hover{transform:translateY(-2px);opacity:.9}
+
+/* 5. Callout Box */
+.sb-el-callout{max-width:720px;margin:0 auto;background:var(--sf);border-left:4px solid var(--red);border-top:1px solid var(--ln);border-right:1px solid var(--ln);border-bottom:1px solid var(--ln);border-radius:var(--r);padding:18px 24px;display:flex;gap:16px;align-items:flex-start}
+.sb-el-callout-icon{font-size:24px;color:var(--red);margin-top:2px}
+.sb-el-callout h4{margin:0 0 6px;font-size:17px;font-family:var(--d)}
+.sb-el-callout p{margin:0;font-size:14px;color:var(--mt);line-height:1.5}
+
+/* 6. Action Button CTA */
+.sb-el-cta-btn{text-align:center;padding:12px 0}
+.sb-el-cta-btn .sbtn{margin:0 auto}
+
+/* 7. Quick Contact Inquiry Form */
+.sb-el-form{max-width:580px;margin:0 auto;background:var(--sf);border:1px solid var(--ln);border-radius:var(--r);padding:26px;box-shadow:0 4px 20px rgba(0,0,0,.03)}
+.sb-el-form h3{font-family:var(--d);font-size:20px;margin-bottom:6px;text-align:center}
+.sb-el-form p{font-size:13px;color:var(--mt);margin-bottom:18px;text-align:center}
+.sb-el-form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+.sb-el-form input,.sb-el-form textarea{width:100%;padding:10px 14px;border:1.5px solid var(--ln);border-radius:var(--br);font-size:13px;outline:none;background:#fff;font-family:inherit}
+.sb-el-form textarea{grid-column:span 2;resize:vertical;min-height:70px;margin-bottom:12px}
+.sb-el-form button{width:100%;border:0;background:var(--brand);color:#fff;border-radius:var(--br);padding:12px 20px;font-weight:700;font-size:14px;cursor:pointer}
+
+/* 8. Trust Badge Ribbon */
+.sb-el-badge{display:flex;align-items:center;justify-content:center;gap:10px;background:rgba(59,130,246,.08);border:1px solid rgba(59,130,246,.2);color:var(--brand);padding:10px 20px;border-radius:99px;font-size:13px;font-weight:700;max-width:max-content;margin:0 auto;letter-spacing:.02em}
+
+/* 9. Feature Pull Quote */
+.sb-el-quote{max-width:680px;margin:0 auto;text-align:center;padding:24px 20px}
+.sb-el-quote-text{font-family:var(--d);font-size:clamp(20px,3.2cqw,28px);font-weight:var(--hw);line-height:1.35;margin-bottom:12px;color:var(--ink)}
+.sb-el-quote-author{font-size:14px;font-weight:700;color:var(--red);text-transform:var(--ey);letter-spacing:var(--et)}
+
+/* Custom HTML / Embed Element */
+.sb-el-custom-html{width:100%;min-height:50px;position:relative}
+
+/* Top Builder Action Toolbar Buttons */
+.sb-top-tool-btn{display:inline-flex;align-items:center;gap:6px;background:#f8fafc;color:#1e293b;border:1px solid #cbd5e1;padding:7px 12px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;transition:all .15s}
+.sb-top-tool-btn:hover{background:#f1f5f9;border-color:#94a3b8;color:#0f172a}
+.sb-top-tool-btn[disabled]{opacity:.35;cursor:not-allowed;background:#f8fafc}
+.sb-top-tool-btn.active{background:#e0e7ff;color:#4338ca;border-color:#a5b4fc}
+
+/* Floating Rich Text WYSIWYG Formatting Toolbar */
+.sb-rte-toolbar{position:absolute;z-index:9999;display:none;align-items:center;gap:3px;background:#0f172a;color:#fff;border-radius:8px;padding:5px 8px;box-shadow:0 12px 32px rgba(0,0,0,.4);border:1px solid #334155;user-select:none;transform:translate(-50%, -100%);margin-top:-10px;pointer-events:auto}
+.sb-rte-toolbar:after{content:"";position:absolute;bottom:-6px;left:50%;transform:translateX(-50%);border-width:6px 6px 0 6px;border-style:solid;border-color:#0f172a transparent transparent transparent}
+.sb-rte-toolbar select{background:#1e293b;color:#fff;border:1px solid #475569;border-radius:4px;padding:3px 6px;font-size:11px;outline:none;cursor:pointer}
+.sb-rte-toolbar button{background:transparent;border:0;color:#cbd5e1;width:26px;height:26px;border-radius:4px;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;font-size:12px;transition:all .15s}
+.sb-rte-toolbar button:hover{background:#334155;color:#fff}
+.sb-rte-toolbar button.active{background:#3b82f6;color:#fff}
+.sb-rte-divider{width:1px;height:18px;background:#334155;margin:0 3px}
+.sb-rte-color-picker{position:relative;display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:4px;cursor:pointer;color:#cbd5e1;transition:background .15s}
+.sb-rte-color-picker:hover{background:#334155;color:#fff}
+.sb-rte-color-picker input[type="color"]{position:absolute;opacity:0;inset:0;width:100%;height:100%;cursor:pointer}
+
+/* HTML Source Code Modal */
+.sb-html-modal-backdrop{position:fixed;inset:0;background:rgba(15,23,42,.75);z-index:10000;display:none;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(3px)}
+.sb-html-modal{background:#0f172a;color:#f8fafc;border-radius:12px;width:100%;max-width:960px;max-height:90vh;display:flex;flex-direction:column;box-shadow:0 24px 60px rgba(0,0,0,.5);border:1px solid #334155;overflow:hidden}
+.sb-html-modal-head{display:flex;align-items:center;justify-content:space-between;padding:14px 20px;border-bottom:1px solid #1e293b;background:#1e293b}
+.sb-html-modal-head h3{margin:0;font-size:15px;font-weight:700;display:flex;align-items:center;gap:8px;color:#f8fafc}
+.sb-html-modal-tabs{display:flex;gap:4px;background:#0f172a;padding:3px;border-radius:6px;border:1px solid #334155}
+.sb-html-modal-tab{background:transparent;border:0;color:#94a3b8;padding:4px 12px;border-radius:4px;font-size:12px;cursor:pointer;font-weight:600}
+.sb-html-modal-tab.active{background:#2563eb;color:#fff}
+.sb-html-modal-body{padding:16px 20px;flex:1;display:flex;flex-direction:column;gap:10px;overflow:hidden}
+.sb-html-modal-toolbar{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.sb-html-modal-textarea{width:100%;height:460px;background:#020617;color:#38bdf8;font-family:"Fira Code",Consolas,Monaco,monospace;font-size:13px;line-height:1.6;padding:16px;border:1px solid #1e293b;border-radius:8px;outline:none;resize:vertical;tab-size:2;white-space:pre}
+.sb-html-modal-foot{display:flex;align-items:center;justify-content:flex-end;gap:10px;padding:14px 20px;border-top:1px solid #1e293b;background:#1e293b}
+
+/* Section Settings & Styles Modal */
+.sb-settings-modal-backdrop{position:fixed;inset:0;background:rgba(15,23,42,.7);z-index:10000;display:none;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(3px)}
+.sb-settings-modal{background:#fff;color:#0f172a;border-radius:12px;width:100%;max-width:680px;max-height:92vh;display:flex;flex-direction:column;box-shadow:0 24px 60px rgba(0,0,0,.25);border:1px solid #e2e8f0;overflow:hidden}
+.sb-settings-modal-head{display:flex;align-items:center;justify-content:space-between;padding:14px 20px;border-bottom:1px solid #e2e8f0;background:#f8fafc}
+.sb-settings-modal-head h3{margin:0;font-size:16px;font-weight:700}
+.sb-settings-modal-body{padding:20px;overflow-y:auto;display:flex;flex-direction:column;gap:16px}
+.sb-settings-group{display:flex;flex-direction:column;gap:6px}
+.sb-settings-group label{font-size:12px;font-weight:700;color:#475569;text-transform:uppercase;letter-spacing:.03em}
+.sb-settings-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.sb-settings-presets{display:flex;gap:8px;flex-wrap:wrap;margin-top:4px}
+.sb-settings-preset-btn{padding:6px 12px;border-radius:6px;border:1px solid #cbd5e1;font-size:12px;font-weight:600;cursor:pointer;background:#f8fafc;transition:all .15s}
+.sb-settings-preset-btn:hover{background:#e2e8f0}
+.sb-settings-preset-btn.active{border-color:#2563eb;background:#eff6ff;color:#1d4ed8}
+.sb-settings-modal-foot{display:flex;align-items:center;justify-content:flex-end;gap:10px;padding:14px 20px;border-top:1px solid #e2e8f0;background:#f8fafc}
+
+/* Section Background Switcher (Color / Image / Gradient) */
+.sb-bg-type-toggle{display:flex;background:#f1f5f9;border-radius:8px;padding:3px;gap:4px;margin-bottom:6px}
+.sb-bg-type-btn{flex:1;padding:8px 12px;border:0;background:transparent;color:#64748b;font-size:13px;font-weight:600;border-radius:6px;cursor:pointer;transition:all .15s;display:flex;align-items:center;justify-content:center;gap:6px}
+.sb-bg-type-btn:hover{color:#0f172a}
+.sb-bg-type-btn.active{background:#fff;color:#2563eb;box-shadow:0 1px 3px rgba(0,0,0,.1);font-weight:700}
+.sb-bg-panel{display:none;flex-direction:column;gap:10px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px}
+.sb-bg-panel.active{display:flex}
+.sb-palette-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:6px}
+.sb-palette-chip{width:28px;height:28px;border-radius:6px;border:2px solid #fff;box-shadow:0 0 0 1px rgba(0,0,0,.15);cursor:pointer;transition:transform .12s}
+.sb-palette-chip:hover{transform:scale(1.15);box-shadow:0 0 0 2px #2563eb}
+.sb-img-preview-box{width:100%;height:100px;border-radius:6px;border:1px solid #cbd5e1;background-size:cover;background-position:center;display:flex;align-items:flex-end;justify-content:flex-end;padding:8px;position:relative;overflow:hidden}
+
+/* Fullscreen Preview Mode */
+body.sb-fullscreen-active{overflow:hidden}
+.sb-fullscreen-active .sb-stage{position:fixed;inset:0;z-index:99999;width:100vw;height:100vh;max-height:none;border-radius:0;padding:20px;background:#1e293b}
+.sb-fullscreen-active .sb-frame{height:calc(100vh - 40px);overflow-y:auto}
+.sb-fullscreen-exit-btn{position:fixed;top:14px;right:20px;z-index:100001;background:#ef4444;color:#fff;border:0;padding:8px 16px;border-radius:99px;font-weight:700;font-size:12px;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.3);display:none}
+.sb-fullscreen-active .sb-fullscreen-exit-btn{display:flex;align-items:center;gap:6px}
+
+/* Custom Section Styling & Embeds */
+.sb-sec-custom-bg .s, .sb-sec-custom-bg .hero, .sb-sec-custom-bg .cta-banner { background: transparent !important; }
+.sb-sec-wrap[style*="color:"] .s, .sb-sec-wrap[style*="color:"] .hd h2, .sb-sec-wrap[style*="color:"] .hero h1, .sb-sec-wrap[style*="color:"] p { color: inherit; }
+.sb-sec-raw-html { width: 100%; overflow: hidden; }
+
 .sb-site{--d:"Bricolage Grotesque",system-ui,sans-serif;--b:Figtree,system-ui,sans-serif;--hw:600;--ink:#1c1d1a;--mt:#575a53;--ln:#e1dbd0;--red:#b0532d;--base:#faf8f4;--sf:#fff;--tn:#f0e9dd;--r:20px;--br:999px;--ey:none;--et:0;--al:left;font-family:var(--b);color:var(--ink);background:var(--base);line-height:1.55;container-type:inline-size}
 .sb-site.sb-classic{--d:"Libre Caslon Text",Georgia,serif;--b:"Public Sans",system-ui,sans-serif;--hw:400;--ink:#17203a;--mt:#4a5163;--ln:#d9d2c3;--red:#a8322d;--base:#f6f3ec;--tn:#e7ebf2;--r:2px;--br:2px;--ey:uppercase;--et:0.16em;--al:center}
 .sb-site h1,.sb-site h2,.sb-site h3{font-family:var(--d);font-weight:var(--hw);margin:0;letter-spacing:-0.02em;line-height:1.1}
@@ -456,11 +698,11 @@ main{min-width:0;padding:6px 12px 24px}
 .sb-site .hd p{color:var(--mt);margin-top:10px}
 .sb-site .ey{text-transform:var(--ey);letter-spacing:var(--et);font-size:12px;font-weight:600;color:var(--red);margin-bottom:10px}
 .sb-site .br .ey{color:#f2c8a6}
-.sb-site .sbtn{display:inline-block;padding:12px 22px;border-radius:var(--br);background:var(--red);color:#fff;font-weight:600;font-size:14px;margin:6px 8px 0 0;cursor:pointer}
-.sb-site .sbtn.o{background:none;border:1.5px solid currentColor;color:inherit}
+.sb-site .sbtn{display:inline-block;padding:12px 22px;border-radius:var(--br);background:var(--red);color:#fff;font-weight:600;font-size:14px;margin:6px 8px 0 0;cursor:pointer;text-decoration:none;transition:all .15s}
+.sb-site .sbtn.o{background:transparent;border:1.5px solid #ffffff;color:#ffffff !important;text-decoration:none;transition:all .15s}
 .sb-site:not(.sb-classic) .sbtn{background:var(--brand)}
 .sb-site .br .sbtn{background:#fff;color:var(--brand)}
-.sb-site .br .sbtn.o{background:none;color:#fff}
+.sb-site .br .sbtn.o{background:transparent;color:#ffffff !important;border-color:#ffffff}
 .sb-site .nav{display:flex;justify-content:space-between;align-items:center;padding:14px 6cqw;background:var(--sf);border-bottom:1px solid var(--ln);font-size:13px}
 .sb-site .nav b{font-family:var(--d)}
 .sb-site .nav span{color:var(--mt)}
@@ -468,12 +710,15 @@ main{min-width:0;padding:6px 12px 24px}
 .sb-site .hero h1{font-size:clamp(32px,6.4cqw,60px)}
 .sb-site .hero p.l{margin:16px 0 20px;color:var(--mt);max-width:48ch}
 .sb-site .hero .ph{aspect-ratio:5/4;border-radius:var(--r)}
+.sb-site .hero .sbtn.o, .sb-site.sb-classic .hero .sbtn.o{background:transparent;border:1.5px solid #ffffff;color:#ffffff !important}
+.sb-site .hero .sbtn.o:hover, .sb-site.sb-classic .hero .sbtn.o:hover, .sb-site .br .sbtn.o:hover, .sb-site .sbtn.o:hover{background:rgba(255,255,255,.18);color:#ffffff !important}
+.sb-site .s:not(.br):not(.hero):not(.sb-sec-custom-bg) .sbtn.o{border:1.5px solid var(--brand);color:var(--brand) !important}
+.sb-site .s:not(.br):not(.hero):not(.sb-sec-custom-bg) .sbtn.o:hover{background:var(--brand);color:#ffffff !important}
 .sb-site.sb-classic .hero{background:var(--brand);color:#fff;text-align:center;grid-template-columns:1fr;padding:0}
 .sb-site.sb-classic .hero .tx{padding:56px 6cqw 36px}
 .sb-site.sb-classic .hero p.l{color:#ffffffcc;margin:16px auto 20px}
 .sb-site.sb-classic .hero .ey{color:#f0c3bb}
 .sb-site.sb-classic .hero .sbtn{background:var(--red)}
-.sb-site.sb-classic .hero .sbtn.o{background:none}
 .sb-site.sb-classic .hero .ph{aspect-ratio:21/8;border-radius:0}
 .sb-site .ph{background-size:cover;background-position:center;position:relative;cursor:pointer}
 .sb-site .ph:hover:after{content:"Replace image";position:absolute;right:10px;bottom:10px;background:#000a;color:#fff;font:500 11px Roboto;padding:5px 10px;border-radius:6px}
@@ -569,11 +814,11 @@ main{min-width:0;padding:6px 12px 24px}
     </div>
 
     <div class="tabs" role="tablist">
-      <button class="tab" role="tab" aria-selected="true" data-tab="profile">Profile</button>
-      <button class="tab" role="tab" aria-selected="false" data-tab="payment">App Payment</button>
-      <button class="tab" role="tab" aria-selected="false" data-tab="web">Webpage Detail</button>
-      <button class="tab" role="tab" aria-selected="false" data-tab="sitebuilder">Homepage Design</button>
-      <button class="tab" role="tab" aria-selected="false" data-tab="invoice">Invoice History</button>
+      <button class="tab" role="tab" aria-selected="true" data-tab="profile" onclick="switchTab('profile')">Profile</button>
+      <button class="tab" role="tab" aria-selected="false" data-tab="payment" onclick="switchTab('payment')">App Payment</button>
+      <button class="tab" role="tab" aria-selected="false" data-tab="web" onclick="switchTab('web')">Webpage Detail</button>
+      <button class="tab" role="tab" aria-selected="false" data-tab="sitebuilder" onclick="switchTab('sitebuilder')">Homepage Design</button>
+      <button class="tab" role="tab" aria-selected="false" data-tab="invoice" onclick="switchTab('invoice')">Invoice History</button>
     </div>
 
 <!-- ================= PROFILE ================= -->
@@ -833,6 +1078,7 @@ main{min-width:0;padding:6px 12px 24px}
               <div class="field full" data-f="link">
                 <label class="lbl" for="websiteLink">Website link<span class="req">*</span></label>
                 <input type="url" id="websiteLink" value="https://allenkiwanis.org">
+                <div class="help" style="margin-top:6px">Live website: <a href="homepage.html" target="_blank" style="color:var(--primary);font-weight:600">Preview Club Homepage (homepage.html) <i class="fa fa-external-link"></i></a> · Design managed in the <a href="#" onclick="gotoTab('sitebuilder');return false;" style="color:var(--primary);font-weight:600">Homepage Design tab</a>.</div>
                 <div class="err-msg">Enter a website link that starts with https://</div>
               </div>
               <div class="field" data-f="title">
@@ -996,9 +1242,38 @@ main{min-width:0;padding:6px 12px 24px}
 
     <section class="panel" data-panel="sitebuilder" hidden>
       <section class="scard">
-        <header><span class="si-t"><i class="fa fa-magic" aria-hidden="true"></i></span><h2>Site Builder</h2></header>
+        <header style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px">
+          <div style="display:flex;align-items:center;gap:10px">
+            <span class="si-t"><i class="fa fa-magic" aria-hidden="true"></i></span>
+            <h2>Site Builder</h2>
+            <span class="sb-live-badge"><span class="sb-live-dot"></span> Live Site Connected</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+            <button type="button" class="sb-top-tool-btn" id="sb-undo-btn" onclick="SB.undo()" title="Undo last action (Ctrl+Z)" disabled>
+              <i class="fa fa-undo"></i> Undo
+            </button>
+            <button type="button" class="sb-top-tool-btn" id="sb-redo-btn" onclick="SB.redo()" title="Redo last action (Ctrl+Y)" disabled>
+              <i class="fa fa-repeat"></i> Redo
+            </button>
+            <button type="button" class="sb-top-tool-btn" onclick="SB.openHtmlSourceModal()" title="View and edit raw HTML source code">
+              <i class="fa fa-code"></i> &lt;/&gt; HTML Source
+            </button>
+            <button type="button" class="sb-top-tool-btn" onclick="SB.exportCleanHtml()" title="Export &amp; download standalone HTML webpage">
+              <i class="fa fa-download"></i> Export HTML
+            </button>
+            <button type="button" class="sb-top-tool-btn" onclick="SB.toggleFullscreen()" title="Toggle full-screen canvas preview">
+              <i class="fa fa-arrows-alt"></i> Fullscreen
+            </button>
+            <a href="homepage.html" target="_blank" class="sb-btn-view" title="Open published club website in a new tab">
+              <i class="fa fa-external-link" aria-hidden="true"></i> View Live
+            </a>
+            <button type="button" class="sb-btn-quick-save" onclick="SB.quickSave()" title="Save changes and publish live">
+              <i class="fa fa-check" aria-hidden="true"></i> Save &amp; Publish
+            </button>
+          </div>
+        </header>
         <div class="sb">
-          <p class="note">Pick a starting point. Photos, layout and fonts are prebuilt. Click any text on the preview to edit it, and click any photo to swap it.</p>
+          <p class="note">Pick a starting point. Photos, layout and fonts are prebuilt. Click any text on the preview to edit it, click any photo to swap it, and reorder sections with the arrows.</p>
           <div class="sb-tpl" id="sb-tpl"></div>
           <input type="file" accept="image/*" id="sb-fi" class="hide">
           <div class="sb-ed">
@@ -1028,6 +1303,75 @@ main{min-width:0;padding:6px 12px 24px}
 (function(){
   var $ = function(s,r){return (r||document).querySelector(s)};
   var $$ = function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))};
+
+  /* ---------- Global Core Utilities & Tab Switcher (Initialized Early) ---------- */
+  var toastT;
+  function toast(msg, bad){
+    var t = $('#toast');
+    if (!t) return;
+    t.textContent = msg;
+    t.className = 'toast show' + (bad ? ' bad' : '');
+    clearTimeout(toastT);
+    toastT = setTimeout(function(){ t.className = 'toast'; }, 3200);
+  }
+  window.toast = toast;
+
+  function updateAll(){
+    var mapChecked = $('input[name=hasmap]:checked');
+    var mapOn = mapChecked ? mapChecked.value === 'yes' : true;
+    var mapFields = $('#mapFields');
+    if (mapFields) mapFields.style.display = mapOn ? '' : 'none';
+    var gChecked = $('input[name=guide]:checked');
+    var gOn = gChecked ? gChecked.value === 'yes' : false;
+    var gf = $('#guideFields');
+    if (gf) {
+      gf.classList.toggle('dim', !gOn);
+      if (gOn) gf.removeAttribute('inert'); else gf.setAttribute('inert', '');
+    }
+  }
+
+  var dirty = false;
+  function markDirty(){
+    dirty = true;
+    var s = $('#saveSt');
+    if (s) s.textContent = 'You have unsaved changes.';
+    updateAll();
+  }
+  window.markDirty = markDirty;
+
+  function switchTab(name){
+    if (!name) return;
+    $$('.tab').forEach(function(x){
+      var isTarget = x.dataset.tab === name || x.getAttribute('data-tab') === name;
+      x.setAttribute('aria-selected', isTarget ? 'true' : 'false');
+    });
+    $$('.panel').forEach(function(p){
+      var isTarget = p.dataset.panel === name || p.getAttribute('data-panel') === name;
+      p.hidden = !isTarget;
+      if (isTarget) {
+        p.removeAttribute('hidden');
+        p.style.display = 'block';
+      } else {
+        p.setAttribute('hidden', '');
+        p.style.display = 'none';
+      }
+    });
+    var sb = $('.savebar');
+    if (sb) sb.style.display = (name === 'web' || name === 'sitebuilder') ? '' : 'none';
+    if (name === 'sitebuilder' && window.SB && window.SB.init) {
+      try { window.SB.init(); } catch(e){ console.error('SB.init error:', e); }
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+  window.switchTab = window.gotoTab = switchTab;
+
+  window.addEventListener('hashchange', function(){
+    var h = (location.hash || '').replace('#', '');
+    if (h === 'homepage') h = 'sitebuilder';
+    if (h && ['profile', 'payment', 'web', 'sitebuilder', 'invoice'].includes(h)) {
+      switchTab(h);
+    }
+  });
 
   /* ---------- Rich text editors ---------- */
   var rteSeed = {
@@ -1254,16 +1598,29 @@ main{min-width:0;padding:6px 12px 24px}
 
   /* ---------- Conditional sections ---------- */
   function updateAll(){
-    var mapOn=$('input[name=hasmap]:checked').value==='yes';
-    $('#mapFields').style.display = mapOn?'':'none';
-    var gOn=$('input[name=guide]:checked').value==='yes', gf=$('#guideFields');
-    gf.classList.toggle('dim',!gOn); if(gOn) gf.removeAttribute('inert'); else gf.setAttribute('inert','');
+    var m = $('input[name=hasmap]:checked');
+    var mapOn = m ? m.value === 'yes' : true;
+    var mf = $('#mapFields');
+    if (mf) mf.style.display = mapOn ? '' : 'none';
+    var g = $('input[name=guide]:checked');
+    var gOn = g ? g.value === 'yes' : false;
+    var gf = $('#guideFields');
+    if (gf) {
+      gf.classList.toggle('dim', !gOn);
+      if (gOn) gf.removeAttribute('inert'); else gf.setAttribute('inert', '');
+    }
   }
   function strip(h){var d=document.createElement('div');d.innerHTML=h;return d.textContent.trim()}
 
   /* ---------- Form wiring ---------- */
   var dirty=false;
-  function markDirty(){ dirty=true; $('#saveSt').textContent='You have unsaved changes.'; updateAll(); }
+  function markDirty(){
+    dirty=true;
+    var s = $('#saveSt');
+    if (s) s.textContent='You have unsaved changes.';
+    try { updateAll(); } catch(e){}
+  }
+  window.markDirty = markDirty;
   ['websiteLink','websiteTitle','contactHeading','group','otpEmail','mapLink','addNote','donLabel','donDesc','guideTitle','ytLink'].forEach(function(id){ $('#'+id).addEventListener('input',function(){ this.closest('.field').classList.remove('bad'); markDirty(); }); });
 
   $$('input[type=radio]').forEach(function(r){ r.addEventListener('change',markDirty); });
@@ -1274,9 +1631,20 @@ main{min-width:0;padding:6px 12px 24px}
   /* ---------- Save / validate ---------- */
   var toastT;
   function toast(msg,bad){ var t=$('#toast'); t.textContent=msg; t.className='toast show'+(bad?' bad':''); clearTimeout(toastT); toastT=setTimeout(function(){t.className='toast'},3200); }
+  window.toast = toast;
   $('#saveBtn').addEventListener('click',function(){
     var first=null;
     function flag(el){ el.classList.add('bad'); if(!first || el.getBoundingClientRect().top < first.getBoundingClientRect().top) first=el; }
+
+    var sbPanel = $('[data-panel=sitebuilder]');
+    if (sbPanel && !sbPanel.hidden) {
+      if (window.SB && window.SB.save) window.SB.save();
+      dirty=false;
+      $('#saveSt').textContent='All changes saved just now.';
+      toast('Homepage design saved! Live website updated.');
+      return;
+    }
+
     var link=$('#websiteLink').value.trim();
     if(!/^https?:\/\/.+\..+/.test(link)) flag($('[data-f=link]'));
     if(!$('#websiteTitle').value.trim()) flag($('[data-f=title]'));
@@ -1287,15 +1655,21 @@ main{min-width:0;padding:6px 12px 24px}
     var yt=$('#ytLink').value.trim(); if(yt && !/^https?:\/\/(www\.|m\.)?(youtube\.com|youtu\.be)\//.test(yt)) flag($('[data-f=yt]'));
     defs.forEach(function(d){ if(d.req && !(state[d.id]&&state[d.id].url)){ var w=$('#dw-'+d.id); w.classList.add('bad'); $('.err-msg',w).textContent=d.label+' is required.'; flag(w); } });
     if(first){ first.scrollIntoView({behavior:'smooth',block:'center'}); toast('Fix the highlighted fields, then save again.',true); return; }
+    if (window.SB && window.SB.inited && window.SB.save) window.SB.save();
     dirty=false; $('#saveSt').textContent='All changes saved just now.'; toast('Changes saved.');
   });
-  $('#resetBtn').addEventListener('click',function(){ location.reload(); });
+  $('#resetBtn').addEventListener('click',function(){
+    var sbPanel = $('[data-panel=sitebuilder]');
+    if (sbPanel && !sbPanel.hidden && window.SB && window.SB.resetToDefaults) {
+      window.SB.resetToDefaults();
+      return;
+    }
+    location.reload();
+  });
 
   /* ---------- Tabs, device toggle, menu, theme ---------- */
   $$('.tab').forEach(function(t){ t.addEventListener('click',function(){
-    $$('.tab').forEach(function(x){ x.setAttribute('aria-selected', x===t?'true':'false'); });
-    $$('.panel').forEach(function(p){ p.hidden = p.dataset.panel!==t.dataset.tab; });
-    $('.savebar').style.display = (t.dataset.tab==='web'||t.dataset.tab==='sitebuilder') ? '' : 'none';
+    switchTab(t.dataset.tab);
   }); });
   $('.savebar').style.display='none';
   $('#menuBtn').onclick=function(){ if(window.innerWidth>860) document.body.classList.toggle('nav-off'); else $('#side').classList.toggle('open'); };
@@ -1311,7 +1685,8 @@ main{min-width:0;padding:6px 12px 24px}
   function money(n){ return '$'+Number(n).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}); }
   function emailOk(v){ return /^\S+@\S+\.\S+$/.test(v); }
   function fmtPhone(v){ var d=String(v).replace(/\D/g,'').slice(0,10); if(d.length<4) return d; if(d.length<7) return '('+d.slice(0,3)+') '+d.slice(3); return '('+d.slice(0,3)+') '+d.slice(3,6)+'-'+d.slice(6); }
-  function gotoTab(name){ var t=$('[data-tab='+name+']'); if(t){ t.click(); window.scrollTo({top:0,behavior:'smooth'}); } }
+  function gotoTab(name){ switchTab(name); }
+  window.gotoTab = gotoTab;
 
   /* ----- generic drawer modal ----- */
   function closeModal(){ var m=$('#mdlBack'); if(m) m.remove(); }
@@ -1348,6 +1723,9 @@ main{min-width:0;padding:6px 12px 24px}
   }
   document.addEventListener('input',function(e){ var fg=e.target.closest&&e.target.closest('.sys .fg.bad'); if(fg) fg.classList.remove('bad'); });
   $$('[data-goto]').forEach(function(b){ b.addEventListener('click',function(){ gotoTab(b.dataset.goto); }); });
+  if (location.hash === '#sitebuilder' || location.search.includes('tab=sitebuilder')) {
+    gotoTab('sitebuilder');
+  }
   $$('[data-save]').forEach(function(b){ b.addEventListener('click',function(){
     var panel=b.closest('.panel'), first=checkReq(panel);
     if(first){ first.scrollIntoView({behavior:'smooth',block:'center'}); first.focus(); toast('Fix the highlighted fields, then save again.',true); return; }
@@ -2006,139 +2384,611 @@ main{min-width:0;padding:6px 12px 24px}
   SB.IMG={}; SB.DEF={};
   SB.SLOTS.forEach(function(s){ SB.DEF[s[0]]=SB.IMG[s[0]]=uri(s[2]); });
 
-  SB.state={tpl:'modern',brand:{modern:'#1f4e79',classic:'#1b2a4e'},dev:'d',hid:{},T:{}};
+  SB.CATALOG = [
+    {
+      type: 'blank',
+      category: 'blank',
+      title: 'Blank Section',
+      desc: 'Clean empty canvas ready for modular elements, text, and media.',
+      icon: 'fa-plus-square-o',
+      previewHTML: `<div style="width:100%;height:100%;border:2px dashed #94a3b8;border-radius:8px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;color:#64748b;background:#f8fafc"><i class="fa fa-plus" style="font-size:22px"></i><span style="font-size:11px;font-weight:700">Blank Canvas</span></div>`,
+      create: function() {
+        return {
+          id: 'sec_blank_' + Date.now(),
+          type: 'blank',
+          title: 'Blank Section',
+          hidden: false,
+          ey: 'Custom Section',
+          heading: 'Your Custom Section',
+          desc: 'Add modular elements below to build this section according to your needs.',
+          elements: []
+        };
+      }
+    },
+    {
+      type: 'hero',
+      category: 'welcome',
+      title: 'Hero Banner (Split)',
+      desc: 'High-impact headline with action buttons and featured photo.',
+      icon: 'fa-flag',
+      previewHTML: `<div style="display:flex;gap:8px;align-items:center;width:100%;height:100%"><div style="flex:1"><div style="width:35%;height:6px;background:#ef4444;border-radius:2px;margin-bottom:6px"></div><div style="width:90%;height:10px;background:#0f172a;border-radius:3px;margin-bottom:6px"></div><div style="width:75%;height:6px;background:#cbd5e1;border-radius:2px;margin-bottom:8px"></div><div style="display:flex;gap:4px"><div style="width:36px;height:12px;background:#2563eb;border-radius:99px"></div><div style="width:36px;height:12px;border:1px solid #94a3b8;border-radius:99px"></div></div></div><div style="width:42%;height:82%;background:#cbd5e1;border-radius:6px;display:flex;align-items:center;justify-content:center"><i class="fa fa-picture-o" style="color:#64748b;font-size:18px"></i></div></div>`,
+      create: function() {
+        return {
+          id: 'sec_hero_' + Date.now(),
+          type: 'hero',
+          title: 'Hero Banner',
+          hidden: false,
+          ey: 'Friends of Fairview · Fairview, TX',
+          heading: 'Flags on every holiday, placed by your neighbors.',
+          desc: 'Volunteers place a full-size American flag at your home or business before each national holiday and collect it afterward. Every subscription supports Fairview’s first responders.',
+          btn1: 'Subscribe now',
+          btn2: 'Manage my subscription',
+          img: 'hero',
+          elements: []
+        };
+      }
+    },
+    {
+      type: 'about',
+      category: 'about',
+      title: 'About the Program',
+      desc: 'Split photo and story block explaining your mission and organization.',
+      icon: 'fa-info-circle',
+      previewHTML: `<div style="display:flex;gap:8px;align-items:center;width:100%;height:100%"><div style="width:42%;height:82%;background:#cbd5e1;border-radius:6px;display:flex;align-items:center;justify-content:center"><i class="fa fa-picture-o" style="color:#64748b;font-size:18px"></i></div><div style="flex:1"><div style="width:40%;height:6px;background:#ef4444;border-radius:2px;margin-bottom:6px"></div><div style="width:85%;height:10px;background:#0f172a;border-radius:3px;margin-bottom:6px"></div><div style="width:95%;height:6px;background:#cbd5e1;border-radius:2px;margin-bottom:4px"></div><div style="width:75%;height:6px;background:#cbd5e1;border-radius:2px"></div></div></div>`,
+      create: function() {
+        return {
+          id: 'sec_about_' + Date.now(),
+          type: 'about',
+          title: 'About the Program',
+          hidden: false,
+          ey: 'About the program',
+          heading: 'Fairview’s way to say thank you',
+          desc: 'Friends of Fairview Fire Fighters Association is a volunteer group that supports Fairview’s Police, Fire and EMS. The flag program brings red, white and blue to our streets and funds the community events that honor those who serve.',
+          img: 'about',
+          elements: []
+        };
+      }
+    },
+    {
+      type: 'how',
+      category: 'services',
+      title: 'How It Works (Steps)',
+      desc: 'Numbered step-by-step process cards for subscriber onboarding.',
+      icon: 'fa-list-ol',
+      previewHTML: `<div style="display:flex;gap:6px;width:100%"><div style="flex:1;background:#fff;border:1px solid #cbd5e1;border-radius:6px;padding:8px 6px"><div style="font-size:12px;font-weight:800;color:#ef4444;margin-bottom:4px">01</div><div style="width:70%;height:6px;background:#0f172a;border-radius:2px;margin-bottom:4px"></div><div style="width:90%;height:4px;background:#94a3b8;border-radius:1px"></div></div><div style="flex:1;background:#fff;border:1px solid #cbd5e1;border-radius:6px;padding:8px 6px"><div style="font-size:12px;font-weight:800;color:#ef4444;margin-bottom:4px">02</div><div style="width:70%;height:6px;background:#0f172a;border-radius:2px;margin-bottom:4px"></div><div style="width:90%;height:4px;background:#94a3b8;border-radius:1px"></div></div><div style="flex:1;background:#fff;border:1px solid #cbd5e1;border-radius:6px;padding:8px 6px"><div style="font-size:12px;font-weight:800;color:#ef4444;margin-bottom:4px">03</div><div style="width:70%;height:6px;background:#0f172a;border-radius:2px;margin-bottom:4px"></div><div style="width:90%;height:4px;background:#94a3b8;border-radius:1px"></div></div></div>`,
+      create: function() {
+        return {
+          id: 'sec_how_' + Date.now(),
+          type: 'how',
+          title: 'How It Works',
+          hidden: false,
+          ey: 'How it works',
+          heading: 'We handle everything',
+          desc: '',
+          items: [
+            { title: 'Subscribe online', desc: 'Choose a plan and tell us where to place your flag. Logging in never needs a password.' },
+            { title: 'We install before each holiday', desc: 'Volunteers place a flag the day before every holiday.' },
+            { title: 'We collect it afterward', desc: 'Flags come down the day after and are stored with care.' }
+          ],
+          elements: []
+        };
+      }
+    },
+    {
+      type: 'plans',
+      category: 'pricing',
+      title: 'Pricing & Plans',
+      desc: 'Multi-column membership and subscription cards with pricing and CTAs.',
+      icon: 'fa-credit-card',
+      previewHTML: `<div style="display:flex;gap:6px;width:100%"><div style="flex:1;background:#fff;border:1px solid #cbd5e1;border-radius:6px;padding:8px 6px;text-align:center"><div style="font-size:9px;color:#64748b">HOME</div><div style="font-size:13px;font-weight:800;color:#0f172a;margin:2px 0">$65</div><div style="width:80%;height:4px;background:#94a3b8;margin:0 auto 6px"></div><div style="width:100%;height:10px;background:#2563eb;border-radius:3px"></div></div><div style="flex:1;background:#eff6ff;border:1.5px solid #3b82f6;border-radius:6px;padding:8px 6px;text-align:center"><div style="font-size:9px;color:#2563eb;font-weight:700">POPULAR</div><div style="font-size:13px;font-weight:800;color:#0f172a;margin:2px 0">$58</div><div style="width:80%;height:4px;background:#94a3b8;margin:0 auto 6px"></div><div style="width:100%;height:10px;background:#2563eb;border-radius:3px"></div></div><div style="flex:1;background:#fff;border:1px solid #cbd5e1;border-radius:6px;padding:8px 6px;text-align:center"><div style="font-size:9px;color:#64748b">DONATION</div><div style="font-size:13px;font-weight:800;color:#0f172a;margin:2px 0">Any</div><div style="width:80%;height:4px;background:#94a3b8;margin:0 auto 6px"></div><div style="width:100%;height:10px;background:#2563eb;border-radius:3px"></div></div></div>`,
+      create: function() {
+        return {
+          id: 'sec_plans_' + Date.now(),
+          type: 'plans',
+          title: 'Subscription Plans',
+          hidden: false,
+          ey: 'Subscription',
+          heading: 'Choose your plan',
+          desc: 'Renew, update or cancel from your account at any time.',
+          footerNote: 'Sample prices shown. Live prices come from your Product List.',
+          items: [
+            { name: 'Home', price: '$65', period: '/ year', desc: 'One flag at your home on every holiday.', btn: 'Subscribe' },
+            { name: 'Business & HOA', price: '$58.50', period: '/ flag', desc: '10% off when you order 4 or more flags.', btn: 'Order flags' },
+            { name: 'Additional donation', price: 'Any', period: 'amount', desc: 'Support the First Responders Appreciation Dinner.', btn: 'Donate' }
+          ],
+          elements: []
+        };
+      }
+    },
+    {
+      type: 'features',
+      category: 'features',
+      title: 'Features & Highlights',
+      desc: '3-column feature grid with icons highlighting key program benefits.',
+      icon: 'fa-star',
+      previewHTML: `<div style="display:flex;gap:6px;width:100%"><div style="flex:1;background:#fff;border:1px solid #cbd5e1;border-radius:6px;padding:8px 6px;text-align:center"><div style="width:18px;height:18px;background:rgba(37,99,235,.15);border-radius:50%;margin:0 auto 4px;color:#2563eb;font-size:9px;display:flex;align-items:center;justify-content:center"><i class="fa fa-shield"></i></div><div style="width:70%;height:5px;background:#0f172a;margin:0 auto 3px"></div><div style="width:90%;height:3px;background:#94a3b8;margin:0 auto"></div></div><div style="flex:1;background:#fff;border:1px solid #cbd5e1;border-radius:6px;padding:8px 6px;text-align:center"><div style="width:18px;height:18px;background:rgba(37,99,235,.15);border-radius:50%;margin:0 auto 4px;color:#2563eb;font-size:9px;display:flex;align-items:center;justify-content:center"><i class="fa fa-flag"></i></div><div style="width:70%;height:5px;background:#0f172a;margin:0 auto 3px"></div><div style="width:90%;height:3px;background:#94a3b8;margin:0 auto"></div></div><div style="flex:1;background:#fff;border:1px solid #cbd5e1;border-radius:6px;padding:8px 6px;text-align:center"><div style="width:18px;height:18px;background:rgba(37,99,235,.15);border-radius:50%;margin:0 auto 4px;color:#2563eb;font-size:9px;display:flex;align-items:center;justify-content:center"><i class="fa fa-heart"></i></div><div style="width:70%;height:5px;background:#0f172a;margin:0 auto 3px"></div><div style="width:90%;height:3px;background:#94a3b8;margin:0 auto"></div></div></div>`,
+      create: function() {
+        return {
+          id: 'sec_features_' + Date.now(),
+          type: 'features',
+          title: 'Features & Highlights',
+          hidden: false,
+          ey: 'Why Choose Us',
+          heading: 'Built for Our Community',
+          desc: 'Premium materials, trusted neighbors, and 100% volunteer dedication.',
+          items: [
+            { icon: 'fa-shield', title: 'Ground Sleeve Protection', desc: 'Flush underground sleeve with protective cap so lawn mowers pass safely over it.' },
+            { icon: 'fa-flag', title: '100% American Made Flags', desc: 'Commercial-grade, weather-resistant nylon flags that fly beautifully in all conditions.' },
+            { icon: 'fa-heart', title: 'Community Funded Impact', desc: 'Every dollar stays in Fairview to equip firefighters, police officers, and paramedics.' }
+          ],
+          elements: []
+        };
+      }
+    },
+    {
+      type: 'stats',
+      category: 'stats',
+      title: 'Stats & Impact Numbers',
+      desc: 'Big number counters showcasing your community achievements.',
+      icon: 'fa-bar-chart',
+      previewHTML: `<div style="display:flex;gap:6px;width:100%"><div style="flex:1;background:#fff;border:1px solid #cbd5e1;border-radius:6px;padding:8px 4px;text-align:center"><div style="font-size:14px;font-weight:800;color:#ef4444">1.4K</div><div style="font-size:7px;color:#64748b">FLAGS</div></div><div style="flex:1;background:#fff;border:1px solid #cbd5e1;border-radius:6px;padding:8px 4px;text-align:center"><div style="font-size:14px;font-weight:800;color:#ef4444">6</div><div style="font-size:7px;color:#64748b">HOLIDAYS</div></div><div style="flex:1;background:#fff;border:1px solid #cbd5e1;border-radius:6px;padding:8px 4px;text-align:center"><div style="font-size:14px;font-weight:800;color:#ef4444">100%</div><div style="font-size:7px;color:#64748b">VOLUNTEER</div></div></div>`,
+      create: function() {
+        return {
+          id: 'sec_stats_' + Date.now(),
+          type: 'stats',
+          title: 'Stats & Impact',
+          hidden: false,
+          ey: 'Our Impact',
+          heading: 'Serving Fairview with Pride',
+          desc: 'Together, our subscribers and volunteers make a visible difference across the entire town.',
+          items: [
+            { number: '1,450+', label: 'ACTIVE SUBSCRIPTIONS', desc: 'Homes and storefronts participating.' },
+            { number: '6', label: 'NATIONAL HOLIDAYS', desc: 'Flags displayed throughout the year.' },
+            { number: '$48,000', label: 'EQUIPMENT FUNDED', desc: 'Directly supporting first responders.' },
+            { number: '100%', label: 'VOLUNTEER POWERED', desc: 'Driven by neighbors serving neighbors.' }
+          ],
+          elements: []
+        };
+      }
+    },
+    {
+      type: 'faq',
+      category: 'faq',
+      title: 'FAQ / Questions',
+      desc: 'Accordion questions and answers addressing customer inquiries.',
+      icon: 'fa-question-circle',
+      previewHTML: `<div style="display:flex;flex-direction:column;gap:4px;width:90%"><div style="background:#fff;border:1px solid #cbd5e1;border-radius:4px;padding:6px 8px;display:flex;justify-content:space-between;align-items:center"><div style="width:70%;height:5px;background:#0f172a;border-radius:1px"></div><i class="fa fa-chevron-down" style="font-size:8px;color:#94a3b8"></i></div><div style="background:#fff;border:1px solid #cbd5e1;border-radius:4px;padding:6px 8px;display:flex;justify-content:space-between;align-items:center"><div style="width:80%;height:5px;background:#0f172a;border-radius:1px"></div><i class="fa fa-chevron-down" style="font-size:8px;color:#94a3b8"></i></div><div style="background:#fff;border:1px solid #cbd5e1;border-radius:4px;padding:6px 8px;display:flex;justify-content:space-between;align-items:center"><div style="width:65%;height:5px;background:#0f172a;border-radius:1px"></div><i class="fa fa-chevron-down" style="font-size:8px;color:#94a3b8"></i></div></div>`,
+      create: function() {
+        return {
+          id: 'sec_faq_' + Date.now(),
+          type: 'faq',
+          title: 'Frequently Asked Questions',
+          hidden: false,
+          ey: 'Common Questions',
+          heading: 'Frequently Asked Questions',
+          desc: 'Everything you need to know about our flag program.',
+          items: [
+            { q: 'When do the flags get installed and collected?', a: 'Volunteers place flags the afternoon before each national holiday and retrieve them the day after the holiday.' },
+            { q: 'How is the flag anchored in my yard?', a: 'We install a small underground plastic receiver flush with your lawn and capped, so lawn mowers pass safely over it.' },
+            { q: 'Where do subscription proceeds go?', a: '100% of proceeds fund local first responder equipment, community safety drives, and appreciation banquets.' }
+          ],
+          elements: []
+        };
+      }
+    },
+    {
+      type: 'say',
+      category: 'reviews',
+      title: 'Testimonials & Reviews',
+      desc: 'Quotes and reviews from community members and local businesses.',
+      icon: 'fa-comments',
+      previewHTML: `<div style="display:flex;gap:6px;width:100%"><div style="flex:1;background:#fff;border:1px solid #cbd5e1;border-radius:6px;padding:8px 6px"><div style="color:#ef4444;font-size:12px;line-height:1;margin-bottom:4px">“</div><div style="width:90%;height:4px;background:#94a3b8;margin-bottom:3px"></div><div style="width:70%;height:4px;background:#94a3b8;margin-bottom:6px"></div><div style="display:flex;align-items:center;gap:3px"><div style="width:8px;height:8px;border-radius:50%;background:#0f172a"></div><div style="width:50%;height:4px;background:#0f172a"></div></div></div><div style="flex:1;background:#fff;border:1px solid #cbd5e1;border-radius:6px;padding:8px 6px"><div style="color:#ef4444;font-size:12px;line-height:1;margin-bottom:4px">“</div><div style="width:90%;height:4px;background:#94a3b8;margin-bottom:3px"></div><div style="width:70%;height:4px;background:#94a3b8;margin-bottom:6px"></div><div style="display:flex;align-items:center;gap:3px"><div style="width:8px;height:8px;border-radius:50%;background:#0f172a"></div><div style="width:50%;height:4px;background:#0f172a"></div></div></div></div>`,
+      create: function() {
+        return {
+          id: 'sec_say_' + Date.now(),
+          type: 'say',
+          title: 'Testimonials',
+          hidden: false,
+          ey: 'Subscribers',
+          heading: 'What neighbors say',
+          desc: '',
+          footerNote: 'Sample quotes. Replace with your own.',
+          items: [
+            { quote: 'I came home the night before Memorial Day and the flag was already up. My kids look for it every holiday now.', name: 'Dana R.', location: 'Fairview' },
+            { quote: 'Our HOA lines the whole entrance with flags. One email and it is handled every year.', name: 'Marcus T.', location: 'Subscriber' },
+            { quote: 'Knowing the money supports our first responders makes it an easy renewal.', name: 'Linda P.', location: 'Fairview' }
+          ],
+          elements: []
+        };
+      }
+    },
+    {
+      type: 'cta',
+      category: 'cta',
+      title: 'Call to Action Banner',
+      desc: 'High-conversion colored banner with prominent action buttons.',
+      icon: 'fa-bullhorn',
+      previewHTML: `<div style="width:90%;background:linear-gradient(135deg,#1f4e79,#0f172a);border-radius:8px;padding:12px;text-align:center;color:#fff"><div style="width:30%;height:4px;background:#f2c8a6;margin:0 auto 4px"></div><div style="width:80%;height:8px;background:#fff;margin:0 auto 4px"></div><div style="width:60%;height:4px;background:#ffffffaa;margin:0 auto 8px"></div><div style="width:40%;height:12px;background:#fff;border-radius:99px;margin:0 auto"></div></div>`,
+      create: function() {
+        return {
+          id: 'sec_cta_' + Date.now(),
+          type: 'cta',
+          title: 'Call to Action',
+          hidden: false,
+          ey: 'Get Started Today',
+          heading: 'Ready to join our community flag program?',
+          desc: 'Sign up in two minutes. Support Fairview first responders and show pride on every major holiday.',
+          btn1: 'Subscribe now ($50/yr)',
+          btn2: 'Contact our team',
+          elements: []
+        };
+      }
+    },
+    {
+      type: 'hol',
+      category: 'events',
+      title: 'Holiday Schedule',
+      desc: 'List of dates and national holidays when flags are displayed.',
+      icon: 'fa-calendar',
+      previewHTML: `<div style="width:90%;background:#fff;border:1px solid #cbd5e1;border-radius:6px;padding:6px 8px;display:flex;flex-direction:column;gap:5px"><div style="display:flex;justify-content:space-between"><div style="width:40%;height:6px;background:#0f172a"></div><div style="width:30%;height:6px;background:#94a3b8"></div></div><div style="display:flex;justify-content:space-between"><div style="width:45%;height:6px;background:#0f172a"></div><div style="width:25%;height:6px;background:#94a3b8"></div></div><div style="display:flex;justify-content:space-between"><div style="width:50%;height:6px;background:#0f172a"></div><div style="width:30%;height:6px;background:#94a3b8"></div></div></div>`,
+      create: function() {
+        return {
+          id: 'sec_hol_' + Date.now(),
+          type: 'hol',
+          title: 'Holiday Schedule',
+          hidden: false,
+          ey: 'Next 12 months',
+          heading: 'Holidays we fly',
+          desc: 'Flags go up the day before each holiday and come down the day after.',
+          items: [
+            { name: 'Veterans Day', date: 'Wed, Nov 11, 2026' },
+            { name: 'Presidents Day', date: 'Mon, Feb 15, 2027' },
+            { name: 'Memorial Day', date: 'Mon, May 31, 2027' },
+            { name: 'Independence Day', date: 'Sun, Jul 4, 2027' },
+            { name: 'Labor Day', date: 'Mon, Sep 6, 2027' }
+          ],
+          elements: []
+        };
+      }
+    },
+    {
+      type: 'gal',
+      category: 'gallery',
+      title: 'Photo Gallery',
+      desc: 'Grid of community photos highlighting holiday displays.',
+      icon: 'fa-camera',
+      previewHTML: `<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:4px;width:95%"><div style="aspect-ratio:1;background:#cbd5e1;border-radius:4px;display:flex;align-items:center;justify-content:center"><i class="fa fa-picture-o" style="color:#64748b;font-size:10px"></i></div><div style="aspect-ratio:1;background:#cbd5e1;border-radius:4px;display:flex;align-items:center;justify-content:center"><i class="fa fa-picture-o" style="color:#64748b;font-size:10px"></i></div><div style="aspect-ratio:1;background:#cbd5e1;border-radius:4px;display:flex;align-items:center;justify-content:center"><i class="fa fa-picture-o" style="color:#64748b;font-size:10px"></i></div><div style="aspect-ratio:1;background:#cbd5e1;border-radius:4px;display:flex;align-items:center;justify-content:center"><i class="fa fa-picture-o" style="color:#64748b;font-size:10px"></i></div></div>`,
+      create: function() {
+        return {
+          id: 'sec_gal_' + Date.now(),
+          type: 'gal',
+          title: 'Photo Gallery',
+          hidden: false,
+          ey: 'Flag days',
+          heading: 'Around Fairview',
+          desc: '',
+          items: ['g1', 'g2', 'g3', 'g4'],
+          elements: []
+        };
+      }
+    },
+    {
+      type: 'contact',
+      category: 'contact',
+      title: 'Contact & Service Map',
+      desc: 'Organization address, phone, email, and service area boundary map.',
+      icon: 'fa-map-marker',
+      previewHTML: `<div style="display:flex;gap:6px;width:100%;height:100%;align-items:center"><div style="flex:1"><div style="width:40%;height:6px;background:#ef4444;margin-bottom:4px"></div><div style="width:85%;height:8px;background:#0f172a;margin-bottom:6px"></div><div style="width:90%;height:4px;background:#94a3b8;margin-bottom:3px"></div><div style="width:70%;height:4px;background:#94a3b8"></div></div><div style="width:45%;height:80%;background:#e2e8f0;border-radius:6px;border:1.5px solid #ef4444;display:flex;align-items:center;justify-content:center;color:#ef4444"><i class="fa fa-map-marker" style="font-size:16px"></i></div></div>`,
+      create: function() {
+        return {
+          id: 'sec_contact_' + Date.now(),
+          type: 'contact',
+          title: 'Contact & Service Map',
+          hidden: false,
+          ey: 'Contact',
+          heading: 'Questions? We’re happy to help.',
+          desc: 'Note: Please check the service map to verify we service your address.',
+          details: '<b>Friends of Fairview</b><br>(469) 331-2520<br>SMS: (972) 968-8140. Text us, it’s faster and easier.<br>510 State HWY 5, Fairview, TX 75069<br>info@friendsoffairview.org',
+          footerNote: 'Friends of Fairview’s service area is highlighted in red.',
+          img: 'map',
+          elements: []
+        };
+      }
+    },
+    {
+      type: 'don',
+      category: 'pricing',
+      title: 'Fundraiser / Donation',
+      desc: 'Dedicated donation appeal for special banquets or community funds.',
+      icon: 'fa-heart',
+      previewHTML: `<div style="display:flex;gap:6px;width:100%;height:100%;align-items:center"><div style="width:40%;height:80%;background:#cbd5e1;border-radius:6px;display:flex;align-items:center;justify-content:center"><i class="fa fa-heart" style="color:#ef4444;font-size:16px"></i></div><div style="flex:1"><div style="width:40%;height:5px;background:#ef4444;margin-bottom:4px"></div><div style="width:80%;height:8px;background:#0f172a;margin-bottom:6px"></div><div style="width:45px;height:12px;background:#ef4444;border-radius:4px"></div></div></div>`,
+      create: function() {
+        return {
+          id: 'sec_don_' + Date.now(),
+          type: 'don',
+          title: 'Additional Donation',
+          hidden: false,
+          ey: 'Additional donation',
+          heading: 'First Responders Appreciation Dinner',
+          desc: 'Each year, we host an Appreciation Dinner to honor all of Fairview’s first responders (Police, Fire and EMS), and we’d be grateful for your support.',
+          btn1: 'Donate',
+          btn2: 'Read more (PDF)',
+          img: 'dinner',
+          elements: []
+        };
+      }
+    },
+    {
+      type: 'text',
+      category: 'about',
+      title: 'Rich Text Announcement',
+      desc: 'Clean editorial block for community updates, policies, or stories.',
+      icon: 'fa-file-text-o',
+      previewHTML: `<div style="width:85%;background:#fff;border:1px solid #cbd5e1;border-radius:6px;padding:8px;text-align:left"><div style="width:30%;height:5px;background:#ef4444;margin-bottom:4px"></div><div style="width:75%;height:8px;background:#0f172a;margin-bottom:6px"></div><div style="width:95%;height:4px;background:#94a3b8;margin-bottom:3px"></div><div style="width:85%;height:4px;background:#94a3b8"></div></div>`,
+      create: function() {
+        return {
+          id: 'sec_text_' + Date.now(),
+          type: 'text',
+          title: 'Rich Text Block',
+          hidden: false,
+          ey: 'Announcement',
+          heading: 'Important Update for 2026 Subscribers',
+          desc: 'We are expanding our flag delivery routes this spring! If you live in an adjoining neighborhood, please reach out to our volunteer coordinator to request inclusion on this year’s delivery map.',
+          elements: []
+        };
+      }
+    }
+  ];
 
-  SB.TPL=[['modern','Modern & Community','Warm neutrals, rounded shapes, photo-led. Friendly and neighborly.'],
-          ['classic','Classic & Patriotic','Serif headlines, navy and red, centered layouts. Traditional and formal.']];
+  /* Modular In-Section Elements Catalog */
+  SB.ELEMENTS_CATALOG = [
+    {
+      type: 'newsletter',
+      category: 'forms',
+      title: 'Newsletter Signup Box',
+      desc: 'Centered email subscription card with headline and call to action.',
+      icon: 'fa-envelope-o',
+      previewHTML: `<div style="width:90%;background:#fff;border:1px solid #cbd5e1;border-radius:8px;padding:10px 8px;text-align:center"><div style="width:55%;height:7px;background:#0f172a;margin:0 auto 4px"></div><div style="width:75%;height:4px;background:#94a3b8;margin:0 auto 8px"></div><div style="display:flex;gap:4px"><div style="flex:1;height:12px;border:1px solid #cbd5e1;border-radius:3px"></div><div style="width:28px;height:12px;background:#2563eb;border-radius:3px"></div></div></div>`,
+      create: function() {
+        return {
+          type: 'newsletter',
+          title: 'Subscribe to Our Newsletter',
+          desc: 'Stay up to date with flag placement schedules, community volunteer days, and first responder events.',
+          placeholder: 'Enter your email address...',
+          btn: 'Subscribe'
+        };
+      }
+    },
+    {
+      type: 'stats',
+      category: 'metrics',
+      title: 'Stats Counter Cards',
+      desc: 'Row of big bold metrics highlighting flags placed and community impact.',
+      icon: 'fa-calculator',
+      previewHTML: `<div style="display:flex;gap:4px;width:95%"><div style="flex:1;background:#fff;border:1px solid #cbd5e1;padding:6px 2px;border-radius:4px;text-align:center"><div style="font-size:12px;font-weight:800;color:#ef4444">1.4K</div><div style="font-size:7px;color:#64748b">FLAGS</div></div><div style="flex:1;background:#fff;border:1px solid #cbd5e1;padding:6px 2px;border-radius:4px;text-align:center"><div style="font-size:12px;font-weight:800;color:#ef4444">6</div><div style="font-size:7px;color:#64748b">DATES</div></div><div style="flex:1;background:#fff;border:1px solid #cbd5e1;padding:6px 2px;border-radius:4px;text-align:center"><div style="font-size:12px;font-weight:800;color:#ef4444">100%</div><div style="font-size:7px;color:#64748b">VOLUNTEER</div></div></div>`,
+      create: function() {
+        return {
+          type: 'stats',
+          title: 'Stats Metrics',
+          stats: [
+            { num: '1,450+', lbl: 'Active Flags' },
+            { num: '6', lbl: 'Holidays a Year' },
+            { num: '100%', lbl: 'Volunteer Run' }
+          ]
+        };
+      }
+    },
+    {
+      type: 'video',
+      category: 'media',
+      title: 'Video Embed Player',
+      desc: '16:9 media player box with play button, headline, and subtitle.',
+      icon: 'fa-play-circle',
+      previewHTML: `<div style="width:85%;height:75%;background:#0f172a;border-radius:6px;display:flex;align-items:center;justify-content:center"><div style="width:30px;height:30px;border-radius:50%;background:#ef4444;display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px"><i class="fa fa-play" style="margin-left:2px"></i></div></div>`,
+      create: function() {
+        return {
+          type: 'video',
+          title: 'Watch: 2026 Memorial Day Flag Placement in Fairview',
+          desc: 'See our team of neighborhood volunteers placing over 1,400 flags at dawn across Fairview streets.'
+        };
+      }
+    },
+    {
+      type: 'social',
+      category: 'buttons',
+      title: 'Social Links Bar',
+      desc: 'Icon strip connecting visitors to Facebook, Twitter, Instagram, YouTube.',
+      icon: 'fa-share-alt',
+      previewHTML: `<div style="display:flex;gap:6px"><div style="width:20px;height:20px;border-radius:50%;background:#1877f2;display:flex;align-items:center;justify-content:center;color:#fff;font-size:9px"><i class="fa fa-facebook"></i></div><div style="width:20px;height:20px;border-radius:50%;background:#1da1f2;display:flex;align-items:center;justify-content:center;color:#fff;font-size:9px"><i class="fa fa-twitter"></i></div><div style="width:20px;height:20px;border-radius:50%;background:#e1306c;display:flex;align-items:center;justify-content:center;color:#fff;font-size:9px"><i class="fa fa-instagram"></i></div><div style="width:20px;height:20px;border-radius:50%;background:#ff0000;display:flex;align-items:center;justify-content:center;color:#fff;font-size:9px"><i class="fa fa-youtube-play"></i></div></div>`,
+      create: function() {
+        return {
+          type: 'social',
+          title: 'Social Media Links'
+        };
+      }
+    },
+    {
+      type: 'callout',
+      category: 'boxes',
+      title: 'Alert / Callout Box',
+      desc: 'Highlighted accent callout with left colored border and notice icon.',
+      icon: 'fa-exclamation-circle',
+      previewHTML: `<div style="width:90%;background:#fff;border-left:4px solid #ef4444;border-top:1px solid #cbd5e1;border-right:1px solid #cbd5e1;border-bottom:1px solid #cbd5e1;border-radius:4px;padding:8px;display:flex;gap:6px;align-items:center"><i class="fa fa-info-circle" style="color:#ef4444;font-size:14px"></i><div style="flex:1"><div style="width:60%;height:5px;background:#0f172a;margin-bottom:3px"></div><div style="width:85%;height:4px;background:#94a3b8"></div></div></div>`,
+      create: function() {
+        return {
+          type: 'callout',
+          title: 'Important Notice for Fairview Residents',
+          desc: 'Flag installation begins at 6:30 AM before each holiday. Please ensure front lawn sprinklers are turned off on delivery morning.',
+          icon: 'fa-info-circle'
+        };
+      }
+    },
+    {
+      type: 'cta-btn',
+      category: 'buttons',
+      title: 'Action Button CTA',
+      desc: 'Standalone centered action button for high-conversion prompts.',
+      icon: 'fa-hand-pointer-o',
+      previewHTML: `<div style="padding:10px 24px;background:#2563eb;color:#fff;border-radius:99px;font-size:11px;font-weight:700">Subscribe now</div>`,
+      create: function() {
+        return {
+          type: 'cta-btn',
+          title: 'Action Button',
+          text: 'Subscribe to Holiday Flag Program'
+        };
+      }
+    },
+    {
+      type: 'form',
+      category: 'forms',
+      title: 'Quick Contact Inquiry Form',
+      desc: 'Inline form with name, email, message fields, and send button.',
+      icon: 'fa-wpforms',
+      previewHTML: `<div style="width:85%;background:#fff;border:1px solid #cbd5e1;border-radius:6px;padding:8px;text-align:center"><div style="width:50%;height:6px;background:#0f172a;margin:0 auto 4px"></div><div style="display:flex;gap:4px;margin-bottom:4px"><div style="flex:1;height:10px;border:1px solid #cbd5e1;border-radius:2px"></div><div style="flex:1;height:10px;border:1px solid #cbd5e1;border-radius:2px"></div></div><div style="width:100%;height:14px;border:1px solid #cbd5e1;border-radius:2px;margin-bottom:4px"></div><div style="width:100%;height:12px;background:#2563eb;border-radius:2px"></div></div>`,
+      create: function() {
+        return {
+          type: 'form',
+          title: 'Quick Community Inquiry',
+          desc: 'Have questions about placement, renewal, or corporate sponsorship? Send us a quick note.',
+          btn: 'Send Message'
+        };
+      }
+    },
+    {
+      type: 'badge',
+      category: 'boxes',
+      title: 'Trust Badge Ribbon',
+      desc: 'Clean verification pill badge displaying credentials and trust marks.',
+      icon: 'fa-shield',
+      previewHTML: `<div style="padding:6px 14px;background:rgba(37,99,235,.1);border:1px solid rgba(37,99,235,.3);color:#2563eb;border-radius:99px;font-size:10px;font-weight:700;display:flex;align-items:center;gap:4px"><i class="fa fa-shield"></i> 100% Volunteer Driven</div>`,
+      create: function() {
+        return {
+          type: 'badge',
+          title: 'Trust Badge',
+          text: '100% Volunteer Driven · Proud 501(c)(3) Partner · Serving Fairview Since 2018'
+        };
+      }
+    },
+    {
+      type: 'quote',
+      category: 'text',
+      title: 'Feature Pull Quote',
+      desc: 'Large editorial statement quote with author attribution.',
+      icon: 'fa-quote-left',
+      previewHTML: `<div style="text-align:center;padding:8px"><div style="font-size:16px;color:#ef4444;line-height:1">“</div><div style="width:75%;height:6px;background:#0f172a;margin:0 auto 4px"></div><div style="width:40%;height:4px;background:#ef4444;margin:0 auto"></div></div>`,
+      create: function() {
+        return {
+          type: 'quote',
+          title: 'Pull Quote',
+          text: 'The sight of hundreds of American flags flying down our neighborhood streets reminds us what true community is all about.',
+          author: '— CHIEF VOLUNTEER COORDINATOR, FAIRVIEW'
+        };
+      }
+    },
+    {
+      type: 'text-block',
+      category: 'text',
+      title: 'Rich Text Paragraph',
+      desc: 'Formatted paragraph block for additional explanations and announcements.',
+      icon: 'fa-paragraph',
+      previewHTML: `<div style="width:85%;text-align:left;padding:6px"><div style="width:40%;height:6px;background:#0f172a;margin-bottom:4px"></div><div style="width:90%;height:4px;background:#94a3b8;margin-bottom:3px"></div><div style="width:80%;height:4px;background:#94a3b8"></div></div>`,
+      create: function() {
+        return {
+          type: 'text-block',
+          title: 'Text Block',
+          heading: 'Community Notes & Guidelines',
+          desc: 'All flag proceeds directly benefit Fairview firefighters, police, and emergency responders. If you move or want to adjust flag placement, just let us know.'
+        };
+      }
+    },
+    {
+      type: 'html',
+      category: 'text',
+      title: 'Custom HTML / Embed Code',
+      desc: 'Embed any custom HTML, iframes, widgets, forms, badges, or scripts.',
+      icon: 'fa-code',
+      previewHTML: `<div style="padding:10px;text-align:center;background:#0f172a;color:#38bdf8;border-radius:6px;font-family:monospace;font-size:11px">&lt;custom-html&gt; ... &lt;/&gt;</div>`,
+      create: function() {
+        return {
+          type: 'html',
+          title: 'Custom HTML Embed',
+          code: '<div style="padding:24px;background:#f8fafc;border:2px dashed #cbd5e1;border-radius:12px;text-align:center">\\n  <h3 style="color:#1e293b;margin:0 0 8px">Your Custom HTML Block</h3>\\n  <p style="color:#64748b;margin:0">Click to edit embed code, widget, iframe, or custom HTML.</p>\\n</div>'
+        };
+      }
+    }
+  ];
+
+  SB.defaultSections = function() {
+    const defaultTypes = ['hero', 'about', 'how', 'plans', 'hol', 'gal', 'don', 'say', 'contact'];
+    return defaultTypes.map(function(type){
+      const def = SB.CATALOG.find(function(c){ return c.type === type; });
+      return def ? def.create() : null;
+    }).filter(Boolean);
+  };
+
+  SB.state = {
+    tpl: 'modern',
+    brand: { modern: '#1f4e79', classic: '#1b2a4e' },
+    dev: 'd',
+    navBrand: 'Friends of Fairview',
+    navLogin: 'Already subscribed? Log in, no password needed',
+    sections: SB.defaultSections()
+  };
+
+  SB.TPL = [
+    ['modern', 'Modern & Community', 'Warm neutrals, rounded shapes, photo-led. Friendly and neighborly.'],
+    ['classic', 'Classic & Patriotic', 'Serif headlines, navy and red, centered layouts. Traditional and formal.']
+  ];
+
+  SB.setTemplate = function(k){
+    SB.state.tpl = k;
+    if (!SB.state.brand[k]) {
+      SB.state.brand[k] = (k === 'classic') ? '#1b2a4e' : '#1f4e79';
+    }
+    const heroSec = SB.state.sections.find(function(s){ return s.type === 'hero'; });
+    if (heroSec) {
+      if (k === 'classic') {
+        if (heroSec.heading === 'Flags on every holiday, placed by your neighbors.') {
+          heroSec.heading = 'Fly the flag on every holiday that matters.';
+        }
+        if (heroSec.ey === 'Friends of Fairview · Fairview, TX') {
+          heroSec.ey = 'Friends of Fairview · Stars & Stripes Flag Program';
+        }
+      } else {
+        if (heroSec.heading === 'Fly the flag on every holiday that matters.') {
+          heroSec.heading = 'Flags on every holiday, placed by your neighbors.';
+        }
+        if (heroSec.ey === 'Friends of Fairview · Stars & Stripes Flag Program') {
+          heroSec.ey = 'Friends of Fairview · Fairview, TX';
+        }
+      }
+    }
+    if (typeof markDirty === 'function') markDirty();
+    SB.tplCards();
+    SB.render();
+    const tplName = (k === 'classic') ? 'Classic & Patriotic' : 'Modern & Community';
+    if (typeof toast === 'function') toast(tplName + ' applied. Your edits and sections are kept');
+  };
+
+  SB.setBrand = function(c){
+    SB.state.brand[SB.state.tpl] = c;
+    if (typeof markDirty === 'function') markDirty();
+    SB.render();
+  };
+
+  SB.resetImage = function(k){
+    SB.IMG[k] = SB.DEF[k];
+    if (typeof markDirty === 'function') markDirty();
+    SB.render();
+    if (typeof toast === 'function') toast('Image reset to default');
+  };
+
   SB.tplCards = function(){
     $('#sb-tpl').innerHTML = SB.TPL.map(function(t){
       const k = t[0], n = t[1], d = t[2];
-      return `<div class="sb-tc ${SB.state.tpl === k ? 'on' : ''}" onclick="SB.state.tpl='${k}';SB.tplCards();SB.render();toast('${n} applied. Your text edits and images are kept')"><img src="${k === 'modern' ? SB.DEF.about : SB.DEF.hero}" alt=""><div><b>${n}</b><span class="note">${d}</span></div></div>`;
+      return `<div class="sb-tc ${SB.state.tpl === k ? 'on' : ''}" onclick="SB.setTemplate('${k}')"><img src="${k === 'modern' ? SB.DEF.about : SB.DEF.hero}" alt=""><div><b>${n}</b><span class="note">${d}</span></div></div>`;
     }).join('');
   };
-
-  const SECS = [
-    ["hero", "Hero banner"],
-    ["about", "About the program"],
-    ["how", "How it works"],
-    ["plans", "Subscription plans"],
-    ["hol", "Holiday schedule"],
-    ["gal", "Image gallery"],
-    ["don", "Additional donation"],
-    ["say", "Testimonials"],
-    ["contact", "Contact & service map"],
-  ];
-  const e = (k, d, tag = "span") =>
-    `<${tag} contenteditable data-k="${k}">${SB.state.T[k] ?? d}</${tag}>`;
-  const ph = (k, cls = "") =>
-    `<div class="ph ${cls}" data-img="${k}" style="background-image:url('${SB.IMG[k]}')"></div>`;
-  const hdr = (k, ey, t, p, br) =>
-    `<div class="hd"><div class="ey">${e(k + "e", ey)}</div><h2>${e(k + "t", t)}</h2>${p ? `<p>${e(k + "p", p)}</p>` : ""}</div>`;
-  function secs(m) {
-    return {
-      hero: () =>
-        m
-          ? `<div class="hero"><div><div class="ey">${e("he", "Friends of Fairview · Fairview, TX")}</div><h1>${e("ht", "Flags on every holiday, placed by your neighbors.")}</h1><p class="l">${e("hp", "Volunteers place a full-size American flag at your home or business before each national holiday and collect it afterward. Every subscription supports Fairview’s first responders.")}</p><span class="sbtn">${e("hb", "Subscribe now")}</span><span class="sbtn o">${e("hb2", "Manage my subscription")}</span></div>${ph("hero")}</div>`
-          : `<div class="hero"><div class="tx"><div class="ey">${e("he", "Friends of Fairview · Stars & Stripes Flag Program")}</div><h1>${e("ht", "Fly the flag on every holiday that matters.")}</h1><p class="l">${e("hp", "Volunteers place a full-size American flag at your home or business before each national holiday and collect it afterward. Every subscription supports Fairview’s first responders.")}</p><span class="sbtn">${e("hb", "Subscribe now")}</span><span class="sbtn o">${e("hb2", "Manage my subscription")}</span></div>${ph("hero")}</div>`,
-      about: () =>
-        `<div class="s base"><div class="split rev">${ph("about")}<div><div class="ey">${e("ae", "About the program")}</div><h2 style="font-size:clamp(26px,4.4cqw,38px)">${e("at", "Fairview’s way to say thank you")}</h2><p>${e("ap", "Friends of Fairview Fire Fighters Association is a volunteer group that supports Fairview’s Police, Fire and EMS. The flag program brings red, white and blue to our streets and funds the community events that honor those who serve.")}</p></div></div></div>`,
-      how: () =>
-        `<div class="s sf">${hdr("w", "How it works", "We handle everything", "")}<div class="cols">${[
-          [
-            "Subscribe online",
-            "Choose a plan and tell us where to place your flag. Logging in never needs a password.",
-          ],
-          [
-            "We install before each holiday",
-            "Volunteers place a flag the day before every holiday.",
-          ],
-          [
-            "We collect it afterward",
-            "Flags come down the day after and are stored with care.",
-          ],
-        ]
-          .map(
-            ([a, b], i) =>
-              `<div class="card"><div class="n">${i + 1}</div><h3>${e("w" + i, a)}</h3><p>${e("wp" + i, b)}</p></div>`,
-          )
-          .join("")}</div></div>`,
-      plans: () =>
-        `<div class="s base"><span class="sync" style="margin-top:-40px">Synced from Product List</span>${hdr("p", "Subscription", "Choose your plan", "Renew, update or cancel from your account at any time.")}<div class="cols">${[
-          [
-            "Home",
-            "$65",
-            "/ year",
-            "One flag at your home on every holiday.",
-            "Subscribe",
-          ],
-          [
-            "Business & HOA",
-            "$58.50",
-            "/ flag",
-            "10% off when you order 4 or more flags.",
-            "Order flags",
-          ],
-          [
-            "Additional donation",
-            "Any",
-            "amount",
-            "Support the First Responders Appreciation Dinner.",
-            "Donate",
-          ],
-        ]
-          .map(
-            ([a, b, c, d, f], i) =>
-              `<div class="card"><h3>${a}</h3><div class="price">${b} <small>${c}</small></div><p style="margin:8px 0 16px">${d}</p><span class="sbtn" style="margin:0">${f}</span></div>`,
-          )
-          .join(
-            "",
-          )}</div><p class="who" style="margin-top:12px">Sample prices shown. Live prices come from your Product List.</p></div>`,
-      hol: () =>
-        `<div class="s tn"><span class="sync" style="margin-top:-40px">Synced from Holidays</span>${hdr("h", "Next 12 months", "Holidays we fly", "Flags go up the day before each holiday and come down the day after.")}<div style="max-width:640px;margin:${m ? "0" : "0 auto"}">${[
-          ["Veterans Day", "Wed, Nov 11, 2026"],
-          ["Presidents Day", "Mon, Feb 15, 2027"],
-          ["Memorial Day", "Mon, May 31, 2027"],
-          ["Independence Day", "Sun, Jul 4, 2027"],
-          ["Labor Day", "Mon, Sep 6, 2027"],
-        ]
-          .map(
-            ([a, b]) =>
-              `<div class="hol"><b>${a}</b><span>${b}</span></div>`,
-          )
-          .join("")}</div></div>`,
-      gal: () =>
-        `<div class="s sf">${hdr("gl", "Flag days", "Around Fairview", "")}<div class="gal">${["g1", "g2", "g3", "g4"].map((k) => ph(k)).join("")}</div></div>`,
-      don: () =>
-        `<div class="s br"><div class="split">${ph("dinner")}<div><div class="ey">${e("de", "Additional donation")}</div><h2 style="font-size:clamp(26px,4.4cqw,38px)">${e("dt", "First Responders Appreciation Dinner")}</h2><p>${e("dp", "Each year, we host an Appreciation Dinner to honor all of Fairview’s first responders (Police, Fire and EMS), and we’d be grateful for your support.")}</p><span class="sbtn">Donate</span><span class="sbtn o">Read more (PDF)</span></div></div></div>`,
-      say: () =>
-        `<div class="s base">${hdr("s", "Subscribers", "What neighbors say", "")}<div class="cols">${[
-          [
-            "I came home the night before Memorial Day and the flag was already up. My kids look for it every holiday now.",
-            "Dana R.",
-            "Fairview",
-          ],
-          [
-            "Our HOA lines the whole entrance with flags. One email and it is handled every year.",
-            "Marcus T.",
-            "Subscriber",
-          ],
-          [
-            "Knowing the money supports our first responders makes it an easy renewal.",
-            "Linda P.",
-            "Fairview",
-          ],
-        ]
-          .map(
-            ([q, n, p], i) =>
-              `<div class="card"><p class="q">“${e("q" + i, q)}”</p><div class="who"><b>${n}</b> · ${p}</div></div>`,
-          )
-          .join(
-            "",
-          )}</div><p class="who" style="margin-top:12px">Sample quotes. Replace with your own.</p></div>`,
-      contact: () =>
-        `<div class="s tn"><div class="split"><div><div class="ey">${e("ce", "Contact")}</div><h2 style="font-size:clamp(26px,4.4cqw,38px)">${e("ct", "Questions? We’re happy to help.")}</h2><p style="margin-bottom:14px">${e("cp", "Note: Please check the service map to verify we service your address.")}</p><p style="color:var(--ink);line-height:1.8"><b>Friends of Fairview</b><br>(469) 331-2520<br>SMS: (972) 968-8140. Text us, it’s faster and easier.<br>510 State HWY 5, Fairview, TX 75069<br>info@friendsoffairview.org</p></div>${ph("map", "map")}</div><p class="who" style="margin-top:12px;text-align:center">Friends of Fairview’s service area is highlighted in red.</p></div>`,
-    };
-  }
 
   let sbPk = null;
   SB.pick = function(k){
@@ -2151,20 +3001,1698 @@ main{min-width:0;padding:6px 12px 24px}
     const r = new FileReader();
     r.onload = function(){
       SB.IMG[sbPk] = r.result;
+      markDirty();
       SB.render();
       toast('Image replaced');
     };
     r.readAsDataURL(f);
     ev.target.value = '';
   };
+
+  /* ============================================================
+     Add Drawer (Sections & Modular Elements)
+     ============================================================ */
+  const SECTION_CATEGORIES = [
+    { id: 'all', name: 'All Sections', icon: 'fa-th' },
+    { id: 'blank', name: '+ Blank Section', icon: 'fa-plus-square-o', special: true },
+    { id: 'welcome', name: 'Welcome & Hero', icon: 'fa-flag' },
+    { id: 'about', name: 'About & Story', icon: 'fa-info-circle' },
+    { id: 'services', name: 'Services & Steps', icon: 'fa-list-ol' },
+    { id: 'pricing', name: 'Plans & Pricing', icon: 'fa-tag' },
+    { id: 'features', name: 'Features & Highlights', icon: 'fa-star' },
+    { id: 'stats', name: 'Stats & Numbers', icon: 'fa-bar-chart' },
+    { id: 'reviews', name: 'Reviews & Credibility', icon: 'fa-comments' },
+    { id: 'cta', name: 'Promote & CTA', icon: 'fa-bullhorn' },
+    { id: 'events', name: 'Schedule & Events', icon: 'fa-calendar' },
+    { id: 'gallery', name: 'Photo Gallery', icon: 'fa-camera' },
+    { id: 'contact', name: 'Contact & Map', icon: 'fa-map-marker' },
+    { id: 'faq', name: 'FAQ & Questions', icon: 'fa-question-circle' }
+  ];
+
+  const ELEMENT_CATEGORIES = [
+    { id: 'all', name: 'All Elements', icon: 'fa-th' },
+    { id: 'forms', name: 'Forms & Contact', icon: 'fa-envelope-o' },
+    { id: 'metrics', name: 'Stats & Numbers', icon: 'fa-calculator' },
+    { id: 'media', name: 'Video & Audio', icon: 'fa-play-circle' },
+    { id: 'buttons', name: 'Buttons & Links', icon: 'fa-hand-pointer-o' },
+    { id: 'boxes', name: 'Callouts & Boxes', icon: 'fa-clone' },
+    { id: 'text', name: 'Text & Quotes', icon: 'fa-font' }
+  ];
+
+  let sbDrawerState = {
+    activeTab: 'sections',
+    activeCategory: 'all',
+    searchQuery: '',
+    targetSecIdx: null,
+    targetSecId: null
+  };
+
+  function ensureAddDrawerDOM() {
+    let el = document.getElementById('sbAddDrawerModal');
+    if (!el) {
+      el = document.createElement('div');
+      el.id = 'sbAddDrawerModal';
+      el.className = 'sb-drawer-backdrop';
+      el.style.display = 'none';
+      document.body.appendChild(el);
+      el.onclick = function(e){ if (e.target === el) SB.closeAddDrawer(); };
+    }
+    return el;
+  }
+
+  SB.openAddDrawer = function(tab, targetSecIdx, targetSecId) {
+    sbDrawerState.activeTab = tab || 'sections';
+    sbDrawerState.targetSecIdx = (typeof targetSecIdx === 'number') ? targetSecIdx : SB.state.sections.length;
+    sbDrawerState.targetSecId = targetSecId || null;
+    sbDrawerState.activeCategory = 'all';
+    sbDrawerState.searchQuery = '';
+
+    if (sbDrawerState.activeTab === 'elements' && !sbDrawerState.targetSecId && SB.state.sections.length > 0) {
+      sbDrawerState.targetSecId = SB.state.sections[0].id;
+    }
+
+    const drawer = ensureAddDrawerDOM();
+    SB.renderAddDrawer();
+    drawer.style.display = 'flex';
+  };
+
+  SB.closeAddDrawer = function() {
+    const drawer = document.getElementById('sbAddDrawerModal');
+    if (drawer) drawer.style.display = 'none';
+  };
+
+  SB.switchDrawerTab = function(tab) {
+    sbDrawerState.activeTab = tab;
+    sbDrawerState.activeCategory = 'all';
+    sbDrawerState.searchQuery = '';
+    SB.renderAddDrawer();
+  };
+
+  SB.selectDrawerCategory = function(catId) {
+    sbDrawerState.activeCategory = catId;
+    SB.renderAddDrawer();
+  };
+
+  SB.handleDrawerSearch = function(query) {
+    sbDrawerState.searchQuery = (query || '').toLowerCase().trim();
+    SB.renderCardsGrid();
+  };
+
+  SB.renderAddDrawer = function() {
+    const drawer = ensureAddDrawerDOM();
+    const isSections = sbDrawerState.activeTab === 'sections';
+    const categories = isSections ? SECTION_CATEGORIES : ELEMENT_CATEGORIES;
+    const targetSec = sbDrawerState.targetSecId ? SB.state.sections.find(function(s){ return s.id === sbDrawerState.targetSecId; }) : null;
+
+    let targetBadgeText = '';
+    if (isSections) {
+      const pos = (typeof sbDrawerState.targetSecIdx === 'number') ? sbDrawerState.targetSecIdx + 1 : SB.state.sections.length + 1;
+      targetBadgeText = `Inserting at Section #${pos}`;
+    } else {
+      targetBadgeText = targetSec ? `Adding into: "${targetSec.title || targetSec.type}"` : 'Modular Element';
+    }
+
+    drawer.innerHTML = `
+      <div class="sb-drawer">
+        <div class="sb-drawer-head">
+          <div class="sb-drawer-tabs">
+            <button type="button" class="sb-tab-btn ${isSections ? 'active' : ''}" onclick="SB.switchDrawerTab('sections')">
+              <i class="fa fa-th-large"></i> Add Section
+            </button>
+            <button type="button" class="sb-tab-btn ${!isSections ? 'active' : ''}" onclick="SB.switchDrawerTab('elements')">
+              <i class="fa fa-puzzle-piece"></i> Add Element
+            </button>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px">
+            <span class="sb-drawer-target-badge">${targetBadgeText}</span>
+            <button type="button" class="sb-drawer-close-btn" onclick="SB.closeAddDrawer()"><i class="fa fa-times"></i></button>
+          </div>
+        </div>
+        <div class="sb-drawer-search-bar">
+          <div class="sb-drawer-search-box">
+            <i class="fa fa-search" style="color:#94a3b8"></i>
+            <input type="text" id="sbSearchInput" value="${sbDrawerState.searchQuery}" placeholder="Search ${isSections ? 'sections (hero, about, plans, faq, features...)' : 'elements (newsletter, stats, video, social, button...)'}..." oninput="SB.handleDrawerSearch(this.value)">
+          </div>
+        </div>
+        <div class="sb-drawer-body">
+          <aside class="sb-drawer-sidebar">
+            ${categories.map(function(cat){
+              const count = isSections
+                ? (cat.id === 'all' ? SB.CATALOG.length : SB.CATALOG.filter(function(c){ return c.category === cat.id; }).length)
+                : (cat.id === 'all' ? SB.ELEMENTS_CATALOG.length : SB.ELEMENTS_CATALOG.filter(function(c){ return c.category === cat.id; }).length);
+              const isActive = sbDrawerState.activeCategory === cat.id;
+              const isSpecial = !!cat.special;
+              return `
+                <button type="button" class="sb-drawer-cat-item ${isActive ? 'active' : ''} ${isSpecial ? 'special' : ''}" onclick="SB.selectDrawerCategory('${cat.id}')">
+                  <span><i class="fa ${cat.icon}" style="width:16px;margin-right:6px"></i> ${cat.name}</span>
+                  <span class="sb-drawer-cat-badge">${count}</span>
+                </button>
+              `;
+            }).join('')}
+          </aside>
+          <main class="sb-drawer-content-area">
+            <div class="sb-drawer-cards-grid" id="sbCardsGrid">
+            </div>
+          </main>
+        </div>
+      </div>
+    `;
+
+    SB.renderCardsGrid();
+  };
+
+  SB.renderCardsGrid = function() {
+    const grid = document.getElementById('sbCardsGrid');
+    if (!grid) return;
+    const isSections = sbDrawerState.activeTab === 'sections';
+    const catalog = isSections ? SB.CATALOG : SB.ELEMENTS_CATALOG;
+    const q = sbDrawerState.searchQuery;
+    const cat = sbDrawerState.activeCategory;
+
+    const filtered = catalog.filter(function(item){
+      const matchCat = (cat === 'all') || (item.category === cat);
+      if (!matchCat) return false;
+      if (!q) return true;
+      const haystack = (item.title + ' ' + (item.desc || '') + ' ' + item.type + ' ' + (item.category || '')).toLowerCase();
+      return haystack.indexOf(q) !== -1;
+    });
+
+    if (filtered.length === 0) {
+      grid.innerHTML = `
+        <div style="grid-column:1/-1;text-align:center;padding:50px 20px;color:#94a3b8">
+          <i class="fa fa-search" style="font-size:32px;margin-bottom:12px;opacity:.5"></i>
+          <p style="font-size:15px;font-weight:600;color:#64748b">No matches found for "${q}"</p>
+          <p style="font-size:13px">Try searching for something else or pick a category from the left.</p>
+        </div>
+      `;
+      return;
+    }
+
+    grid.innerHTML = filtered.map(function(item){
+      const clickAction = isSections
+        ? `SB.addSection('${item.type}')`
+        : `SB.addElement('${sbDrawerState.targetSecId}', '${item.type}')`;
+      const btnLabel = isSections ? '+ Add Section' : '+ Add to Section';
+      return `
+        <div class="sb-drawer-card" onclick="${clickAction}">
+          <div class="sb-drawer-card-preview">
+            ${item.previewHTML || `<i class="fa ${item.icon}" style="font-size:36px;color:#94a3b8"></i>`}
+            <div class="sb-drawer-card-overlay">
+              <button type="button" class="sb-drawer-card-overlay-btn">${btnLabel}</button>
+            </div>
+          </div>
+          <div class="sb-drawer-card-info">
+            <h4><i class="fa ${item.icon}" style="color:var(--primary);margin-right:4px"></i> ${item.title}</h4>
+            <p>${item.desc || ''}</p>
+          </div>
+        </div>
+      `;
+    }).join('');
+  };
+
+  SB.openAddSecModal = function(idx) {
+    SB.openAddDrawer('sections', idx);
+  };
+
+  SB.closeAddSecModal = function() {
+    SB.closeAddDrawer();
+  };
+
+  SB.addSection = function(type){
+    const def = SB.CATALOG.find(function(c){ return c.type === type; });
+    if (!def) return;
+    const newSec = def.create();
+    if (!newSec.elements) newSec.elements = [];
+    const insertIdx = (typeof sbDrawerState.targetSecIdx === 'number') ? sbDrawerState.targetSecIdx : SB.state.sections.length;
+    SB.state.sections.splice(insertIdx, 0, newSec);
+    SB.closeAddDrawer();
+    markDirty();
+    SB.render();
+    setTimeout(function(){
+      const el = document.getElementById(newSec.id);
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 100);
+    toast(`"${newSec.title}" section added!`);
+  };
+
+  SB.addElement = function(secId, elType){
+    let sec = SB.state.sections.find(function(s){ return s.id === secId; });
+    if (!sec) {
+      if (SB.state.sections.length > 0) {
+        sec = SB.state.sections[0];
+      } else {
+        toast('Please add a section first before adding elements!', true);
+        return;
+      }
+    }
+    const def = SB.ELEMENTS_CATALOG.find(function(c){ return c.type === elType; });
+    if (!def) return;
+    const newEl = def.create();
+    if (!sec.elements) sec.elements = [];
+    sec.elements.push(newEl);
+    SB.closeAddDrawer();
+    markDirty();
+    SB.render();
+    setTimeout(function(){
+      const el = document.getElementById(`el_${sec.id}_${sec.elements.length - 1}`);
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 100);
+    toast(`"${def.title}" element added to "${sec.title || sec.type}"!`);
+  };
+
+  SB.deleteElement = function(secId, elIdx){
+    const sec = SB.state.sections.find(function(s){ return s.id === secId; });
+    if (!sec || !sec.elements || sec.elements[elIdx] === undefined) return;
+    const el = sec.elements[elIdx];
+    if (confirm(`Delete the "${el.title || el.type}" element?`)) {
+      sec.elements.splice(elIdx, 1);
+      markDirty();
+      SB.render();
+      toast('Element deleted');
+    }
+  };
+
+  SB.moveElement = function(secId, elIdx, dir){
+    const sec = SB.state.sections.find(function(s){ return s.id === secId; });
+    if (!sec || !sec.elements) return;
+    const target = elIdx + dir;
+    if (target < 0 || target >= sec.elements.length) return;
+    const temp = sec.elements[elIdx];
+    sec.elements[elIdx] = sec.elements[target];
+    sec.elements[target] = temp;
+    markDirty();
+    SB.render();
+    toast('Element moved');
+  };
+
+  SB.deleteSection = function(secId){
+    const idx = SB.state.sections.findIndex(function(s){ return s.id === secId; });
+    if (idx < 0) return;
+    const sec = SB.state.sections[idx];
+    if (confirm(`Delete the "${sec.title || 'Section'}" section?`)) {
+      SB.state.sections.splice(idx, 1);
+      markDirty();
+      SB.render();
+      toast(`"${sec.title || 'Section'}" deleted`);
+    }
+  };
+
+  SB.duplicateSection = function(secId){
+    const idx = SB.state.sections.findIndex(function(s){ return s.id === secId; });
+    if (idx < 0) return;
+    const orig = SB.state.sections[idx];
+    const clone = JSON.parse(JSON.stringify(orig));
+    clone.id = 'sec_' + orig.type + '_' + Date.now();
+    clone.title = (orig.title || orig.type) + ' (Copy)';
+    SB.state.sections.splice(idx + 1, 0, clone);
+    markDirty();
+    SB.render();
+    setTimeout(function(){
+      const el = document.getElementById(clone.id);
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 100);
+    toast(`Duplicated "${orig.title}"`);
+  };
+
+  SB.moveSection = function(secId, dir){
+    const idx = SB.state.sections.findIndex(function(s){ return s.id === secId; });
+    if (idx < 0) return;
+    const target = idx + dir;
+    if (target < 0 || target >= SB.state.sections.length) return;
+    const temp = SB.state.sections[idx];
+    SB.state.sections[idx] = SB.state.sections[target];
+    SB.state.sections[target] = temp;
+    markDirty();
+    SB.render();
+    toast('Section moved ' + (dir < 0 ? 'up' : 'down'));
+  };
+
+  SB.toggleSection = function(secId){
+    const sec = SB.state.sections.find(function(s){ return s.id === secId; });
+    if (!sec) return;
+    sec.hidden = !sec.hidden;
+    markDirty();
+    SB.render();
+    toast(sec.hidden ? `"${sec.title}" hidden` : `"${sec.title}" visible`);
+  };
+
+  // Item-level CRUD
+  SB.addItem = function(secId){
+    const sec = SB.state.sections.find(function(s){ return s.id === secId; });
+    if (!sec) return;
+    if (!sec.items) sec.items = [];
+
+    if (sec.type === 'how') {
+      sec.items.push({ title: 'New Step', desc: 'Describe the instructions or process for your subscribers.' });
+    } else if (sec.type === 'plans') {
+      sec.items.push({ name: 'Custom Tier', price: '$75', period: '/ year', desc: 'Description of the benefits included in this plan tier.', btn: 'Subscribe' });
+    } else if (sec.type === 'hol') {
+      sec.items.push({ name: 'New Holiday', date: 'Date & Month, Year' });
+    } else if (sec.type === 'say') {
+      sec.items.push({ quote: 'Great communication and dependable service on every single flag holiday.', name: 'Subscriber Name', location: 'Resident' });
+    } else if (sec.type === 'faq') {
+      sec.items.push({ q: 'Add your new question here?', a: 'Write the answer here to guide and inform your subscribers.' });
+    } else if (sec.type === 'features') {
+      sec.items.push({ icon: 'fa-star', title: 'New Feature', desc: 'Describe the unique benefit or advantage for your subscribers.' });
+    } else if (sec.type === 'stats') {
+      sec.items.push({ num: '100+', label: 'New Metric', desc: 'Brief description of what this number represents.' });
+    } else if (sec.type === 'gal') {
+      const slots = ['g1', 'g2', 'g3', 'g4'];
+      sec.items.push(slots[sec.items.length % slots.length]);
+    }
+    markDirty();
+    SB.render();
+    toast('New item added');
+  };
+
+  SB.deleteItem = function(secId, itemIdx){
+    const sec = SB.state.sections.find(function(s){ return s.id === secId; });
+    if (!sec || !sec.items) return;
+    if (sec.items.length <= 1) {
+      if (!confirm('This is the last item in this section. Delete it?')) return;
+    }
+    sec.items.splice(itemIdx, 1);
+    markDirty();
+    SB.render();
+    toast('Item deleted');
+  };
+
+  /* ============================================================
+     1. Undo / Redo History Stack
+     ============================================================ */
+  SB.history = [];
+  SB.historyIdx = -1;
+  const MAX_HISTORY = 40;
+
+  SB.pushHistory = function(actionName) {
+    if (!SB.state) return;
+    const snap = JSON.stringify(SB.state);
+    if (SB.history[SB.historyIdx] === snap) return;
+    if (SB.historyIdx < SB.history.length - 1) {
+      SB.history = SB.history.slice(0, SB.historyIdx + 1);
+    }
+    SB.history.push(snap);
+    if (SB.history.length > MAX_HISTORY) {
+      SB.history.shift();
+    }
+    SB.historyIdx = SB.history.length - 1;
+    SB.updateHistoryButtons();
+  };
+
+  SB.undo = function() {
+    if (SB.historyIdx > 0) {
+      SB.historyIdx--;
+      SB.state = JSON.parse(SB.history[SB.historyIdx]);
+      markDirty();
+      SB.render();
+      SB.updateHistoryButtons();
+      toast('Undo');
+    }
+  };
+
+  SB.redo = function() {
+    if (SB.historyIdx < SB.history.length - 1) {
+      SB.historyIdx++;
+      SB.state = JSON.parse(SB.history[SB.historyIdx]);
+      markDirty();
+      SB.render();
+      SB.updateHistoryButtons();
+      toast('Redo');
+    }
+  };
+
+  SB.updateHistoryButtons = function() {
+    const undoBtn = document.getElementById('sb-undo-btn');
+    const redoBtn = document.getElementById('sb-redo-btn');
+    if (undoBtn) undoBtn.disabled = SB.historyIdx <= 0;
+    if (redoBtn) redoBtn.disabled = SB.historyIdx >= SB.history.length - 1;
+  };
+
+  document.addEventListener('keydown', function(e) {
+    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'z') {
+      if (e.shiftKey) {
+        e.preventDefault();
+        SB.redo();
+      } else {
+        e.preventDefault();
+        SB.undo();
+      }
+    } else if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'y') {
+      e.preventDefault();
+      SB.redo();
+    }
+  });
+
+  /* ============================================================
+     2. Floating Rich Text WYSIWYG Editor Toolbar
+     ============================================================ */
+  function ensureRteToolbarDOM() {
+    let tb = document.getElementById('sbRteToolbar');
+    if (!tb) {
+      tb = document.createElement('div');
+      tb.id = 'sbRteToolbar';
+      tb.className = 'sb-rte-toolbar';
+      tb.innerHTML = `
+        <select id="sbRteBlock" title="Heading or Paragraph">
+          <option value="p">Paragraph</option>
+          <option value="h1">Heading 1</option>
+          <option value="h2">Heading 2</option>
+          <option value="h3">Heading 3</option>
+          <option value="h4">Heading 4</option>
+          <option value="blockquote">Quote</option>
+        </select>
+        <select id="sbRteSize" title="Font Size">
+          <option value="">Size</option>
+          <option value="1">Small</option>
+          <option value="3">Normal</option>
+          <option value="4">Medium</option>
+          <option value="5">Large</option>
+          <option value="6">X-Large</option>
+          <option value="7">Huge</option>
+        </select>
+        <span class="sb-rte-divider"></span>
+        <button type="button" data-cmd="bold" title="Bold (Ctrl+B)"><b>B</b></button>
+        <button type="button" data-cmd="italic" title="Italic (Ctrl+I)"><i>I</i></button>
+        <button type="button" data-cmd="underline" title="Underline (Ctrl+U)"><u>U</u></button>
+        <button type="button" data-cmd="strikeThrough" title="Strikethrough"><s>S</s></button>
+        <span class="sb-rte-divider"></span>
+        <label class="sb-rte-color-picker" title="Text Color">
+          <i class="fa fa-font" style="border-bottom:2px solid #3b82f6"></i>
+          <input type="color" id="sbRteColor" value="#000000">
+        </label>
+        <label class="sb-rte-color-picker" title="Highlight Color">
+          <i class="fa fa-paint-brush"></i>
+          <input type="color" id="sbRteHilite" value="#ffff00">
+        </label>
+        <span class="sb-rte-divider"></span>
+        <button type="button" data-cmd="justifyLeft" title="Align Left"><i class="fa fa-align-left"></i></button>
+        <button type="button" data-cmd="justifyCenter" title="Align Center"><i class="fa fa-align-center"></i></button>
+        <button type="button" data-cmd="justifyRight" title="Align Right"><i class="fa fa-align-right"></i></button>
+        <span class="sb-rte-divider"></span>
+        <button type="button" data-cmd="insertUnorderedList" title="Bullet List"><i class="fa fa-list-ul"></i></button>
+        <button type="button" data-cmd="insertOrderedList" title="Numbered List"><i class="fa fa-list-ol"></i></button>
+        <button type="button" id="sbRteLinkBtn" title="Insert/Edit Link"><i class="fa fa-link"></i></button>
+        <button type="button" data-cmd="removeFormat" title="Clear Formatting"><i class="fa fa-eraser"></i></button>
+      `;
+      document.body.appendChild(tb);
+
+      tb.onmousedown = function(e){
+        if (e.target.tagName !== 'SELECT' && e.target.tagName !== 'INPUT') {
+          e.preventDefault();
+        }
+      };
+
+      tb.querySelectorAll('button[data-cmd]').forEach(function(btn){
+        btn.onclick = function(){
+          document.execCommand(btn.dataset.cmd, false, null);
+          SB.syncActiveContentEditable();
+        };
+      });
+
+      const blockSel = tb.querySelector('#sbRteBlock');
+      blockSel.onchange = function(){
+        document.execCommand('formatBlock', false, blockSel.value);
+        SB.syncActiveContentEditable();
+      };
+
+      const sizeSel = tb.querySelector('#sbRteSize');
+      sizeSel.onchange = function(){
+        if (sizeSel.value) {
+          document.execCommand('fontSize', false, sizeSel.value);
+          SB.syncActiveContentEditable();
+        }
+      };
+
+      const colorInput = tb.querySelector('#sbRteColor');
+      colorInput.oninput = function(){
+        document.execCommand('foreColor', false, colorInput.value);
+        SB.syncActiveContentEditable();
+      };
+
+      const hiliteInput = tb.querySelector('#sbRteHilite');
+      hiliteInput.oninput = function(){
+        document.execCommand('hiliteColor', false, hiliteInput.value);
+        SB.syncActiveContentEditable();
+      };
+
+      const linkBtn = tb.querySelector('#sbRteLinkBtn');
+      linkBtn.onclick = function(){
+        const url = prompt('Enter destination link URL (e.g. https://...):', 'https://');
+        if (url) {
+          document.execCommand('createLink', false, url);
+          SB.syncActiveContentEditable();
+        }
+      };
+    }
+    return tb;
+  }
+
+  SB.syncActiveContentEditable = function() {
+    const sel = window.getSelection();
+    if (!sel || !sel.rangeCount) return;
+    const node = sel.anchorNode;
+    const el = node ? (node.nodeType === 1 ? node : node.parentElement).closest('[contenteditable]') : null;
+    if (!el) return;
+
+    const secId = el.dataset.secId;
+    const elIdx = el.dataset.elIdx;
+    const elField = el.dataset.elField;
+    const field = el.dataset.field;
+
+    if (secId && elIdx !== undefined && elField) {
+      const sec = SB.state.sections.find(function(s){ return s.id === secId; });
+      if (sec && sec.elements && sec.elements[elIdx]) {
+        sec.elements[elIdx][elField] = el.innerHTML;
+        markDirty();
+      }
+      return;
+    }
+
+    if (secId && field) {
+      const sec = SB.state.sections.find(function(s){ return s.id === secId; });
+      if (sec) {
+        if (field.startsWith('items[')) {
+          const match = field.match(/^items\[(\d+)\](?:\.(.+))?$/);
+          if (match && sec.items) {
+            const idx = parseInt(match[1], 10);
+            const prop = match[2];
+            if (sec.items[idx]) {
+              if (prop) sec.items[idx][prop] = el.innerHTML;
+              else sec.items[idx] = el.innerHTML;
+            }
+          }
+        } else {
+          sec[field] = el.innerHTML;
+        }
+        markDirty();
+      }
+    }
+  };
+
+  document.addEventListener('selectionchange', function() {
+    const tb = ensureRteToolbarDOM();
+    const sel = window.getSelection();
+    if (!sel || sel.isCollapsed || !sel.rangeCount) {
+      tb.style.display = 'none';
+      return;
+    }
+    const range = sel.getRangeAt(0);
+    const container = range.commonAncestorContainer;
+    const editable = (container.nodeType === 1 ? container : container.parentElement).closest('#sb-site [contenteditable]');
+    if (!editable) {
+      tb.style.display = 'none';
+      return;
+    }
+    const rect = range.getBoundingClientRect();
+    if (!rect || rect.width === 0) {
+      tb.style.display = 'none';
+      return;
+    }
+    tb.style.display = 'flex';
+    tb.style.left = (rect.left + rect.width / 2) + 'px';
+    tb.style.top = (rect.top + window.scrollY - 10) + 'px';
+  });
+
+  /* ============================================================
+     3. HTML Source Code Modal & Editor
+     ============================================================ */
+  let sbHtmlEditorState = {
+    targetSecId: null,
+    targetElIdx: null,
+    mode: 'page'
+  };
+
+  function ensureHtmlModalDOM() {
+    let m = document.getElementById('sbHtmlModalBackdrop');
+    if (!m) {
+      m = document.createElement('div');
+      m.id = 'sbHtmlModalBackdrop';
+      m.className = 'sb-html-modal-backdrop';
+      m.innerHTML = `
+        <div class="sb-html-modal">
+          <div class="sb-html-modal-head">
+            <h3><i class="fa fa-code"></i> HTML Source Code Editor</h3>
+            <div class="sb-html-modal-tabs">
+              <button type="button" class="sb-html-modal-tab" id="sbHtmlTabFull" onclick="SB.setHtmlModalMode('page')">Full Webpage</button>
+              <button type="button" class="sb-html-modal-tab" id="sbHtmlTabSec" onclick="SB.setHtmlModalMode('section')">Active Section</button>
+            </div>
+            <button type="button" class="sb-drawer-close-btn" onclick="SB.closeHtmlSourceModal()" style="font-size:18px;border:0;background:none;color:#94a3b8;cursor:pointer"><i class="fa fa-times"></i></button>
+          </div>
+          <div class="sb-html-modal-body">
+            <div class="sb-html-modal-toolbar">
+              <div style="font-size:12px;color:#94a3b8" id="sbHtmlEditorInfo">Editing full page HTML</div>
+              <div style="display:flex;gap:6px">
+                <button type="button" class="sb-top-tool-btn" onclick="SB.formatHtmlCode()"><i class="fa fa-indent"></i> Format HTML</button>
+                <button type="button" class="sb-top-tool-btn" onclick="SB.copyHtmlCode()"><i class="fa fa-copy"></i> Copy</button>
+              </div>
+            </div>
+            <textarea class="sb-html-modal-textarea" id="sbHtmlTextarea" spellcheck="false"></textarea>
+          </div>
+          <div class="sb-html-modal-foot">
+            <button type="button" class="btn ghost" onclick="SB.closeHtmlSourceModal()" style="border:1px solid #475569;background:#1e293b;color:#cbd5e1">Cancel</button>
+            <button type="button" class="btn primary" onclick="SB.applyHtmlSource()" style="background:#2563eb;color:#fff"><i class="fa fa-check"></i> Apply HTML to Site</button>
+          </div>
+        </div>
+      `;
+      document.body.appendChild(m);
+      m.onclick = function(e){ if (e.target === m) SB.closeHtmlSourceModal(); };
+    }
+    return m;
+  }
+
+  SB.openHtmlSourceModal = function(secId, elIdx) {
+    const modal = ensureHtmlModalDOM();
+    sbHtmlEditorState.targetSecId = secId || null;
+    sbHtmlEditorState.targetElIdx = (typeof elIdx === 'number') ? elIdx : null;
+    sbHtmlEditorState.mode = elIdx !== null && elIdx !== undefined ? 'element' : (secId ? 'section' : 'page');
+
+    SB.updateHtmlModalUI();
+    modal.style.display = 'flex';
+  };
+
+  SB.closeHtmlSourceModal = function() {
+    const modal = document.getElementById('sbHtmlModalBackdrop');
+    if (modal) modal.style.display = 'none';
+  };
+
+  SB.setHtmlModalMode = function(mode) {
+    sbHtmlEditorState.mode = mode;
+    if (mode === 'section' && !sbHtmlEditorState.targetSecId && SB.state.sections.length > 0) {
+      sbHtmlEditorState.targetSecId = SB.state.sections[0].id;
+    }
+    SB.updateHtmlModalUI();
+  };
+
+  SB.updateHtmlModalUI = function() {
+    ensureHtmlModalDOM();
+    const tabFull = document.getElementById('sbHtmlTabFull');
+    const tabSec = document.getElementById('sbHtmlTabSec');
+    const info = document.getElementById('sbHtmlEditorInfo');
+    const textarea = document.getElementById('sbHtmlTextarea');
+
+    if (sbHtmlEditorState.mode === 'element' && sbHtmlEditorState.targetSecId && sbHtmlEditorState.targetElIdx !== null) {
+      const sec = SB.state.sections.find(function(s){ return s.id === sbHtmlEditorState.targetSecId; });
+      const el = sec && sec.elements ? sec.elements[sbHtmlEditorState.targetElIdx] : null;
+      if (tabFull) tabFull.classList.remove('active');
+      if (tabSec) tabSec.classList.add('active');
+      info.textContent = `Editing Element HTML: ${el ? (el.title || el.type) : 'Custom Block'}`;
+      textarea.value = el ? (el.code || '') : '';
+      return;
+    }
+
+    if (sbHtmlEditorState.mode === 'section' && sbHtmlEditorState.targetSecId) {
+      const sec = SB.state.sections.find(function(s){ return s.id === sbHtmlEditorState.targetSecId; });
+      if (tabFull) tabFull.classList.remove('active');
+      if (tabSec) tabSec.classList.add('active');
+      info.textContent = `Editing Section: "${sec ? (sec.title || sec.type) : 'Section'}"`;
+      const domSec = document.getElementById(sbHtmlEditorState.targetSecId);
+      textarea.value = domSec ? domSec.outerHTML : '';
+    } else {
+      if (tabFull) tabFull.classList.add('active');
+      if (tabSec) tabSec.classList.remove('active');
+      info.textContent = 'Editing Full Live Page HTML';
+      const site = document.getElementById('sb-site');
+      textarea.value = site ? site.innerHTML : '';
+    }
+  };
+
+  SB.formatHtmlCode = function() {
+    const textarea = document.getElementById('sbHtmlTextarea');
+    if (!textarea) return;
+    let html = textarea.value.trim();
+    let formatted = '';
+    let pad = 0;
+    html = html.replace(/>\s*</g, '><');
+    const tokens = html.split(/(<[^>]+>)/g).filter(Boolean);
+    tokens.forEach(function(token){
+      if (token.match(/^<\/\w/)) {
+        pad = Math.max(0, pad - 1);
+        formatted += '  '.repeat(pad) + token + '\n';
+      } else if (token.match(/^<\w[^>]*[^\/]>$/) && !token.match(/^<(input|img|br|hr|meta|link)/i)) {
+        formatted += '  '.repeat(pad) + token + '\n';
+        pad++;
+      } else if (token.startsWith('<')) {
+        formatted += '  '.repeat(pad) + token + '\n';
+      } else if (token.trim()) {
+        formatted += '  '.repeat(pad) + token.trim() + '\n';
+      }
+    });
+    textarea.value = formatted.trim();
+    toast('HTML code formatted');
+  };
+
+  SB.copyHtmlCode = function() {
+    const textarea = document.getElementById('sbHtmlTextarea');
+    if (!textarea) return;
+    navigator.clipboard.writeText(textarea.value).then(function(){
+      toast('HTML copied to clipboard!');
+    });
+  };
+
+  SB.applyHtmlSource = function() {
+    const textarea = document.getElementById('sbHtmlTextarea');
+    if (!textarea) return;
+    const newHtml = textarea.value;
+
+    if (sbHtmlEditorState.mode === 'element' && sbHtmlEditorState.targetSecId && sbHtmlEditorState.targetElIdx !== null) {
+      const sec = SB.state.sections.find(function(s){ return s.id === sbHtmlEditorState.targetSecId; });
+      if (sec && sec.elements && sec.elements[sbHtmlEditorState.targetElIdx]) {
+        sec.elements[sbHtmlEditorState.targetElIdx].code = newHtml;
+        SB.pushHistory('Edit Element HTML');
+        markDirty();
+        SB.render();
+        SB.closeHtmlSourceModal();
+        toast('Element HTML updated successfully!');
+      }
+      return;
+    }
+
+    if (sbHtmlEditorState.mode === 'section' && sbHtmlEditorState.targetSecId) {
+      const sec = SB.state.sections.find(function(s){ return s.id === sbHtmlEditorState.targetSecId; });
+      if (sec) {
+        if (!sec.settings) sec.settings = {};
+        sec.settings.rawHtml = newHtml;
+        SB.pushHistory('Edit Section HTML');
+        markDirty();
+        SB.render();
+        SB.closeHtmlSourceModal();
+        toast('Section HTML applied!');
+      }
+      return;
+    }
+
+    const site = document.getElementById('sb-site');
+    if (site) {
+      site.innerHTML = newHtml;
+      markDirty();
+      SB.pushHistory('Edit Full Page HTML');
+      SB.closeHtmlSourceModal();
+      toast('Page HTML applied successfully!');
+    }
+  };
+
+  /* ============================================================
+     4. Section Settings & Style Inspector Modal
+     ============================================================ */
+  let sbActiveSettingsSecId = null;
+  let sbActiveBgType = 'color';
+
+  function ensureSecSettingsModalDOM() {
+    let m = document.getElementById('sbSecSettingsModalBackdrop');
+    if (!m) {
+      m = document.createElement('div');
+      m.id = 'sbSecSettingsModalBackdrop';
+      m.className = 'sb-settings-modal-backdrop';
+      m.innerHTML = `
+        <div class="sb-settings-modal">
+          <div class="sb-settings-modal-head">
+            <h3 id="sbSettingsTitle"><i class="fa fa-sliders"></i> Section Styles &amp; Settings</h3>
+            <button type="button" class="sb-drawer-close-btn" onclick="SB.closeSecSettingsModal()" style="font-size:18px;border:0;background:none;color:#64748b;cursor:pointer"><i class="fa fa-times"></i></button>
+          </div>
+          <div class="sb-settings-modal-body">
+            <div class="sb-settings-group">
+              <label>Section Display Title</label>
+              <input type="text" id="sbSetTitle" style="padding:8px 12px;border:1px solid #cbd5e1;border-radius:6px;font-size:13px">
+            </div>
+
+            <!-- Background Mode Selector (Color vs Image vs Gradient) -->
+            <div class="sb-settings-group">
+              <label><i class="fa fa-paint-brush"></i> Section Background (Color or Image)</label>
+              <div class="sb-bg-type-toggle">
+                <button type="button" class="sb-bg-type-btn active" id="sbBgTypeColorBtn" onclick="SB.setSecBgType('color')">
+                  <i class="fa fa-tint"></i> Solid Color
+                </button>
+                <button type="button" class="sb-bg-type-btn" id="sbBgTypeImageBtn" onclick="SB.setSecBgType('image')">
+                  <i class="fa fa-picture-o"></i> Background Image
+                </button>
+                <button type="button" class="sb-bg-type-btn" id="sbBgTypeGradientBtn" onclick="SB.setSecBgType('gradient')">
+                  <i class="fa fa-magic"></i> Gradient
+                </button>
+              </div>
+
+              <!-- Color Panel -->
+              <div class="sb-bg-panel" id="sbBgPanelColor" style="display:flex">
+                <div style="display:flex;align-items:center;gap:10px">
+                  <input type="color" id="sbSetBgColor" value="#ffffff" style="width:42px;height:42px;border-radius:6px;border:1px solid #cbd5e1;cursor:pointer">
+                  <input type="text" id="sbSetBgColorText" placeholder="#ffffff" style="flex:1;padding:9px 12px;border:1px solid #cbd5e1;border-radius:6px;font-size:13px">
+                  <button type="button" class="sb-settings-preset-btn" onclick="SB.clearSecBgColor()" style="color:#ef4444">Clear</button>
+                </div>
+                <div>
+                  <span style="font-size:11px;font-weight:600;color:#64748b;text-transform:uppercase">Quick Color Swatches</span>
+                  <div class="sb-palette-row">
+                    <span class="sb-palette-chip" style="background:#ffffff" onclick="SB.quickSetBgColor('#ffffff')" title="Pure White"></span>
+                    <span class="sb-palette-chip" style="background:#f8fafc" onclick="SB.quickSetBgColor('#f8fafc')" title="Soft Light"></span>
+                    <span class="sb-palette-chip" style="background:#fefce8" onclick="SB.quickSetBgColor('#fefce8')" title="Warm Cream"></span>
+                    <span class="sb-palette-chip" style="background:#e2e8f0" onclick="SB.quickSetBgColor('#e2e8f0')" title="Cool Slate"></span>
+                    <span class="sb-palette-chip" style="background:#0f172a" onclick="SB.quickSetBgColor('#0f172a')" title="Deep Navy"></span>
+                    <span class="sb-palette-chip" style="background:#1e3a8a" onclick="SB.quickSetBgColor('#1e3a8a')" title="Patriotic Blue"></span>
+                    <span class="sb-palette-chip" style="background:#064e3b" onclick="SB.quickSetBgColor('#064e3b')" title="Emerald Green"></span>
+                    <span class="sb-palette-chip" style="background:#991b1b" onclick="SB.quickSetBgColor('#991b1b')" title="Crimson Red"></span>
+                    <span class="sb-palette-chip" style="background:#1e293b" onclick="SB.quickSetBgColor('#1e293b')" title="Dark Slate"></span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Image Panel -->
+              <div class="sb-bg-panel" id="sbBgPanelImage" style="display:none">
+                <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+                  <label class="btn primary sm" style="cursor:pointer;padding:7px 12px;font-size:12px;background:#2563eb;color:#fff;border-radius:6px;display:inline-flex;align-items:center;gap:6px">
+                    <i class="fa fa-upload"></i> Upload Image File
+                    <input type="file" id="sbSecBgFileInput" accept="image/*" style="display:none" onchange="SB.handleSecBgFileUpload(this)">
+                  </label>
+                  <span style="font-size:12px;color:#64748b">or choose preset slot:</span>
+                  <button type="button" class="sb-top-tool-btn" onclick="SB.pickForSecBg('hero')">Hero</button>
+                  <button type="button" class="sb-top-tool-btn" onclick="SB.pickForSecBg('about')">About</button>
+                  <button type="button" class="sb-top-tool-btn" onclick="SB.pickForSecBg('dinner')">Dinner</button>
+                  <button type="button" class="sb-top-tool-btn" onclick="SB.clearSecBgImg()" style="color:#ef4444">Remove Image</button>
+                </div>
+                <div>
+                  <input type="text" id="sbSetBgImg" placeholder="https://example.com/image.jpg (or uploaded data URL)" style="width:100%;padding:8px 12px;border:1px solid #cbd5e1;border-radius:6px;font-size:12px" oninput="SB.updateBgImgPreview()">
+                </div>
+                <div id="sbBgImgPreviewWrap" style="display:none">
+                  <div class="sb-img-preview-box" id="sbBgImgPreview">
+                    <span style="background:rgba(0,0,0,.6);color:#fff;padding:2px 8px;border-radius:4px;font-size:11px">Preview</span>
+                  </div>
+                </div>
+                <div class="sb-settings-row" style="margin-top:2px">
+                  <div class="sb-settings-group">
+                    <label>Image Overlay (for text readability)</label>
+                    <select id="sbSetBgOverlay" style="padding:8px 10px;border:1px solid #cbd5e1;border-radius:6px;font-size:12px">
+                      <option value="">None (Natural Image)</option>
+                      <option value="dark">Medium Dark Tint (55%)</option>
+                      <option value="dark-heavy">Heavy Dark Tint (75%)</option>
+                      <option value="light">Light Tint (70%)</option>
+                    </select>
+                  </div>
+                  <div class="sb-settings-group">
+                    <label>Image Scroll Effect</label>
+                    <select id="sbSetBgAttachment" style="padding:8px 10px;border:1px solid #cbd5e1;border-radius:6px;font-size:12px">
+                      <option value="scroll">Normal Scroll</option>
+                      <option value="fixed">Fixed / Parallax Effect</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Gradient Panel -->
+              <div class="sb-bg-panel" id="sbBgPanelGradient" style="display:none">
+                <span style="font-size:11px;font-weight:600;color:#64748b;text-transform:uppercase">Modern Gradient Presets</span>
+                <div class="sb-settings-presets">
+                  <button type="button" class="sb-settings-preset-btn" onclick="SB.setSecGradient('')">None</button>
+                  <button type="button" class="sb-settings-preset-btn" onclick="SB.setSecGradient('linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%)')">Deep Navy</button>
+                  <button type="button" class="sb-settings-preset-btn" onclick="SB.setSecGradient('linear-gradient(135deg, #1b2a4e 0%, #991b1b 100%)')">Patriotic Navy-Red</button>
+                  <button type="button" class="sb-settings-preset-btn" onclick="SB.setSecGradient('linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%)')">Light Slate</button>
+                  <button type="button" class="sb-settings-preset-btn" onclick="SB.setSecGradient('linear-gradient(135deg, #fef3c7 0%, #fed7aa 100%)')">Warm Glow</button>
+                  <button type="button" class="sb-settings-preset-btn" onclick="SB.setSecGradient('linear-gradient(135deg, #064e3b 0%, #047857 100%)')">Emerald</button>
+                  <button type="button" class="sb-settings-preset-btn" onclick="SB.setSecGradient('linear-gradient(135deg, #4c1d95 0%, #1e3a8a 100%)')">Sunset Indigo</button>
+                </div>
+                <div style="margin-top:6px">
+                  <label style="font-size:11px;font-weight:600;color:#64748b;text-transform:uppercase">Custom Gradient CSS</label>
+                  <input type="text" id="sbSetBgGradientCustom" placeholder="linear-gradient(135deg, #123456, #abcdef)" style="width:100%;padding:8px 10px;border:1px solid #cbd5e1;border-radius:6px;font-size:12px" oninput="SB.setSecGradient(this.value)">
+                </div>
+              </div>
+            </div>
+
+            <!-- Text Theme -->
+            <div class="sb-settings-group">
+              <label>Text Theme / Font Color</label>
+              <select id="sbSetTextColor" style="padding:9px 12px;border:1px solid #cbd5e1;border-radius:6px;font-size:13px">
+                <option value="">Default (Auto from Template)</option>
+                <option value="#0f172a">Dark Ink (#0f172a - for light backgrounds)</option>
+                <option value="#ffffff">Pure White Text (#ffffff - for dark backgrounds &amp; photos)</option>
+              </select>
+            </div>
+
+            <div class="sb-settings-row">
+              <div class="sb-settings-group">
+                <label>Vertical Section Padding</label>
+                <select id="sbSetPadding" style="padding:9px 12px;border:1px solid #cbd5e1;border-radius:6px;font-size:13px">
+                  <option value="">Default (56px)</option>
+                  <option value="24px">Compact (24px)</option>
+                  <option value="72px">Spacious (72px)</option>
+                  <option value="110px">Heroic / Tall (110px)</option>
+                  <option value="0px">None (0px)</option>
+                </select>
+              </div>
+              <div class="sb-settings-group">
+                <label>Container Width</label>
+                <select id="sbSetWidth" style="padding:9px 12px;border:1px solid #cbd5e1;border-radius:6px;font-size:13px">
+                  <option value="">Default Boxed</option>
+                  <option value="820px">Narrow Centered (820px)</option>
+                  <option value="100%">Full Screen Width (100%)</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="sb-settings-group">
+              <label>Custom CSS Class &amp; Inline Style</label>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+                <input type="text" id="sbSetClass" placeholder="custom-class-name" style="padding:8px 10px;border:1px solid #cbd5e1;border-radius:6px;font-size:12px">
+                <input type="text" id="sbSetInlineStyle" placeholder="border-top:2px solid red;" style="padding:8px 10px;border:1px solid #cbd5e1;border-radius:6px;font-size:12px">
+              </div>
+            </div>
+          </div>
+          <div class="sb-settings-modal-foot">
+            <button type="button" class="btn ghost" onclick="SB.closeSecSettingsModal()">Cancel</button>
+            <button type="button" class="btn primary" onclick="SB.saveSecSettings()"><i class="fa fa-save"></i> Save Settings</button>
+          </div>
+        </div>
+      `;
+      document.body.appendChild(m);
+      m.onclick = function(e){ if (e.target === m) SB.closeSecSettingsModal(); };
+    }
+    return m;
+  }
+
+  SB.setSecBgType = function(type) {
+    sbActiveBgType = type;
+    const btnColor = document.getElementById('sbBgTypeColorBtn');
+    const btnImage = document.getElementById('sbBgTypeImageBtn');
+    const btnGrad = document.getElementById('sbBgTypeGradientBtn');
+    const pColor = document.getElementById('sbBgPanelColor');
+    const pImage = document.getElementById('sbBgPanelImage');
+    const pGrad = document.getElementById('sbBgPanelGradient');
+
+    if (btnColor) btnColor.classList.toggle('active', type === 'color');
+    if (btnImage) btnImage.classList.toggle('active', type === 'image');
+    if (btnGrad) btnGrad.classList.toggle('active', type === 'gradient');
+
+    if (pColor) pColor.style.display = type === 'color' ? 'flex' : 'none';
+    if (pImage) pImage.style.display = type === 'image' ? 'flex' : 'none';
+    if (pGrad) pGrad.style.display = type === 'gradient' ? 'flex' : 'none';
+  };
+
+  SB.quickSetBgColor = function(hex) {
+    const cInp = document.getElementById('sbSetBgColor');
+    const tInp = document.getElementById('sbSetBgColorText');
+    if (cInp) cInp.value = hex;
+    if (tInp) tInp.value = hex;
+    const txtSelect = document.getElementById('sbSetTextColor');
+    if (txtSelect) {
+      if (['#0f172a', '#1e3a8a', '#064e3b', '#991b1b', '#1e293b'].includes(hex)) {
+        txtSelect.value = '#ffffff';
+      } else if (['#ffffff', '#f8fafc', '#fefce8', '#e2e8f0'].includes(hex)) {
+        txtSelect.value = '#0f172a';
+      }
+    }
+    toast(`Color set to ${hex}`);
+  };
+
+  SB.clearSecBgColor = function() {
+    const cInp = document.getElementById('sbSetBgColor');
+    const tInp = document.getElementById('sbSetBgColorText');
+    if (cInp) cInp.value = '#ffffff';
+    if (tInp) tInp.value = '';
+    const txtSelect = document.getElementById('sbSetTextColor');
+    if (txtSelect) txtSelect.value = '';
+    toast('Background color cleared (default transparent)');
+  };
+
+  SB.updateBgImgPreview = function() {
+    const url = ($('#sbSetBgImg') ? $('#sbSetBgImg').value : '').trim();
+    const wrap = document.getElementById('sbBgImgPreviewWrap');
+    const prev = document.getElementById('sbBgImgPreview');
+    if (url && wrap && prev) {
+      prev.style.backgroundImage = `url('${url}')`;
+      wrap.style.display = 'block';
+    } else if (wrap) {
+      wrap.style.display = 'none';
+    }
+  };
+
+  SB.handleSecBgFileUpload = function(inp) {
+    const f = inp.files && inp.files[0];
+    if (!f) return;
+    if (f.size > 8 * 1048576) {
+      toast('Image must be under 8 MB', true);
+      inp.value = '';
+      return;
+    }
+    const r = new FileReader();
+    r.onload = function() {
+      $('#sbSetBgImg').value = r.result;
+      SB.updateBgImgPreview();
+      const txt = $('#sbSetTextColor'); if (txt) txt.value = '#ffffff';
+      const ov = $('#sbSetBgOverlay'); if (ov && !ov.value) ov.value = 'dark';
+      toast('Section background image uploaded!');
+    };
+    r.readAsDataURL(f);
+    inp.value = '';
+  };
+
+  SB.openSecSettingsModal = function(secId, mode) {
+    sbActiveSettingsSecId = secId;
+    const sec = SB.state.sections.find(function(s){ return s.id === secId; });
+    if (!sec) return;
+
+    ensureSecSettingsModalDOM();
+    const settings = sec.settings || {};
+
+    const isBgMode = mode === 'bg' || mode === 'image' || mode === 'color';
+    $('#sbSettingsTitle').innerHTML = isBgMode
+      ? `<i class="fa fa-picture-o"></i> Section Background: ${sec.title || sec.type}`
+      : `<i class="fa fa-sliders"></i> Section Styles: ${sec.title || sec.type}`;
+    $('#sbSetTitle').value = sec.title || '';
+    $('#sbSetBgColor').value = settings.bgColor || '#ffffff';
+    $('#sbSetBgColorText').value = settings.bgColor || '';
+    $('#sbSetTextColor').value = settings.textColor || '';
+    $('#sbSetBgImg').value = settings.bgImg || '';
+    $('#sbSetBgOverlay').value = settings.bgOverlay || '';
+    $('#sbSetBgAttachment').value = settings.bgAttachment || 'scroll';
+    $('#sbSetBgGradientCustom').value = settings.bgGradient || '';
+    $('#sbSetPadding').value = settings.padding || '';
+    $('#sbSetWidth').value = settings.maxWidth || '';
+    $('#sbSetClass').value = settings.customClass || '';
+    $('#sbSetInlineStyle').value = settings.inlineStyle || '';
+
+    $('#sbSetBgColor').oninput = function(){ $('#sbSetBgColorText').value = this.value; };
+    $('#sbSetBgColorText').oninput = function(){ if (this.value.startsWith('#')) $('#sbSetBgColor').value = this.value; };
+
+    let initialType = settings.bgType || (settings.bgImg ? 'image' : (settings.bgGradient ? 'gradient' : 'color'));
+    if (mode === 'image') initialType = 'image';
+    else if (mode === 'color') initialType = 'color';
+    SB.setSecBgType(initialType);
+    SB.updateBgImgPreview();
+
+    $('#sbSecSettingsModalBackdrop').style.display = 'flex';
+  };
+
+  SB.closeSecSettingsModal = function() {
+    const modal = document.getElementById('sbSecSettingsModalBackdrop');
+    if (modal) modal.style.display = 'none';
+  };
+
+  SB.setSecGradient = function(gradientStr) {
+    if (!sbActiveSettingsSecId) return;
+    const sec = SB.state.sections.find(function(s){ return s.id === sbActiveSettingsSecId; });
+    if (!sec) return;
+    if (!sec.settings) sec.settings = {};
+    sec.settings.bgGradient = gradientStr;
+    const customInp = document.getElementById('sbSetBgGradientCustom');
+    if (customInp) customInp.value = gradientStr;
+    if (gradientStr.includes('#0f172a') || gradientStr.includes('#1b2a4e') || gradientStr.includes('#064e3b') || gradientStr.includes('#4c1d95')) {
+      $('#sbSetTextColor').value = '#ffffff';
+    }
+    toast(gradientStr ? 'Gradient selected' : 'Gradient removed');
+  };
+
+  SB.pickForSecBg = function(slot) {
+    const url = (SB.IMG && SB.IMG[slot]) || (SB.DEF && SB.DEF[slot]);
+    if (url) {
+      $('#sbSetBgImg').value = url;
+      SB.updateBgImgPreview();
+      $('#sbSetTextColor').value = '#ffffff';
+      const ov = $('#sbSetBgOverlay'); if (ov && !ov.value) ov.value = 'dark';
+      toast(`Background image set to ${slot}`);
+    }
+  };
+
+  SB.clearSecBgImg = function() {
+    $('#sbSetBgImg').value = '';
+    SB.updateBgImgPreview();
+    toast('Background image cleared');
+  };
+
+  SB.saveSecSettings = function() {
+    if (!sbActiveSettingsSecId) return;
+    const sec = SB.state.sections.find(function(s){ return s.id === sbActiveSettingsSecId; });
+    if (!sec) return;
+
+    if (!sec.settings) sec.settings = {};
+    sec.title = $('#sbSetTitle').value.trim() || sec.type;
+    sec.settings.bgType = sbActiveBgType || 'color';
+
+    if (sbActiveBgType === 'color') {
+      sec.settings.bgColor = $('#sbSetBgColorText').value.trim() || null;
+      sec.settings.bgImg = null;
+      sec.settings.bgGradient = null;
+    } else if (sbActiveBgType === 'image') {
+      sec.settings.bgImg = $('#sbSetBgImg').value.trim() || null;
+      sec.settings.bgOverlay = $('#sbSetBgOverlay').value || null;
+      sec.settings.bgAttachment = $('#sbSetBgAttachment').value || null;
+      sec.settings.bgGradient = null;
+    } else if (sbActiveBgType === 'gradient') {
+      sec.settings.bgGradient = ($('#sbSetBgGradientCustom').value || sec.settings.bgGradient || '').trim() || null;
+      sec.settings.bgImg = null;
+    }
+
+    sec.settings.textColor = $('#sbSetTextColor').value || null;
+    sec.settings.padding = $('#sbSetPadding').value || null;
+    sec.settings.maxWidth = $('#sbSetWidth').value || null;
+    sec.settings.customClass = $('#sbSetClass').value.trim() || null;
+    sec.settings.inlineStyle = $('#sbSetInlineStyle').value.trim() || null;
+
+    SB.pushHistory('Update Section Settings');
+    try { markDirty(); } catch(e){ console.warn(e); }
+    SB.render();
+    SB.closeSecSettingsModal();
+    toast(`Settings updated for "${sec.title}"!`);
+  };
+
+  /* ============================================================
+     5. Fullscreen Preview & Clean HTML Export
+     ============================================================ */
+  SB.toggleFullscreen = function() {
+    document.body.classList.toggle('sb-fullscreen-active');
+    let exitBtn = document.getElementById('sbFullscreenExitBtn');
+    if (!exitBtn) {
+      exitBtn = document.createElement('button');
+      exitBtn.id = 'sbFullscreenExitBtn';
+      exitBtn.className = 'sb-fullscreen-exit-btn';
+      exitBtn.innerHTML = '<i class="fa fa-times"></i> Exit Fullscreen';
+      exitBtn.onclick = function(){ SB.toggleFullscreen(); };
+      document.body.appendChild(exitBtn);
+    }
+    const isFull = document.body.classList.contains('sb-fullscreen-active');
+    toast(isFull ? 'Entered full canvas preview (Press Esc or button to exit)' : 'Exited fullscreen');
+  };
+
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'Escape' && document.body.classList.contains('sb-fullscreen-active')) {
+      SB.toggleFullscreen();
+    }
+  });
+
+  SB.exportCleanHtml = function() {
+    const site = document.getElementById('sb-site');
+    if (!site) return;
+    const bodyContent = site.innerHTML;
+    const isClassic = SB.state.tpl === 'classic';
+    const brandColor = SB.state.brand[SB.state.tpl] || '#1f4e79';
+
+    const fullHtml = '<!DOCTYPE html>\n' +
+      '<html lang="en">\n<head>\n' +
+      '  <meta charset="UTF-8">\n' +
+      '  <meta name="viewport" content="width=device-width, initial-scale=1.0">\n' +
+      '  <title>' + (SB.state.navBrand || "Friends of Fairview") + ' · Stars &amp; Stripes Flag Program</title>\n' +
+      '  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">\n' +
+      '  <link rel="preconnect" href="https://fonts.googleapis.com">\n' +
+      '  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>\n' +
+      '  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;700;800&family=Figtree:wght@400;500;600;700&family=Libre+Caslon+Text:wght@400;700&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">\n' +
+      '  <style>\n' +
+      '    :root { --brand: ' + brandColor + '; }\n' +
+      '    * { box-sizing: border-box; }\n' +
+      '    body { margin: 0; padding: 0; }\n' +
+      '  </style>\n' +
+      '</head>\n' +
+      '<' + 'body class="' + (isClassic ? 'sb-classic' : '') + '">\n' +
+      bodyContent + '\n' +
+      '<' + '/body>\n' +
+      '<' + '/html>';
+
+    const blob = new Blob([fullHtml], { type: 'text/html;charset=utf-8' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = `${(SB.state.navBrand || 'club').toLowerCase().replace(/[^a-z0-9]/g, '-')}-website.html`;
+    a.click();
+    toast('Standalone HTML webpage exported!');
+  };
+
+  // Modular In-Section Element Renderer Helper
+  function renderElementHTML(secId, el, elIdx, isModern) {
+    const elEd = function(field, val, tag, extraStyle) {
+      tag = tag || 'span';
+      extraStyle = extraStyle || '';
+      return `<${tag} contenteditable="true" data-sec-id="${secId}" data-el-idx="${elIdx}" data-el-field="${field}" style="${extraStyle}">${val !== undefined ? val : ''}</${tag}>`;
+    };
+
+    let inner = '';
+    switch(el.type) {
+      case 'newsletter':
+        inner = `
+          <div class="sb-el-newsletter">
+            <h3>${elEd('title', el.title || 'Subscribe to Our Newsletter')}</h3>
+            <p>${elEd('desc', el.desc || 'Stay up to date with flag placement schedules, community volunteer days, and first responder events.')}</p>
+            <div class="sb-el-newsletter-row">
+              <input type="email" placeholder="${el.placeholder || 'Enter your email address...'}" readonly style="cursor:default">
+              <button type="button"><span>${elEd('btn', el.btn || 'Subscribe')}</span></button>
+            </div>
+          </div>`;
+        break;
+
+      case 'stats':
+        inner = `
+          <div class="sb-el-stats">
+            ${(el.stats || [
+              { num: '1,450+', lbl: 'Active Flags' },
+              { num: '6', lbl: 'Holidays a Year' },
+              { num: '100%', lbl: 'Volunteer Run' }
+            ]).map(function(st, sIdx) {
+              return `<div class="sb-el-stat-box">
+                <div class="sb-el-stat-num">${elEd(`stats[${sIdx}].num`, st.num)}</div>
+                <div class="sb-el-stat-lbl">${elEd(`stats[${sIdx}].lbl`, st.lbl)}</div>
+              </div>`;
+            }).join('')}
+          </div>`;
+        break;
+
+      case 'video':
+        inner = `
+          <div class="sb-el-video">
+            <div class="sb-el-video-preview" onclick="toast('Video preview mode')">
+              <div class="sb-el-video-play-btn"><i class="fa fa-play" style="margin-left:4px"></i></div>
+            </div>
+            <div class="sb-el-video-meta">
+              <h4>${elEd('title', el.title || 'Watch: 2026 Memorial Day Flag Placement in Fairview')}</h4>
+              <p>${elEd('desc', el.desc || 'See our team of neighborhood volunteers placing over 1,400 flags at dawn across Fairview streets.')}</p>
+            </div>
+          </div>`;
+        break;
+
+      case 'social':
+        inner = `
+          <div class="sb-el-social">
+            <a href="#" class="sb-el-social-link" style="background:#1877f2" title="Facebook" onclick="return false;"><i class="fa fa-facebook"></i></a>
+            <a href="#" class="sb-el-social-link" style="background:#1da1f2" title="Twitter/X" onclick="return false;"><i class="fa fa-twitter"></i></a>
+            <a href="#" class="sb-el-social-link" style="background:#e1306c" title="Instagram" onclick="return false;"><i class="fa fa-instagram"></i></a>
+            <a href="#" class="sb-el-social-link" style="background:#ff0000" title="YouTube" onclick="return false;"><i class="fa fa-youtube-play"></i></a>
+          </div>`;
+        break;
+
+      case 'callout':
+        inner = `
+          <div class="sb-el-callout">
+            <div class="sb-el-callout-icon"><i class="fa ${el.icon || 'fa-info-circle'}"></i></div>
+            <div>
+              <h4>${elEd('title', el.title || 'Important Notice for Fairview Residents')}</h4>
+              <p>${elEd('desc', el.desc || 'Flag installation begins at 6:30 AM before each holiday. Please ensure front lawn sprinklers are turned off on delivery morning.')}</p>
+            </div>
+          </div>`;
+        break;
+
+      case 'cta-btn':
+        inner = `
+          <div class="sb-el-cta-btn">
+            <button class="sbtn" style="pointer-events:none"><span>${elEd('text', el.text || 'Subscribe to Holiday Flag Program', 'span', 'pointer-events:auto')}</span></button>
+          </div>`;
+        break;
+
+      case 'form':
+        inner = `
+          <div class="sb-el-form">
+            <h3>${elEd('title', el.title || 'Quick Community Inquiry')}</h3>
+            <p>${elEd('desc', el.desc || 'Have questions about placement, renewal, or corporate sponsorship? Send us a quick note.')}</p>
+            <div class="sb-el-form-grid">
+              <input type="text" placeholder="Your Name" readonly style="cursor:default">
+              <input type="email" placeholder="Email Address" readonly style="cursor:default">
+              <textarea placeholder="How can we help you?" readonly style="cursor:default"></textarea>
+            </div>
+            <button type="button"><span>${elEd('btn', el.btn || 'Send Message')}</span></button>
+          </div>`;
+        break;
+
+      case 'badge':
+        inner = `
+          <div class="sb-el-badge">
+            <i class="fa fa-shield"></i>
+            <span>${elEd('text', el.text || '100% Volunteer Driven · Proud 501(c)(3) Partner · Serving Fairview Since 2018')}</span>
+          </div>`;
+        break;
+
+      case 'quote':
+        inner = `
+          <div class="sb-el-quote">
+            <div class="sb-el-quote-text">“${elEd('text', el.text || 'The sight of hundreds of American flags flying down our neighborhood streets reminds us what true community is all about.')}”</div>
+            <div class="sb-el-quote-author">${elEd('author', el.author || '— CHIEF VOLUNTEER COORDINATOR, FAIRVIEW')}</div>
+          </div>`;
+        break;
+
+      case 'text-block':
+        inner = `
+          <div style="max-width:760px;margin:0 auto;padding:12px 20px;text-align:left">
+            <h4 style="font-family:var(--d);font-size:20px;margin-bottom:8px">${elEd('heading', el.heading || 'Community Notes & Guidelines')}</h4>
+            <div style="font-size:15px;line-height:1.7;color:var(--mt)">${elEd('desc', el.desc || '', 'div')}</div>
+          </div>`;
+        break;
+
+      case 'html':
+        inner = `
+          <div class="sb-el-custom-html">
+            <div class="sb-el-custom-html-preview">${el.code || '<div style="padding:22px 16px;text-align:center;color:var(--mt);border:1.5px dashed var(--bdr,#cbd5e1);border-radius:8px;background:rgba(241,245,249,.6)"><i class="fa fa-code" style="font-size:20px;display:block;margin-bottom:6px;color:var(--primary)"></i><b>Custom HTML / Embed Block</b><div style="font-size:12px;margin-top:4px">Click "Edit Custom HTML" below to embed widgets, scripts, badges, or iframes.</div></div>'}</div>
+            <div style="margin-top:8px;text-align:right">
+              <button type="button" class="sbtn sbtn-sm" style="display:inline-flex;align-items:center;gap:6px;padding:4px 10px;font-size:11px;background:#4f46e5;color:#fff;border-radius:6px;border:0;cursor:pointer" onclick="SB.openHtmlSourceModal('${secId}', ${elIdx})"><i class="fa fa-code"></i> Edit Custom HTML</button>
+            </div>
+          </div>`;
+        break;
+
+      default:
+        inner = `<div style="padding:10px;text-align:center;color:var(--mt)">Element: ${el.type}</div>`;
+        break;
+    }
+
+    return `
+      <div class="sb-el-wrap" id="el_${secId}_${elIdx}" data-sec-id="${secId}" data-el-idx="${elIdx}">
+        <div class="sb-el-bar">
+          <span class="sb-el-tag" style="display:flex;align-items:center;gap:3px;font-weight:600"><i class="fa fa-cube"></i> ${el.title || el.type}</span>
+          ${el.type === 'html' ? `<button type="button" onclick="event.stopPropagation();SB.openHtmlSourceModal('${secId}', ${elIdx})" title="Edit HTML Code"><i class="fa fa-code"></i> Edit HTML</button>` : ''}
+          <button type="button" onclick="event.stopPropagation();SB.moveElement('${secId}', ${elIdx}, -1)" title="Move element up" ${elIdx === 0 ? 'disabled style="opacity:.3"' : ''}><i class="fa fa-chevron-up"></i></button>
+          <button type="button" onclick="event.stopPropagation();SB.moveElement('${secId}', ${elIdx}, 1)" title="Move element down"><i class="fa fa-chevron-down"></i></button>
+          <button type="button" class="del" onclick="event.stopPropagation();SB.deleteElement('${secId}', ${elIdx})" title="Delete element"><i class="fa fa-trash-o"></i></button>
+        </div>
+        ${inner}
+      </div>
+    `;
+  }
+
+  // Section renderer helper
+  function renderSectionHTML(sec, isModern) {
+    const ed = function(field, text, tag, extraCls) {
+      tag = tag || 'span';
+      extraCls = extraCls || '';
+      return `<${tag} contenteditable="true" data-sec-id="${sec.id}" data-field="${field}" class="${extraCls}">${text !== undefined ? text : ''}</${tag}>`;
+    };
+
+    const ph = function(slot, cls) {
+      cls = cls || '';
+      const imgUrl = (SB.IMG && SB.IMG[slot]) || (SB.DEF && SB.DEF[slot]) || (slot && slot.includes('/') ? slot : '');
+      return `<div class="ph ${cls}" data-img="${slot}" style="background-image:url('${imgUrl}')"></div>`;
+    };
+
+    const secHdr = function() {
+      return `<div class="hd"><div class="ey">${ed('ey', sec.ey)}</div><h2>${ed('heading', sec.heading)}</h2>${sec.desc ? `<p>${ed('desc', sec.desc)}</p>` : `<p style="display:none">${ed('desc', '')}</p>`}</div>`;
+    };
+
+    const settings = sec.settings || {};
+    let inner = '';
+    if (settings.rawHtml && settings.rawHtml.trim()) {
+      inner = `<div class="sb-sec-raw-html" style="padding:24px 0">${settings.rawHtml}</div>`;
+    } else {
+      switch(sec.type) {
+      case 'blank':
+        inner = `<div class="s base sb-sec-blank"><div style="text-align:center;max-width:700px;margin:0 auto"><div class="ey">${ed('ey', sec.ey || 'Custom Section')}</div><h2>${ed('heading', sec.heading || 'Your Custom Section')}</h2><p style="color:var(--mt)">${ed('desc', sec.desc || '')}</p></div></div>`;
+        break;
+
+      case 'features':
+        inner = `<div class="s sf">${secHdr()}<div class="cols">` +
+          (sec.items || []).map(function(it, i){
+            return `<div class="sb-item-wrap card">
+              <button type="button" class="sb-item-del" onclick="event.stopPropagation();SB.deleteItem('${sec.id}', ${i})" title="Delete feature"><i class="fa fa-times"></i></button>
+              <div style="width:44px;height:44px;border-radius:10px;background:rgba(59,130,246,.1);color:var(--brand);display:flex;align-items:center;justify-content:center;font-size:20px;margin-bottom:14px">
+                <i class="fa ${it.icon || 'fa-check'}"></i>
+              </div>
+              <h3>${ed(`items[${i}].title`, it.title)}</h3>
+              <p>${ed(`items[${i}].desc`, it.desc)}</p>
+            </div>`;
+          }).join('') +
+          `<div class="sb-item-add-card" onclick="SB.addItem('${sec.id}')">
+            <i class="fa fa-plus-circle" style="font-size:22px"></i>
+            <span>+ Add Feature</span>
+          </div>` +
+          `</div></div>`;
+        break;
+
+      case 'stats':
+        inner = `<div class="s tn">${secHdr()}<div class="cols">` +
+          (sec.items || []).map(function(it, i){
+            return `<div class="sb-item-wrap card" style="text-align:center">
+              <button type="button" class="sb-item-del" onclick="event.stopPropagation();SB.deleteItem('${sec.id}', ${i})" title="Delete stat"><i class="fa fa-times"></i></button>
+              <div style="font-family:var(--d);font-size:clamp(32px,5cqw,46px);font-weight:900;color:var(--brand);margin-bottom:6px">${ed(`items[${i}].num`, it.num)}</div>
+              <div style="font-size:16px;font-weight:700;color:var(--ink);margin-bottom:4px">${ed(`items[${i}].label`, it.label)}</div>
+              <p style="font-size:13px;color:var(--mt)">${ed(`items[${i}].desc`, it.desc)}</p>
+            </div>`;
+          }).join('') +
+          `<div class="sb-item-add-card" onclick="SB.addItem('${sec.id}')">
+            <i class="fa fa-plus-circle" style="font-size:22px"></i>
+            <span>+ Add Stat</span>
+          </div>` +
+          `</div></div>`;
+        break;
+
+      case 'hero':
+        inner = isModern
+          ? `<div class="hero"><div><div class="ey">${ed('ey', sec.ey)}</div><h1>${ed('heading', sec.heading)}</h1><p class="l">${ed('desc', sec.desc)}</p><span class="sbtn">${ed('btn1', sec.btn1)}</span><span class="sbtn o">${ed('btn2', sec.btn2)}</span></div>${ph(sec.img || 'hero')}</div>`
+          : `<div class="hero"><div class="tx"><div class="ey">${ed('ey', sec.ey)}</div><h1>${ed('heading', sec.heading)}</h1><p class="l">${ed('desc', sec.desc)}</p><span class="sbtn">${ed('btn1', sec.btn1)}</span><span class="sbtn o">${ed('btn2', sec.btn2)}</span></div>${ph(sec.img || 'hero')}</div>`;
+        break;
+
+      case 'about':
+        inner = `<div class="s base"><div class="split rev">${ph(sec.img || 'about')}<div><div class="ey">${ed('ey', sec.ey)}</div><h2 style="font-size:clamp(26px,4.4cqw,38px)">${ed('heading', sec.heading)}</h2><p>${ed('desc', sec.desc)}</p></div></div></div>`;
+        break;
+
+      case 'how':
+        inner = `<div class="s sf">${secHdr()}<div class="cols">` +
+          (sec.items || []).map(function(it, i){
+            return `<div class="sb-item-wrap card">
+              <button type="button" class="sb-item-del" onclick="event.stopPropagation();SB.deleteItem('${sec.id}', ${i})" title="Delete step"><i class="fa fa-times"></i></button>
+              <div class="n">${i + 1}</div>
+              <h3>${ed(`items[${i}].title`, it.title)}</h3>
+              <p>${ed(`items[${i}].desc`, it.desc)}</p>
+            </div>`;
+          }).join('') +
+          `<div class="sb-item-add-card" onclick="SB.addItem('${sec.id}')">
+            <i class="fa fa-plus-circle" style="font-size:22px"></i>
+            <span>+ Add Step</span>
+          </div>` +
+          `</div></div>`;
+        break;
+
+      case 'plans':
+        inner = `<div class="s base"><span class="sync" style="margin-top:-40px">Synced from Product List</span>${secHdr()}<div class="cols">` +
+          (sec.items || []).map(function(it, i){
+            return `<div class="sb-item-wrap card">
+              <button type="button" class="sb-item-del" onclick="event.stopPropagation();SB.deleteItem('${sec.id}', ${i})" title="Delete plan"><i class="fa fa-times"></i></button>
+              <h3>${ed(`items[${i}].name`, it.name)}</h3>
+              <div class="price">${ed(`items[${i}].price`, it.price)} <small>${ed(`items[${i}].period`, it.period)}</small></div>
+              <p style="margin:8px 0 16px">${ed(`items[${i}].desc`, it.desc)}</p>
+              <span class="sbtn" style="margin:0">${ed(`items[${i}].btn`, it.btn || 'Subscribe')}</span>
+            </div>`;
+          }).join('') +
+          `<div class="sb-item-add-card" onclick="SB.addItem('${sec.id}')">
+            <i class="fa fa-plus-circle" style="font-size:22px"></i>
+            <span>+ Add Plan</span>
+          </div>` +
+          `</div><p class="who" style="margin-top:12px">${ed('footerNote', sec.footerNote || 'Sample prices shown. Live prices come from your Product List.')}</p></div>`;
+        break;
+
+      case 'faq':
+        inner = `<div class="s sf">${secHdr()}<div class="faq-list">` +
+          (sec.items || []).map(function(it, i){
+            return `<div class="sb-item-wrap faq-item">
+              <button type="button" class="sb-item-del" onclick="event.stopPropagation();SB.deleteItem('${sec.id}', ${i})" title="Delete question"><i class="fa fa-times"></i></button>
+              <div class="faq-q">${ed(`items[${i}].q`, it.q)}</div>
+              <div class="faq-a">${ed(`items[${i}].a`, it.a)}</div>
+            </div>`;
+          }).join('') +
+          `<div class="sb-item-add-card" style="min-height:55px" onclick="SB.addItem('${sec.id}')">
+            <i class="fa fa-plus-circle"></i>
+            <span>+ Add Question</span>
+          </div>` +
+          `</div></div>`;
+        break;
+
+      case 'say':
+        inner = `<div class="s base">${secHdr()}<div class="cols">` +
+          (sec.items || []).map(function(it, i){
+            return `<div class="sb-item-wrap card">
+              <button type="button" class="sb-item-del" onclick="event.stopPropagation();SB.deleteItem('${sec.id}', ${i})" title="Delete testimonial"><i class="fa fa-times"></i></button>
+              <p class="q">“${ed(`items[${i}].quote`, it.quote)}”</p>
+              <div class="who"><b>${ed(`items[${i}].name`, it.name)}</b> · ${ed(`items[${i}].location`, it.location)}</div>
+            </div>`;
+          }).join('') +
+          `<div class="sb-item-add-card" onclick="SB.addItem('${sec.id}')">
+            <i class="fa fa-plus-circle" style="font-size:22px"></i>
+            <span>+ Add Review</span>
+          </div>` +
+          `</div><p class="who" style="margin-top:12px">${ed('footerNote', sec.footerNote || 'Sample quotes. Replace with your own.')}</p></div>`;
+        break;
+
+      case 'cta':
+        inner = `<div class="s br"><div class="cta-banner"><div class="ey">${ed('ey', sec.ey)}</div><h2>${ed('heading', sec.heading)}</h2><p>${ed('desc', sec.desc)}</p><div><span class="sbtn">${ed('btn1', sec.btn1 || 'Subscribe now')}</span>${sec.btn2 ? `<span class="sbtn o">${ed('btn2', sec.btn2)}</span>` : ''}</div></div></div>`;
+        break;
+
+      case 'hol':
+        inner = `<div class="s tn"><span class="sync" style="margin-top:-40px">Synced from Holidays</span>${secHdr()}<div style="max-width:640px;margin:${isModern ? '0' : '0 auto'}">` +
+          (sec.items || []).map(function(it, i){
+            return `<div class="sb-item-wrap hol">
+              <button type="button" class="sb-item-del" onclick="event.stopPropagation();SB.deleteItem('${sec.id}', ${i})" title="Delete date"><i class="fa fa-times"></i></button>
+              <b>${ed(`items[${i}].name`, it.name)}</b>
+              <span>${ed(`items[${i}].date`, it.date)}</span>
+            </div>`;
+          }).join('') +
+          `<div class="sb-item-add-card" style="min-height:48px;margin-top:10px" onclick="SB.addItem('${sec.id}')">
+            <span>+ Add Holiday / Date</span>
+          </div>` +
+          `</div></div>`;
+        break;
+
+      case 'gal':
+        inner = `<div class="s sf">${secHdr()}<div class="gal">` +
+          (sec.items || []).map(function(slot, i){
+            return `<div class="sb-item-wrap" style="position:relative">
+              <button type="button" class="sb-item-del" onclick="event.stopPropagation();SB.deleteItem('${sec.id}', ${i})" title="Delete photo" style="top:6px;right:6px"><i class="fa fa-times"></i></button>
+              ${ph(slot)}
+            </div>`;
+          }).join('') +
+          `<div class="sb-item-add-card" style="min-height:160px" onclick="SB.addItem('${sec.id}')">
+            <i class="fa fa-camera" style="font-size:24px"></i>
+            <span>+ Add Photo Slot</span>
+          </div>` +
+          `</div></div>`;
+        break;
+
+      case 'contact':
+        inner = `<div class="s tn"><div class="split"><div><div class="ey">${ed('ey', sec.ey)}</div><h2 style="font-size:clamp(26px,4.4cqw,38px)">${ed('heading', sec.heading)}</h2><p style="margin-bottom:14px">${ed('desc', sec.desc)}</p><div style="color:var(--ink);line-height:1.8">${ed('details', sec.details || '<b>Friends of Fairview</b><br>(469) 331-2520<br>info@friendsoffairview.org', 'div')}</div></div>${ph(sec.img || 'map', 'map')}</div><p class="who" style="margin-top:12px;text-align:center">${ed('footerNote', sec.footerNote || 'Friends of Fairview’s service area is highlighted in red.')}</p></div>`;
+        break;
+
+      case 'don':
+        inner = `<div class="s br"><div class="split">${ph(sec.img || 'dinner')}<div><div class="ey">${ed('ey', sec.ey)}</div><h2 style="font-size:clamp(26px,4.4cqw,38px)">${ed('heading', sec.heading)}</h2><p>${ed('desc', sec.desc)}</p><span class="sbtn">${ed('btn1', sec.btn1 || 'Donate')}</span><span class="sbtn o">${ed('btn2', sec.btn2 || 'Read more (PDF)')}</span></div></div></div>`;
+        break;
+
+      case 'text':
+        inner = `<div class="s base"><div style="max-width:760px;margin:0 auto"><div class="ey">${ed('ey', sec.ey)}</div><h2 style="font-size:clamp(28px,4.5cqw,40px);margin-bottom:16px">${ed('heading', sec.heading)}</h2><div style="font-size:16px;line-height:1.7;color:var(--mt)">${ed('desc', sec.desc, 'div')}</div></div></div>`;
+        break;
+
+      default:
+        inner = `<div class="s base"><div class="ey">${ed('ey', sec.ey || 'Custom')}</div><h2>${ed('heading', sec.heading || sec.title)}</h2><p>${ed('desc', sec.desc || '')}</p></div>`;
+        break;
+      }
+    }
+
+    const elementsHTML = `
+      <div class="sb-sec-elements">
+        ${(sec.elements || []).map(function(el, elIdx) { return renderElementHTML(sec.id, el, elIdx, isModern); }).join('')}
+        <div class="sb-sec-add-el-box" style="text-align:center">
+          <button type="button" class="sb-sec-add-el-btn" onclick="SB.openAddDrawer('elements', null, '${sec.id}')">
+            <i class="fa fa-plus-circle"></i> + Add Element to this Section
+          </button>
+        </div>
+      </div>
+    `;
+
+    let secStyle = '';
+    let customBgCls = '';
+    if (settings.bgColor || settings.bgGradient || settings.bgImg) {
+      customBgCls = 'sb-sec-custom-bg';
+      if (settings.bgGradient) secStyle += `background:${settings.bgGradient};`;
+      else if (settings.bgColor) secStyle += `background-color:${settings.bgColor};`;
+      if (settings.bgImg) {
+        let overlayCss = '';
+        if (settings.bgOverlay === 'dark') overlayCss = 'linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.55)), ';
+        else if (settings.bgOverlay === 'dark-heavy') overlayCss = 'linear-gradient(rgba(0,0,0,0.75), rgba(0,0,0,0.75)), ';
+        else if (settings.bgOverlay === 'light') overlayCss = 'linear-gradient(rgba(255,255,255,0.7), rgba(255,255,255,0.7)), ';
+        secStyle += `background-image:${overlayCss}url('${settings.bgImg}');background-size:cover;background-position:center;`;
+        if (settings.bgAttachment === 'fixed') secStyle += `background-attachment:fixed;`;
+      }
+    }
+    if (settings.textColor) secStyle += `color:${settings.textColor};`;
+    if (settings.padding) {
+      const padMap = { compact: '30px 6cqw', normal: '56px 6cqw', spacious: '90px 6cqw', flush: '0px' };
+      secStyle += `padding:${padMap[settings.padding] || settings.padding};`;
+    }
+    if (settings.maxWidth) {
+      secStyle += `max-width:${settings.maxWidth};margin-left:auto;margin-right:auto;`;
+    }
+    if (settings.inlineStyle) {
+      secStyle += settings.inlineStyle.endsWith(';') ? settings.inlineStyle : (settings.inlineStyle + ';');
+    }
+
+    return `
+      <div class="sb-sec-wrap ${sec.hidden ? 'hidden-preview' : ''} ${customBgCls} ${settings.customClass || ''}" id="${sec.id}" data-sec-type="${sec.type}" style="${secStyle}">
+        <div class="sb-sec-bar">
+          <span class="sb-sec-tag">${sec.title || sec.type}</span>
+          <button type="button" onclick="SB.openAddDrawer('elements', null, '${sec.id}')" title="Add element to section" style="background:#4f46e5;color:#fff;border-radius:3px"><i class="fa fa-cube"></i> + Element</button>
+          <button type="button" onclick="SB.openSecSettingsModal('${sec.id}', 'bg')" title="Change section background to image or color" style="background:#0284c7;color:#fff;border-radius:3px"><i class="fa fa-picture-o"></i> Background</button>
+          <button type="button" onclick="SB.openSecSettingsModal('${sec.id}')" title="Section styles &amp; layout"><i class="fa fa-sliders"></i> Style</button>
+          <button type="button" onclick="SB.openHtmlSourceModal('${sec.id}')" title="Edit section HTML"><i class="fa fa-code"></i> HTML</button>
+          <button type="button" onclick="SB.moveSection('${sec.id}', -1)" title="Move up"><i class="fa fa-chevron-up"></i></button>
+          <button type="button" onclick="SB.moveSection('${sec.id}', 1)" title="Move down"><i class="fa fa-chevron-down"></i></button>
+          <button type="button" onclick="SB.duplicateSection('${sec.id}')" title="Duplicate section"><i class="fa fa-clone"></i> Duplicate</button>
+          <button type="button" class="del" onclick="SB.deleteSection('${sec.id}')" title="Delete section"><i class="fa fa-trash-o"></i> Delete</button>
+        </div>
+        ${inner}
+        ${elementsHTML}
+      </div>
+    `;
+  }
+
   SB.panel = function(){
     const m = SB.state.tpl === 'modern';
+    const curBrandRaw = (SB.state && SB.state.brand && SB.state.brand[SB.state.tpl]) || (m ? '#1f4e79' : '#1b2a4e');
+    const curBrand = /^#[0-9a-f]{6}$/i.test(curBrandRaw) ? curBrandRaw : (m ? '#1f4e79' : '#1b2a4e');
+    const presets = m ? ['#1f4e79', '#2f5d50', '#7a3b2e', '#2b2b33'] : ['#1b2a4e', '#5e1f24', '#1f3b2c', '#2b2b2f'];
+
     $('#sb-tools').innerHTML =
-      `<h4>Device</h4><div class="sb-seg-dev"><button class="${SB.state.dev === 'd' ? 'on' : ''}" onclick="SB.state.dev='d';SB.frame()">Desktop</button><button class="${SB.state.dev === 'm' ? 'on' : ''}" onclick="SB.state.dev='m';SB.frame()">Mobile</button></div>
-<h4>Brand color</h4><div class="sb-dots">${(m ? ['#1f4e79', '#2f5d50', '#7a3b2e', '#2b2b33'] : ['#1b2a4e', '#5e1f24', '#1f3b2c', '#2b2b2f']).map(function(c){ return `<i class="${SB.state.brand[SB.state.tpl] === c ? 'on' : ''}" style="background:${c}" onclick="SB.state.brand[SB.state.tpl]='${c}';SB.render()"></i>`; }).join('')}</div>
-<h4>Sections</h4>${SECS.map(function(s){ const k = s[0], l = s[1]; return `<div class="sb-tg" style="padding:6px 0"><div class="sb-sw ${SB.state.hid[k] ? '' : 'on'}" onclick="SB.state.hid['${k}']=!SB.state.hid['${k}'];SB.render()"></div><span>${l}</span></div>`; }).join('')}
-<h4>Images (prebuilt, swap any)</h4>${SB.SLOTS.map(function(s){ const k = s[0], l = s[1]; return `<div class="sb-im"><img src="${SB.IMG[k]}"><span>${l}</span><button onclick="SB.pick('${k}')">Replace</button>${SB.IMG[k] !== SB.DEF[k] ? `<button onclick="SB.IMG['${k}']=SB.DEF['${k}'];SB.render()">Reset</button>` : ''}</div>`; }).join('')}`;
+      `<h4>Device &amp; Preview</h4>
+<div class="sb-seg-dev">
+  <button class="${SB.state.dev === 'd' ? 'on' : ''}" onclick="SB.state.dev='d';SB.frame()">Desktop</button>
+  <button class="${SB.state.dev === 'm' ? 'on' : ''}" onclick="SB.state.dev='m';SB.frame()">Mobile</button>
+</div>
+<div style="margin-bottom:12px">
+  <a href="homepage.html" target="_blank" style="display:flex;align-items:center;justify-content:center;gap:6px;padding:7px 10px;background:var(--soft);color:var(--text);border-radius:6px;font-size:12px;font-weight:600;text-decoration:none;border:1px solid var(--border)" title="Open in new window">
+    <i class="fa fa-external-link"></i> Open Live Site in New Tab
+  </a>
+</div>
+
+<h4>Brand color</h4>
+<div class="sb-dots" style="align-items:center">
+  ${presets.map(function(c){
+    return `<i class="${curBrand === c ? 'on' : ''}" style="background:${c}" onclick="SB.setBrand('${c}')" title="${c}"></i>`;
+  }).join('')}
+  <label class="sb-color-custom" title="Choose custom hex color">
+    <input type="color" value="${curBrand}" onchange="SB.setBrand(this.value)">
+  </label>
+</div>
+
+<h4>Sections &amp; Layout (${SB.state.sections.length})</h4>
+<div style="display:flex;gap:6px;margin-bottom:12px">
+  <button type="button" class="btn" style="flex:1;font-size:12px;background:#3b82f6;color:#fff;border:0;display:flex;align-items:center;justify-content:center;gap:6px;padding:8px 8px;border-radius:6px;font-weight:600" onclick="SB.openAddDrawer('sections')">
+    <i class="fa fa-plus-circle"></i> + Section
+  </button>
+  <button type="button" class="btn" style="flex:1;font-size:12px;background:#6366f1;color:#fff;border:0;display:flex;align-items:center;justify-content:center;gap:6px;padding:8px 8px;border-radius:6px;font-weight:600" onclick="SB.openAddDrawer('elements')">
+    <i class="fa fa-cube"></i> + Element
+  </button>
+</div>
+<div class="sb-sec-list">
+  ${SB.state.sections.map(function(sec, idx){
+    const isHidden = !!sec.hidden;
+    const elCount = (sec.elements && sec.elements.length) || 0;
+    return `<div class="sb-sec-row">
+      <!-- 1st Row: Switch and Name -->
+      <div class="sb-sec-row-main">
+        <div class="sb-sw ${isHidden ? '' : 'on'}" onclick="SB.toggleSection('${sec.id}')" title="${isHidden ? 'Show section' : 'Hide section'}"></div>
+        <span class="sb-sec-name" style="${isHidden ? 'color:var(--muted);text-decoration:line-through' : ''}" title="${sec.title || sec.type}">
+          ${sec.title || sec.type}
+        </span>
+        ${elCount > 0 ? `<span class="sb-sec-badge">${elCount} el</span>` : ''}
+      </div>
+      <!-- 2nd Row: Other buttons -->
+      <div class="sb-sec-row-btns">
+        <button type="button" class="sb-sec-btn-el" onclick="SB.openAddDrawer('elements', null, '${sec.id}')" title="Add modular element into this section">
+          <i class="fa fa-cube"></i> + Element
+        </button>
+        <div class="sb-sec-btn-group">
+          <button type="button" onclick="SB.openSecSettingsModal('${sec.id}', 'bg')" title="Section background (image or color)"><i class="fa fa-picture-o"></i></button>
+          <button type="button" onclick="SB.openSecSettingsModal('${sec.id}')" title="Section styles &amp; layout"><i class="fa fa-sliders"></i></button>
+          <button type="button" onclick="SB.openHtmlSourceModal('${sec.id}')" title="Edit section HTML"><i class="fa fa-code"></i></button>
+          <button type="button" onclick="SB.moveSection('${sec.id}', -1)" title="Move section up" ${idx === 0 ? 'disabled' : ''}><i class="fa fa-chevron-up"></i></button>
+          <button type="button" onclick="SB.moveSection('${sec.id}', 1)" title="Move section down" ${idx === SB.state.sections.length - 1 ? 'disabled' : ''}><i class="fa fa-chevron-down"></i></button>
+          <button type="button" onclick="SB.duplicateSection('${sec.id}')" title="Duplicate section"><i class="fa fa-clone"></i></button>
+          <button type="button" class="btn-del" onclick="SB.deleteSection('${sec.id}')" title="Delete section"><i class="fa fa-trash-o"></i></button>
+        </div>
+      </div>
+    </div>`;
+  }).join('')}
+</div>
+
+<h4>Images (prebuilt, click to swap)</h4>
+${SB.SLOTS.map(function(s){
+  const k = s[0], l = s[1];
+  return `<div class="sb-im">
+    <img src="${SB.IMG[k]}" alt="${l}">
+    <span>${l}</span>
+    <button type="button" onclick="SB.pick('${k}')">Replace</button>
+    ${SB.IMG[k] !== SB.DEF[k] ? `<button type="button" onclick="SB.resetImage('${k}')">Reset</button>` : ''}
+  </div>`;
+}).join('')}
+
+<div style="margin-top:16px;border-top:1px solid var(--border);padding-top:12px;text-align:center">
+  <button type="button" class="btn primary" style="width:100%;margin-bottom:8px" onclick="SB.quickSave()">
+    <i class="fa fa-cloud-upload"></i> Save &amp; Publish
+  </button>
+  <span class="sb-reset-link" onclick="SB.resetToDefaults()">Reset design to default template</span>
+</div>`;
   };
+
   SB.frame = function(){
     const f = $('#sb-frame');
     f.style.width = SB.state.dev === 'm' ? '390px' : '100%';
@@ -2173,28 +4701,217 @@ main{min-width:0;padding:6px 12px 24px}
   };
 
   SB.render = function(){
-    const m = SB.state.tpl === 'modern', b = SB.state.brand[SB.state.tpl], f = secs(m);
+    const m = SB.state.tpl === 'modern', b = SB.state.brand[SB.state.tpl];
     $('#sb-site').className = 'sb-site ' + (SB.state.tpl === 'classic' ? 'sb-classic' : '');
     $('#sb-site').style.setProperty('--brand', b);
-    $('#sb-site').innerHTML =
-      `<div class="nav"><b>${e("nb", "Friends of Fairview")}</b><span>Already subscribed? <u>Log in, no password needed</u></span></div>` +
-      SECS.filter(([k]) => !SB.state.hid[k])
-        .map(([k]) => {
-          const h = f[k]();
-          return k == "hero" || h.startsWith('<div class="s')
-            ? h
-            : `<div class="s base">${h}</div>`;
-        })
-        .join("") +
-      `<div class="ft s br" style="padding:36px 6cqw"><b>Friends of Fairview Fire Fighters Association</b><p>info@friendsoffairview.org · (469) 331-2520</p><p>Privacy policy · Terms of service · Recurring billing & cancellation · Donation refund policy</p><p>© 2026 Friends of Fairview · Powered by Helping With Flags</p></div>`;
+
+    let siteHTML = `<div class="nav"><b contenteditable="true" data-nav="brand">${SB.state.navBrand || "Friends of Fairview"}</b><span><span contenteditable="true" data-nav="login">${SB.state.navLogin || "Already subscribed? Log in, no password needed"}</span></span></div>`;
+
+    // Render sections with inter-section add lines
+    siteHTML += `<div class="sb-sec-add-line"><button type="button" class="sb-sec-add-btn" onclick="SB.openAddSecModal(0)"><i class="fa fa-plus"></i> Add Section</button></div>`;
+
+    SB.state.sections.forEach(function(sec, idx){
+      if (!sec.hidden) {
+        siteHTML += renderSectionHTML(sec, m);
+        siteHTML += `<div class="sb-sec-add-line"><button type="button" class="sb-sec-add-btn" onclick="SB.openAddSecModal(${idx + 1})"><i class="fa fa-plus"></i> Add Section</button></div>`;
+      }
+    });
+
+    siteHTML += `<div class="ft s br" style="padding:36px 6cqw"><b>Friends of Fairview Fire Fighters Association</b><p>info@friendsoffairview.org · (469) 331-2520</p><p>Privacy policy · Terms of service · Recurring billing &amp; cancellation · Donation refund policy</p><p>© 2026 Friends of Fairview · Powered by Helping With Flags</p></div>`;
+
+    $('#sb-site').innerHTML = siteHTML;
+
+    // Attach image pickers
     $('#sb-site').querySelectorAll('[data-img]').forEach(function(el){
       el.onclick = function(){ SB.pick(el.dataset.img); };
     });
-    $('#sb-site').querySelectorAll('[data-k]').forEach(function(el){
-      el.oninput = function(){ SB.state.T[el.dataset.k] = el.innerText; };
-    });
+
+    // Attach inline text editing handler
+    $('#sb-site').oninput = function(ev){
+      const el = ev.target.closest('[contenteditable]');
+      if (!el) return;
+
+      if (el.dataset.nav === 'brand') {
+        SB.state.navBrand = el.innerHTML;
+        markDirty();
+        return;
+      }
+      if (el.dataset.nav === 'login') {
+        SB.state.navLogin = el.innerHTML;
+        markDirty();
+        return;
+      }
+
+      const secId = el.dataset.secId;
+      const elIdx = el.dataset.elIdx;
+      const elField = el.dataset.elField;
+      if (secId && elIdx !== undefined && elField) {
+        const sec = SB.state.sections.find(function(s){ return s.id === secId; });
+        if (sec && sec.elements && sec.elements[elIdx]) {
+          const targetEl = sec.elements[elIdx];
+          if (elField.startsWith('stats[')) {
+            const match = elField.match(/^stats\[(\d+)\]\.(.+)$/);
+            if (match) {
+              const stIdx = parseInt(match[1], 10);
+              const stProp = match[2];
+              if (targetEl.stats && targetEl.stats[stIdx]) {
+                targetEl.stats[stIdx][stProp] = el.innerHTML;
+              }
+            }
+          } else {
+            targetEl[elField] = el.innerHTML;
+          }
+          markDirty();
+        }
+        return;
+      }
+
+      const field = el.dataset.field;
+      if (!secId || !field) return;
+
+      const sec = SB.state.sections.find(function(s){ return s.id === secId; });
+      if (!sec) return;
+
+      if (field.startsWith('items[')) {
+        const match = field.match(/^items\[(\d+)\](?:\.(.+))?$/);
+        if (match) {
+          const itemIdx = parseInt(match[1], 10);
+          const prop = match[2];
+          if (sec.items && sec.items[itemIdx] !== undefined) {
+            if (prop) {
+              sec.items[itemIdx][prop] = el.innerHTML;
+            } else {
+              sec.items[itemIdx] = el.innerHTML;
+            }
+          }
+        }
+      } else {
+        sec[field] = el.innerHTML;
+      }
+      markDirty();
+    };
+
     SB.panel();
   };
+
+  SB.save = function(){
+    try {
+      const customIMG = {};
+      for (const k in SB.IMG) {
+        if (SB.IMG[k] !== SB.DEF[k]) {
+          customIMG[k] = SB.IMG[k];
+        }
+      }
+      const data = {
+        tpl: SB.state.tpl,
+        brand: SB.state.brand,
+        dev: SB.state.dev,
+        navBrand: SB.state.navBrand || 'Friends of Fairview',
+        navLogin: SB.state.navLogin || 'Already subscribed? Log in, no password needed',
+        sections: SB.state.sections,
+        customIMG: customIMG,
+        savedAt: new Date().toISOString()
+      };
+      localStorage.setItem('hwf_sitebuilder_design', JSON.stringify(data));
+      return true;
+    } catch(e) {
+      console.error('Error saving sitebuilder design to localStorage:', e);
+      return false;
+    }
+  };
+
+  SB.load = function(){
+    try {
+      const raw = localStorage.getItem('hwf_sitebuilder_design');
+      if (!raw) return false;
+      const data = JSON.parse(raw);
+      if (data.tpl) SB.state.tpl = data.tpl;
+      if (data.brand) SB.state.brand = Object.assign(SB.state.brand, data.brand);
+      if (data.dev) SB.state.dev = data.dev;
+      if (data.navBrand) SB.state.navBrand = data.navBrand;
+      if (data.navLogin) SB.state.navLogin = data.navLogin;
+
+      if (data.sections && Array.isArray(data.sections) && data.sections.length > 0) {
+        SB.state.sections = data.sections;
+      } else if (data.secOrder && Array.isArray(data.secOrder)) {
+        // Upgrade from older version format
+        const defaults = SB.defaultSections();
+        const map = {};
+        defaults.forEach(function(d){ map[d.type] = d; });
+        SB.state.sections = data.secOrder.map(function(type){
+          const s = map[type] || (SB.CATALOG.find(function(c){ return c.type === type; }) || {}).create();
+          if (s && data.hid && data.hid[type]) s.hidden = true;
+          return s;
+        }).filter(Boolean);
+      }
+
+      if (data.customIMG) {
+        for (const k in data.customIMG) {
+          SB.IMG[k] = data.customIMG[k];
+        }
+      }
+      return true;
+    } catch(e) {
+      console.error('Error loading sitebuilder design from localStorage:', e);
+      return false;
+    }
+  };
+
+  SB.quickSave = function(){
+    if (SB.save()) {
+      dirty = false;
+      $('#saveSt').textContent = 'All changes saved just now.';
+      toast('Homepage design saved! Live website updated.');
+    } else {
+      toast('Could not save design (storage full or unavailable)', true);
+    }
+  };
+
+  SB.resetToDefaults = function(){
+    if (confirm('Reset Homepage Design to factory defaults? Your custom edits and added sections will be reverted.')) {
+      localStorage.removeItem('hwf_sitebuilder_design');
+      SB.state = {
+        tpl: 'modern',
+        brand: { modern: '#1f4e79', classic: '#1b2a4e' },
+        dev: 'd',
+        navBrand: 'Friends of Fairview',
+        navLogin: 'Already subscribed? Log in, no password needed',
+        sections: SB.defaultSections()
+      };
+      SB.SLOTS.forEach(function(s){ SB.DEF[s[0]] = SB.IMG[s[0]] = uri(s[2]); });
+      SB.tplCards();
+      SB.frame();
+      SB.render();
+      dirty = false;
+      $('#saveSt').textContent = 'Changes reset to default.';
+      toast('Design reset to default');
+    }
+  };
+
+  SB.inited = false;
+  SB.init = function(){
+    if (SB.inited) return;
+    SB.inited = true;
+    SB.load();
+    SB.tplCards();
+    SB.frame();
+    SB.render();
+  };
+
+  // If hash or query indicates any tab, switch to it
+  var targetTab = '';
+  if (location.hash) {
+    targetTab = location.hash.replace('#', '');
+  } else if (location.search.includes('tab=')) {
+    var tm = location.search.match(/tab=([^&]+)/);
+    if (tm) targetTab = tm[1];
+  }
+  if (targetTab === 'homepage') targetTab = 'sitebuilder';
+  if (targetTab && ['profile', 'payment', 'web', 'sitebuilder', 'invoice'].includes(targetTab)) {
+    if (typeof gotoTab === 'function') {
+      gotoTab(targetTab);
+    }
+  }
 
 })();
 </script>

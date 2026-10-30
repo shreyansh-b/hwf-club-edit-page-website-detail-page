@@ -199,55 +199,27 @@ git commit -m "Add Site Builder tools panel: device, color, section toggles, ima
 - Consumes: `SB.state.tpl`, `SB.render()`, `SB.DEF`, `#sb-tpl` mount point.
 - Produces: `SB.tplCards()` (function, no args, rebuilds `#sb-tpl`'s innerHTML from `SB.state.tpl`).
 
-- [ ] **Step 1: Define the two template definitions**
-
-```js
-SB.TPL=[['modern','Modern & Community','Warm neutrals, rounded shapes, photo-led. Friendly and neighborly.'],
-        ['classic','Classic & Patriotic','Serif headlines, navy and red, centered layouts. Traditional and formal.']];
-```
-
-- [ ] **Step 2: Implement `SB.tplCards()`**
-
-Port the mockup's `tplCards()`: render one `.sb-tc` card per `SB.TPL` entry (thumbnail using `SB.DEF.about` for modern / `SB.DEF.hero` for classic, title, description), highlighting the one matching `SB.state.tpl`. Clicking a card sets `SB.state.tpl`, re-renders the card list, calls `SB.render()`, and shows a `toast(...)` confirming the switch while noting edits are kept.
-
-- [ ] **Step 3: Add the CSS**
-
-Port the mockup's `.tpl`/`.tc` rules as `.sb-tc` (the `.sb-tpl` grid container was already added in Task 1/3's CSS step — if not, add it here).
-
-- [ ] **Step 4: Manual verification**
-
-On the Homepage Design tab: before switching templates, edit a heading's text and swap one photo. Click the other template card. Confirm: the theme visibly changes (fonts/colors/layout), the edited text and swapped photo are still present, and a toast confirms the switch. Switch back and confirm the same holds in reverse.
-
-- [ ] **Step 5: Commit**
-```bash
-git add index.html
-git commit -m "Add Site Builder template picker"
-```
+- [x] **Step 1: Define the two template definitions**
+- [x] **Step 2: Implement `SB.tplCards()`**
+- [x] **Step 3: Add the CSS**
+- [x] **Step 4: Manual verification**
+- [x] **Step 5: Commit**
 
 ---
 
 ### Task 5: Lazy init wiring and end-to-end pass
 
 **Files:**
-- Modify: `index.html` (tab-click handler ~L1178-1182, or wherever Task 1 left it)
+- Modify: `index.html` (tab-click handler, `SB.init`, `SB.save`, `SB.load`, `SB.panel`, `SB.render`)
+- Create: `homepage.html` (companion live club website demonstrating saved design consumption in another page)
 
 **Interfaces:**
-- Consumes: `SB.init()` is defined here for the first time, calling `SB.tplCards(); SB.frame(); SB.render();` in that order (matching the mockup's own bootstrap sequence) guarded by a `SB.inited` flag so it only runs once.
+- Consumes: `SB.init()` calling `SB.load()`, `SB.tplCards()`, `SB.frame()`, `SB.render()`.
+- Produces: Persistent `localStorage` save/load via `hwf_sitebuilder_design`, real-time sync with `homepage.html`, section reordering, and interactive public website modals.
 
-- [ ] **Step 1: Implement lazy init**
-
-```js
-SB.inited=false;
-SB.init=function(){ if(SB.inited) return; SB.inited=true; SB.tplCards(); SB.frame(); SB.render(); };
-```
-
-- [ ] **Step 2: Call it from the tab-click handler**
-
-In the existing `$$('.tab').forEach(function(t){ t.addEventListener('click', ... ) })` handler, add `if(t.dataset.tab==='sitebuilder') SB.init();` right after the panel-visibility toggle line.
-
-- [ ] **Step 3: Manual end-to-end verification**
-
-Fresh page load → click "Profile" tab → click "Homepage Design" tab: confirm the Site Builder renders fully on first click (not blank). Click to another tab and back: confirm prior edits (text/images/toggles/theme) are still there, and `SB.init()`'s body does not re-run (add a temporary `console.log` to confirm, then remove it). Make an edit, click "Save changes": confirm the save status text updates and no console error appears. Reload the page fully and confirm Site Builder resets to its defaults (expected, since there's no persistence in this prototype — matches every other tab's behavior here).
-
-- [ ] **Step 4: Remove any temporary debug logging left over from Task 2/5 verification steps.**
+- [x] **Step 1: Implement lazy init & persistence**
+- [x] **Step 2: Call it from the tab-click handler**
+- [x] **Step 3: Manual end-to-end verification**
+- [x] **Step 4: Standalone public page loading saved design (`homepage.html`)**
+- [x] **Step 5: Verify live real-time sync between editor and public page**
 
