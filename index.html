@@ -413,12 +413,13 @@ main{min-width:0;padding:6px 12px 24px}
 .hide{display:none}
 
 /* ---------- Site Builder ---------- */
-.sb-tpl{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
-.sb-tc{border:2px solid var(--border);border-radius:10px;overflow:hidden;cursor:pointer;background:#fff}
+.sb-tpl{display:flex;flex-direction:column;gap:8px;margin-bottom:14px}
+.sb-tc{border:2px solid var(--border);border-radius:8px;overflow:hidden;cursor:pointer;background:#fff;display:flex;align-items:center;gap:0}
 .sb-tc.on{border-color:var(--primary);box-shadow:0 0 0 3px rgba(63,81,181,.2)}
-.sb-tc img{display:block;width:100%;aspect-ratio:16/9;object-fit:cover}
-.sb-tc div{padding:10px 12px}
-.sb-tc b{display:block;font-size:14px}
+.sb-tc img{display:block;width:90px;flex:none;aspect-ratio:16/9;object-fit:cover}
+.sb-tc div{padding:8px 10px;flex:1}
+.sb-tc b{display:block;font-size:12px;font-weight:700}
+.sb-tc .note{font-size:10px;line-height:1.3;margin:2px 0 0;color:var(--muted)}
 .sb-ed{display:grid;grid-template-columns:310px 1fr;gap:14px;margin-top:14px;align-items:start}
 .sb-tools{border:1px solid var(--border);border-radius:8px;padding:12px;position:sticky;top:56px;max-height:calc(100vh - 70px);overflow:auto}
 .sb-tools h4{margin:14px 0 6px;font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted)}
@@ -1325,7 +1326,6 @@ body.sb-fullscreen-active{overflow:hidden}
           <div style="display:flex;align-items:center;gap:10px">
             <span class="si-t"><i class="fa fa-magic" aria-hidden="true"></i></span>
             <h2>Site Builder</h2>
-            <span class="sb-live-badge"><span class="sb-live-dot"></span> Live Site Connected</span>
           </div>
           <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
             <button type="button" class="sb-top-tool-btn" id="sb-undo-btn" onclick="SB.undo()" title="Undo last action (Ctrl+Z)" disabled>
@@ -1349,11 +1349,14 @@ body.sb-fullscreen-active{overflow:hidden}
           </div>
         </header>
         <div class="sb">
-          <p class="note">Pick a starting point. Photos, layout and fonts are prebuilt. Click any text on the preview to edit it, click any photo to swap it, and reorder sections with the arrows.</p>
-          <div class="sb-tpl" id="sb-tpl"></div>
           <input type="file" accept="image/*" id="sb-fi" class="hide">
           <div class="sb-ed">
-            <div class="sb-tools" id="sb-tools"></div>
+            <div class="sb-tools" id="sb-tools">
+              <h4 style="margin-top:0">Template</h4>
+              <p class="note" style="margin:0 0 8px;font-size:11px;line-height:1.4">Pick a starting point. Click any text on the preview to edit it.</p>
+              <div class="sb-tpl" id="sb-tpl"></div>
+              <div id="sb-tools-inner"></div>
+            </div>
             <div class="sb-stage">
               <div class="sb-frame" id="sb-frame">
                 <div class="sb-chrome"><i></i><i></i><i></i><span>Preview</span></div>
@@ -3225,7 +3228,7 @@ body.sb-fullscreen-active{overflow:hidden}
 
   SB.state = {
     tpl: 'modern',
-    brand: { modern: '#1f4e79', classic: '#1b2a4e' },
+    brand: { modern: '#3f51b5', classic: '#3f51b5' },
     dev: 'd',
     navBrand: 'Friends of Fairview',
     navLogin: 'Already subscribed? Log in',
@@ -3241,7 +3244,7 @@ body.sb-fullscreen-active{overflow:hidden}
   SB.setTemplate = function(k){
     SB.state.tpl = k;
     if (!SB.state.brand[k]) {
-      SB.state.brand[k] = (k === 'classic') ? '#1b2a4e' : '#1f4e79';
+      SB.state.brand[k] = (k === 'classic') ? '#3f51b5' : '#3f51b5';
     }
     const heroSec = SB.state.sections.find(function(s){ return s.type === 'hero'; });
     if (heroSec) {
@@ -5154,7 +5157,7 @@ body.sb-fullscreen-active{overflow:hidden}
     if (!site) return;
     const bodyContent = site.innerHTML;
     const isClassic = SB.state.tpl === 'classic';
-    const brandColor = SB.state.brand[SB.state.tpl] || '#1f4e79';
+    const brandColor = SB.state.brand[SB.state.tpl] || '#3f51b5';
 
     const fullHtml = '<!DOCTYPE html>\n' +
       '<html lang="en">\n<head>\n' +
@@ -6158,7 +6161,6 @@ body.sb-fullscreen-active{overflow:hidden}
         <div class="sb-sec-bar">
           <span class="sb-sec-tag">${sec.title || sec.type}</span>
           <button type="button" onclick="SB.openAddDrawer('elements', null, '${sec.id}')" title="Add element to section" style="background:#4f46e5;color:#fff;border-radius:3px"><i class="fa fa-cube"></i> + Element</button>
-          <button type="button" onclick="SB.openSecSettingsModal('${sec.id}', 'bg')" title="Change section background to image or color" style="background:#0284c7;color:#fff;border-radius:3px"><i class="fa fa-picture-o"></i> Background</button>
           <button type="button" onclick="SB.openSecSettingsModal('${sec.id}')" title="Section styles &amp; layout"><i class="fa fa-sliders"></i> Style</button>
           <button type="button" onclick="SB.openHtmlSourceModal('${sec.id}')" title="Edit section HTML"><i class="fa fa-code"></i> HTML</button>
           <button type="button" onclick="SB.moveSection('${sec.id}', -1)" title="Move up"><i class="fa fa-chevron-up"></i></button>
@@ -6174,11 +6176,11 @@ body.sb-fullscreen-active{overflow:hidden}
 
   SB.panel = function(){
     const m = SB.state.tpl === 'modern';
-    const curBrandRaw = (SB.state && SB.state.brand && SB.state.brand[SB.state.tpl]) || (m ? '#1f4e79' : '#1b2a4e');
-    const curBrand = /^#[0-9a-f]{6}$/i.test(curBrandRaw) ? curBrandRaw : (m ? '#1f4e79' : '#1b2a4e');
-    const presets = m ? ['#1f4e79', '#2f5d50', '#7a3b2e', '#2b2b33'] : ['#1b2a4e', '#5e1f24', '#1f3b2c', '#2b2b2f'];
+    const curBrandRaw = (SB.state && SB.state.brand && SB.state.brand[SB.state.tpl]) || '#3f51b5';
+    const curBrand = /^#[0-9a-f]{6}$/i.test(curBrandRaw) ? curBrandRaw : '#3f51b5';
+    const presets = m ? ['#3f51b5', '#2f5d50', '#7a3b2e', '#2b2b33'] : ['#3f51b5', '#5e1f24', '#1f3b2c', '#2b2b2f'];
 
-    $('#sb-tools').innerHTML =
+    $('#sb-tools-inner').innerHTML =
       `<h4>Device &amp; Preview</h4>
 <div class="sb-seg-dev">
   <button class="${SB.state.dev === 'd' ? 'on' : ''}" onclick="SB.state.dev='d';SB.frame()">Desktop</button>
@@ -6228,7 +6230,6 @@ body.sb-fullscreen-active{overflow:hidden}
           <i class="fa fa-cube"></i> + Element
         </button>
         <div class="sb-sec-btn-group">
-          <button type="button" onclick="SB.openSecSettingsModal('${sec.id}', 'bg')" title="Section background (image or color)"><i class="fa fa-picture-o"></i></button>
           <button type="button" onclick="SB.openSecSettingsModal('${sec.id}')" title="Section styles &amp; layout"><i class="fa fa-sliders"></i></button>
           <button type="button" onclick="SB.openHtmlSourceModal('${sec.id}')" title="Edit section HTML"><i class="fa fa-code"></i></button>
           <button type="button" onclick="SB.moveSection('${sec.id}', -1)" title="Move section up" ${idx === 0 ? 'disabled' : ''}><i class="fa fa-chevron-up"></i></button>
@@ -6452,7 +6453,7 @@ ${SB.SLOTS.map(function(s){
       localStorage.removeItem('hwf_sitebuilder_design');
       SB.state = {
         tpl: 'modern',
-        brand: { modern: '#1f4e79', classic: '#1b2a4e' },
+        brand: { modern: '#3f51b5', classic: '#3f51b5' },
         dev: 'd',
         navBrand: 'Friends of Fairview',
         navLogin: 'Already subscribed? Log in',
