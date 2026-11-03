@@ -8,7 +8,19 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..700&family=Figtree:wght@400..700&family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400&family=Public+Sans:wght@400..700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <style>
+/* SweetAlert2 System Theme Customization */
+.swal2-popup{font-family:inherit !important;border-radius:14px !important;padding:24px 20px !important}
+.swal2-title{font-size:20px !important;font-weight:700 !important;color:#0f172a !important}
+.swal2-html-container{font-size:14px !important;color:#475569 !important;line-height:1.5 !important}
+.swal2-actions{gap:10px !important;margin-top:20px !important}
+.swal2-confirm,.swal2-cancel{border-radius:8px !important;font-weight:600 !important;font-size:13px !important;padding:9px 18px !important;box-shadow:none !important}
+.swal2-confirm{background-color:#ef4444 !important}
+.swal2-confirm.swal2-confirm-primary{background-color:var(--primary,#3f51b5) !important}
+.swal2-cancel{background-color:#f1f5f9 !important;color:#475569 !important}
+.swal2-cancel:hover{background-color:#e2e8f0 !important}
+
 /* =====================================================================
    Edit Club (prototype) - styled with the approved "system indigo" theme.
    Values come from new-theme.css / customers-list.css / home-new.css and
@@ -452,8 +464,21 @@ main{min-width:0;padding:6px 12px 24px}
 .sb-btn-quick-save{display:inline-flex;align-items:center;gap:6px;background:var(--primary);color:#fff;border:0;font-weight:600;font-size:13px;padding:7px 14px;border-radius:6px;cursor:pointer;transition:all .15s}
 .sb-btn-quick-save:hover{opacity:.9}
 .sb-sec-list{display:flex;flex-direction:column;gap:8px;margin-bottom:12px}
-.sb-sec-row{display:flex;flex-direction:column;padding:10px;border:1px solid var(--border);border-radius:8px;background:#fff;gap:8px;box-shadow:0 1px 3px rgba(0,0,0,.03);transition:border-color .15s}
+.sb-sec-row{display:flex;flex-direction:column;padding:10px;border:1px solid var(--border);border-radius:8px;background:#fff;gap:8px;box-shadow:0 1px 3px rgba(0,0,0,.03);transition:border-color .15s,opacity .15s;cursor:grab}
 .sb-sec-row:hover{border-color:#cbd5e1}
+.sb-sec-row.sb-dragging{opacity:.4;cursor:grabbing}
+.sb-sec-row.sb-drag-over{border-color:var(--primary);box-shadow:0 0 0 2px rgba(63,81,181,.3)}
+.sb-drag-handle{display:inline-flex;align-items:center;color:var(--muted);cursor:grab;font-size:13px;padding:0 2px;flex-shrink:0}
+.sb-drag-handle:hover{color:var(--text)}
+/* Trash drop zone */
+.sb-trash-zone{display:none;position:fixed;bottom:24px;right:24px;z-index:9999;width:72px;height:72px;border-radius:50%;background:#fee2e2;border:2.5px dashed #f87171;align-items:center;justify-content:center;flex-direction:column;font-size:10px;color:#ef4444;font-weight:700;transition:all .2s;box-shadow:0 4px 16px rgba(239,68,68,.2)}
+.sb-trash-zone.visible{display:flex}
+.sb-trash-zone.over{background:#ef4444;border-color:#dc2626;color:#fff;transform:scale(1.15)}
+.sb-trash-zone i{font-size:22px;margin-bottom:2px}
+/* Drag over indicator on preview sections */
+.sb-sec-wrap.sb-drag-over-preview{outline:3px solid var(--primary)!important;outline-offset:2px}
+.sb-sec-wrap[draggable="true"]{cursor:grab}
+.sb-sec-wrap[draggable="true"].sb-dragging-preview{opacity:.35;cursor:grabbing}
 .sb-sec-row-main{display:flex;align-items:center;gap:10px;width:100%}
 .sb-sec-name{font-size:13px;font-weight:600;color:var(--text);flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .sb-sec-badge{font-size:10px;background:#e0e7ff;color:#4338ca;padding:2px 7px;border-radius:99px;font-weight:700;flex-shrink:0}
@@ -779,6 +804,16 @@ body.sb-fullscreen-active{overflow:hidden}
 .sb-ph-btn:hover{background:#2563eb;border-color:#3b82f6;transform:translateY(-1px)}
 .sb-ph-size-btn{background:rgba(30,58,138,.92);border-color:rgba(147,197,253,.35)}
 .sb-ph-size-btn:hover{background:#1d4ed8;border-color:#60a5fa}
+.sb-ph-btn.sb-ph-del-btn{background:rgba(220,38,38,.9);border-color:rgba(252,165,165,.4)}
+.sb-ph-btn.sb-ph-del-btn:hover{background:#dc2626;border-color:#f87171}
+.sb-ph-dropzone{display:flex;align-items:center;justify-content:center;width:100%;aspect-ratio:5/4;min-height:220px;border:2.5px dashed #94a3b8;border-radius:var(--r, 12px);background:rgba(241,245,249,.85);cursor:pointer;transition:all .2s ease;margin:0;position:relative}
+.sb-ph-dropzone:hover,.sb-ph-dropzone.sb-file-drag-over{border-color:var(--primary,#3f51b5);background:rgba(238,242,255,.95);transform:scale(1.008)}
+.sb-ph-dropzone-inner{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;color:#64748b;text-align:center;padding:24px;pointer-events:none}
+.sb-ph-dropzone:hover .sb-ph-dropzone-inner,.sb-ph-dropzone.sb-file-drag-over .sb-ph-dropzone-inner{color:var(--primary,#3f51b5)}
+.sb-ph-dropzone i{font-size:36px;color:var(--primary,#3f51b5);margin-bottom:2px}
+.sb-ph-dropzone-title{font-size:15px;font-weight:700;color:var(--text,#1e293b)}
+.sb-ph-dropzone-sub{font-size:12px;opacity:.85}
+.sb-ph-wrap.sb-file-drag-over .ph{outline:3.5px dashed var(--primary,#3f51b5) !important;outline-offset:-3.5px;filter:brightness(0.9)}
 .sb-tool-size-btn{display:inline-flex;align-items:center;gap:4px;padding:3px 8px;font-size:11px;font-weight:600;border:1px solid #cbd5e1;background:#f8fafc;border-radius:4px;cursor:pointer;color:#334155;transition:all .15s}
 .sb-tool-size-btn:hover{background:#eff6ff;border-color:#3b82f6;color:#1d4ed8}
 .sb-img-modal-backdrop{position:fixed;inset:0;z-index:10005;background:rgba(15,23,42,.65);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;padding:20px}
@@ -1858,7 +1893,47 @@ body.sb-fullscreen-active{overflow:hidden}
   function mval(b,id){ return ($('#'+id,b).value||'').trim(); }
   function mbad(b,id,msg){ var f=$('#'+id,b).closest('.fg'); f.classList.add('bad'); var e=$('.em',f); if(e&&msg) e.textContent=msg; return f; }
   function mclear(b){ $$('.fg.bad',b).forEach(function(x){ x.classList.remove('bad'); }); }
-  function confirmModal(title,text,yes,fn){ openModal(title,'<p>'+text+'</p>',{save:yes,danger:true,onSave:function(){ fn(); }}); }
+  function sbConfirm(opts) {
+    if (typeof Swal !== 'undefined') {
+      return Swal.fire({
+        title: opts.title || 'Are you sure?',
+        html: opts.html || (opts.text ? `<p style="margin:0;font-size:14px;color:#64748b;line-height:1.5">${opts.text}</p>` : ''),
+        icon: opts.icon || (opts.isDanger !== false ? 'warning' : 'question'),
+        showCancelButton: true,
+        confirmButtonColor: opts.isDanger !== false ? '#ef4444' : '#3f51b5',
+        cancelButtonColor: '#94a3b8',
+        confirmButtonText: opts.confirmButtonText || (opts.isDanger !== false ? 'Yes, delete it!' : 'Yes, proceed'),
+        cancelButtonText: opts.cancelButtonText || 'Cancel',
+        reverseButtons: true,
+        focusCancel: true
+      }).then(function(result){
+        return !!result.isConfirmed;
+      });
+    }
+    return Promise.resolve(window.confirm((opts.title ? opts.title + '\n' : '') + (opts.text || '')));
+  }
+  window.sbConfirm = sbConfirm;
+
+  function confirmModal(title,text,yes,fn){
+    if (typeof Swal !== 'undefined') {
+      Swal.fire({
+        title: title,
+        html: text.startsWith('<') ? text : ('<p style="margin:0;font-size:14px;color:#64748b;line-height:1.5">'+text+'</p>'),
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#ef4444',
+        cancelButtonColor: '#94a3b8',
+        confirmButtonText: yes || 'Delete',
+        cancelButtonText: 'Cancel',
+        reverseButtons: true,
+        focusCancel: true
+      }).then(function(res){
+        if (res.isConfirmed && fn) fn();
+      });
+      return;
+    }
+    openModal(title,'<p>'+text+'</p>',{save:yes,danger:true,onSave:function(){ fn(); }});
+  }
 
   /* ----- shared: required-field check for a panel ----- */
   function checkReq(panel){
@@ -1976,7 +2051,27 @@ body.sb-fullscreen-active{overflow:hidden}
     var sel=this, nv=sel.value;
     confirmModalKeep('Change processor?','Changing the payment gateway removes previously stored Card and ACH details. Continue?','Yes, change',function(){ procNow=nv; bank=null; cards=[]; renderWell(); renderPay(); toast('Processor changed. Stored card and bank details were removed.'); },function(){ sel.value=procNow; });
   });
-  function confirmModalKeep(title,text,yes,ok,cancel){ openModal(title,'<p>'+text+'</p>',{save:yes,danger:true,noFocus:true,onSave:function(){ ok(); },onCancel:cancel}); }
+  function confirmModalKeep(title,text,yes,ok,cancel){
+    if (typeof Swal !== 'undefined') {
+      Swal.fire({
+        title: title,
+        html: text.startsWith('<') ? text : ('<p style="margin:0;font-size:14px;color:#64748b;line-height:1.5">'+text+'</p>'),
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#ef4444',
+        cancelButtonColor: '#94a3b8',
+        confirmButtonText: yes || 'Yes, proceed',
+        cancelButtonText: 'Cancel',
+        reverseButtons: true,
+        focusCancel: true
+      }).then(function(res){
+        if (res.isConfirmed) { if (ok) ok(); }
+        else { if (cancel) cancel(); }
+      });
+      return;
+    }
+    openModal(title,'<p>'+text+'</p>',{save:yes,danger:true,noFocus:true,onSave:function(){ ok(); },onCancel:cancel});
+  }
   function brandOf(n){ return /^4/.test(n)?'VISA':/^(5[1-5]|2[2-7])/.test(n)?'MASTERCARD':/^3[47]/.test(n)?'AMEX':/^6/.test(n)?'DISCOVER':'CARD'; }
   var TEST_CARDS=['4242424242424242','4111111111111111','4000056655665556','5555555555554444','2223003122003222','5200828282828210','378282246310005','6011111111111117'];
   function luhn(n){ var t=0,alt=false; for(var i=n.length-1;i>=0;i--){ var d=+n[i]; if(alt){ d*=2; if(d>9) d-=9; } t+=d; alt=!alt; } return t%10===0; }
@@ -3292,8 +3387,10 @@ body.sb-fullscreen-active{overflow:hidden}
   };
 
   let sbPk = null;
-  SB.pick = function(k){
+  let sbSecPk = null;
+  SB.pick = function(k, secId){
     sbPk = k;
+    sbSecPk = secId || null;
     $('#sb-fi').click();
   };
   $('#sb-fi').onchange = function(ev){
@@ -3302,12 +3399,67 @@ body.sb-fullscreen-active{overflow:hidden}
     const r = new FileReader();
     r.onload = function(){
       SB.IMG[sbPk] = r.result;
+      if (sbSecPk) {
+        const sec = SB.state.sections.find(function(s){ return s.id === sbSecPk; });
+        if (sec) sec.hideImg = false;
+      }
       markDirty();
       SB.render();
-      toast('Image replaced');
+      toast('Photo updated');
     };
     r.readAsDataURL(f);
     ev.target.value = '';
+  };
+
+  SB.handleFileDrop = function(file, slot, secId){
+    if (!file || !file.type.startsWith('image/')) {
+      toast('Please drop a valid image file (PNG, JPG, SVG, WebP)');
+      return;
+    }
+    const r = new FileReader();
+    r.onload = function(){
+      SB.IMG[slot] = r.result;
+      if (secId) {
+        const sec = SB.state.sections.find(function(s){ return s.id === secId; });
+        if (sec) sec.hideImg = false;
+      }
+      markDirty();
+      SB.render();
+      toast('Photo added via drag & drop!');
+    };
+    r.readAsDataURL(file);
+  };
+
+  SB.removePhoto = function(slot, secId){
+    let sec = null;
+    if (secId) {
+      sec = SB.state.sections.find(function(s){ return s.id === secId; });
+    }
+    if (!sec) {
+      sec = SB.state.sections.find(function(s){ return (s.img === slot) || (slot === 'hero' && s.type === 'hero') || (slot === 'about' && s.type === 'about') || (slot === 'dinner' && s.type === 'dinner') || (slot === 'map' && s.type === 'contact'); });
+    }
+    if (sec) {
+      sec.hideImg = true;
+    }
+    markDirty();
+    SB.render();
+    toast('Photo removed from section. You can drag & drop an image or click + Add Photo in the preview to restore it.');
+  };
+
+  SB.restorePhoto = function(slot, secId){
+    let sec = null;
+    if (secId) {
+      sec = SB.state.sections.find(function(s){ return s.id === secId; });
+    }
+    if (!sec) {
+      sec = SB.state.sections.find(function(s){ return (s.img === slot) || (slot === 'hero' && s.type === 'hero') || (slot === 'about' && s.type === 'about') || (slot === 'dinner' && s.type === 'dinner') || (slot === 'map' && s.type === 'contact'); });
+    }
+    if (sec) {
+      sec.hideImg = false;
+    }
+    markDirty();
+    SB.render();
+    toast('Photo restored');
   };
 
   /* ============================================================
@@ -3565,12 +3717,19 @@ body.sb-fullscreen-active{overflow:hidden}
     const sec = SB.state.sections.find(function(s){ return s.id === secId; });
     if (!sec || !sec.elements || sec.elements[elIdx] === undefined) return;
     const el = sec.elements[elIdx];
-    if (confirm(`Delete the "${el.title || el.type}" element?`)) {
-      sec.elements.splice(elIdx, 1);
-      markDirty();
-      SB.render();
-      toast('Element deleted');
-    }
+    sbConfirm({
+      title: 'Delete Element?',
+      text: `Are you sure you want to delete the "${el.title || el.type}" element?`,
+      confirmButtonText: 'Yes, delete element',
+      isDanger: true
+    }).then(function(confirmed){
+      if (confirmed) {
+        sec.elements.splice(elIdx, 1);
+        markDirty();
+        SB.render();
+        toast('Element deleted');
+      }
+    });
   };
 
   SB.moveElement = function(secId, elIdx, dir){
@@ -3586,16 +3745,52 @@ body.sb-fullscreen-active{overflow:hidden}
     toast('Element moved');
   };
 
-  SB.deleteSection = function(secId){
+  SB.deleteSection = function(secId, silent){
     const idx = SB.state.sections.findIndex(function(s){ return s.id === secId; });
     if (idx < 0) return;
     const sec = SB.state.sections[idx];
-    if (confirm(`Delete the "${sec.title || 'Section'}" section?`)) {
+
+    // Check if this section has an active image
+    const hasPhoto = (sec.type === 'hero' || sec.type === 'about' || sec.type === 'don' || sec.type === 'contact' || !!sec.img);
+    const photoActive = hasPhoto && !sec.hideImg;
+
+    if (photoActive && !silent) {
+      // First click: remove image only from section! Section stays with '+' dropzone
+      sbConfirm({
+        title: 'Remove Image?',
+        text: `Remove image from "${sec.title || sec.type}"? The section will remain in place with a "+" dropzone to add or drag & drop a new image.`,
+        confirmButtonText: 'Yes, remove image',
+        isDanger: true
+      }).then(function(confirmed){
+        if (confirmed) {
+          sec.hideImg = true;
+          markDirty();
+          SB.render();
+          toast(`Image removed from "${sec.title || sec.type}". Click delete again to delete the section.`);
+        }
+      });
+      return;
+    }
+
+    // Without image (or section has no photo): remove the entire section
+    const doDelete = function(){
       SB.state.sections.splice(idx, 1);
       markDirty();
       SB.render();
       toast(`"${sec.title || 'Section'}" deleted`);
+    };
+    if (silent) {
+      doDelete();
+      return;
     }
+    sbConfirm({
+      title: 'Delete Section?',
+      text: `Are you sure you want to delete the "${sec.title || 'Section'}" section?`,
+      confirmButtonText: 'Yes, delete section',
+      isDanger: true
+    }).then(function(confirmed){
+      if (confirmed) doDelete();
+    });
   };
 
   SB.duplicateSection = function(secId){
@@ -3627,6 +3822,150 @@ body.sb-fullscreen-active{overflow:hidden}
     SB.render();
     toast('Section moved ' + (dir < 0 ? 'up' : 'down'));
   };
+
+  // ── Drag & Drop (left panel list + preview) ──────────────────────────
+  (function(){
+    var dragId = null; // id of section being dragged
+    var dragSrc = null; // 'panel' or 'preview'
+
+    function getTrash(){ return document.getElementById('sb-trash-zone'); }
+
+    function showTrash(){ var t=getTrash(); if(t) t.classList.add('visible'); }
+    function hideTrash(){ var t=getTrash(); if(t){ t.classList.remove('visible','over'); } }
+
+    function reorderById(draggedId, targetId){
+      var secs = SB.state.sections;
+      var fi = secs.findIndex(function(s){ return s.id === draggedId; });
+      var ti = secs.findIndex(function(s){ return s.id === targetId; });
+      if(fi < 0 || ti < 0 || fi === ti) return;
+      var moved = secs.splice(fi, 1)[0];
+      ti = secs.findIndex(function(s){ return s.id === targetId; });
+      secs.splice(ti, 0, moved);
+      markDirty();
+      SB.render();
+    }
+
+    // Attach events after render
+    SB.initDragDrop = function(){
+      // ── Left panel rows ──
+      document.querySelectorAll('.sb-sec-row[draggable]').forEach(function(row){
+        row.addEventListener('dragstart', function(e){
+          dragId = row.dataset.secId;
+          dragSrc = 'panel';
+          e.dataTransfer.effectAllowed = 'move';
+          e.dataTransfer.setData('text/plain', dragId);
+          setTimeout(function(){ row.classList.add('sb-dragging'); }, 0);
+          showTrash();
+        });
+        row.addEventListener('dragend', function(){
+          row.classList.remove('sb-dragging');
+          hideTrash();
+          document.querySelectorAll('.sb-sec-row.sb-drag-over').forEach(function(el){ el.classList.remove('sb-drag-over'); });
+          dragId = null;
+        });
+        row.addEventListener('dragover', function(e){
+          e.preventDefault();
+          e.dataTransfer.dropEffect = 'move';
+          document.querySelectorAll('.sb-sec-row.sb-drag-over').forEach(function(el){ el.classList.remove('sb-drag-over'); });
+          row.classList.add('sb-drag-over');
+        });
+        row.addEventListener('dragleave', function(){ row.classList.remove('sb-drag-over'); });
+        row.addEventListener('drop', function(e){
+          e.preventDefault();
+          row.classList.remove('sb-drag-over');
+          var targetId = row.dataset.secId;
+          if(dragId && targetId && dragId !== targetId) reorderById(dragId, targetId);
+        });
+      });
+
+      // ── Preview section wraps ──
+      document.querySelectorAll('.sb-sec-wrap[draggable]').forEach(function(wrap){
+        wrap.addEventListener('dragstart', function(e){
+          dragId = wrap.dataset.secId;
+          dragSrc = 'preview';
+          e.dataTransfer.effectAllowed = 'move';
+          e.dataTransfer.setData('text/plain', dragId);
+          setTimeout(function(){ wrap.classList.add('sb-dragging-preview'); }, 0);
+          showTrash();
+        });
+        wrap.addEventListener('dragend', function(){
+          wrap.classList.remove('sb-dragging-preview');
+          hideTrash();
+          document.querySelectorAll('.sb-sec-wrap.sb-drag-over-preview').forEach(function(el){ el.classList.remove('sb-drag-over-preview'); });
+          dragId = null;
+        });
+        wrap.addEventListener('dragover', function(e){
+          if(!dragId) return;
+          e.preventDefault();
+          e.dataTransfer.dropEffect = 'move';
+          document.querySelectorAll('.sb-sec-wrap.sb-drag-over-preview').forEach(function(el){ el.classList.remove('sb-drag-over-preview'); });
+          wrap.classList.add('sb-drag-over-preview');
+        });
+        wrap.addEventListener('dragleave', function(e){
+          if(!wrap.contains(e.relatedTarget)) wrap.classList.remove('sb-drag-over-preview');
+        });
+        wrap.addEventListener('drop', function(e){
+          e.preventDefault();
+          e.stopPropagation();
+          wrap.classList.remove('sb-drag-over-preview');
+          var targetId = wrap.dataset.secId;
+          if(dragId && targetId && dragId !== targetId) reorderById(dragId, targetId);
+        });
+      });
+
+      // ── Trash zone ──
+      var trash = getTrash();
+      if(trash){
+        trash.addEventListener('dragover', function(e){
+          e.preventDefault();
+          e.dataTransfer.dropEffect = 'move';
+          trash.classList.add('over');
+        });
+        trash.addEventListener('dragleave', function(){ trash.classList.remove('over'); });
+        trash.addEventListener('drop', function(e){
+          e.preventDefault();
+          trash.classList.remove('over');
+          if(dragId) SB.deleteSection(dragId, true);
+          dragId = null;
+        });
+      }
+
+      // ── File Drag & Drop directly onto photos & dropzones in preview ──
+      document.querySelectorAll('.sb-ph-wrap, .sb-ph-dropzone').forEach(function(zone){
+        var slot = zone.dataset.imgSlot || (zone.querySelector('[data-img]') && zone.querySelector('[data-img]').dataset.img);
+        var secId = zone.dataset.secId;
+
+        zone.addEventListener('dragover', function(e){
+          if (e.dataTransfer && Array.from(e.dataTransfer.types || []).includes('Files')) {
+            e.preventDefault();
+            e.stopPropagation();
+            e.dataTransfer.dropEffect = 'copy';
+            zone.classList.add('sb-file-drag-over');
+          }
+        });
+
+        zone.addEventListener('dragleave', function(e){
+          if (!zone.contains(e.relatedTarget)) {
+            zone.classList.remove('sb-file-drag-over');
+          }
+        });
+
+        zone.addEventListener('drop', function(e){
+          if (e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+            e.preventDefault();
+            e.stopPropagation();
+            zone.classList.remove('sb-file-drag-over');
+            var f = e.dataTransfer.files[0];
+            if (f && f.type.startsWith('image/')) {
+              SB.handleFileDrop(f, slot, secId);
+            } else {
+              toast('Please drop an image file (PNG, JPG, SVG, WebP)');
+            }
+          }
+        });
+      });
+    };
+  })();
 
   SB.toggleSection = function(secId){
     const sec = SB.state.sections.find(function(s){ return s.id === secId; });
@@ -3669,13 +4008,24 @@ body.sb-fullscreen-active{overflow:hidden}
   SB.deleteItem = function(secId, itemIdx){
     const sec = SB.state.sections.find(function(s){ return s.id === secId; });
     if (!sec || !sec.items) return;
+    const doDelete = function(){
+      sec.items.splice(itemIdx, 1);
+      markDirty();
+      SB.render();
+      toast('Item deleted');
+    };
     if (sec.items.length <= 1) {
-      if (!confirm('This is the last item in this section. Delete it?')) return;
+      sbConfirm({
+        title: 'Delete Last Item?',
+        text: 'This is the last item in this section. Are you sure you want to delete it?',
+        confirmButtonText: 'Yes, delete it',
+        isDanger: true
+      }).then(function(confirmed){
+        if (confirmed) doDelete();
+      });
+      return;
     }
-    sec.items.splice(itemIdx, 1);
-    markDirty();
-    SB.render();
-    toast('Item deleted');
+    doDelete();
   };
 
   /* ============================================================
@@ -5904,10 +6254,27 @@ body.sb-fullscreen-active{overflow:hidden}
       return `<${tag} contenteditable="true" data-sec-id="${sec.id}" data-field="${field}" class="${extraCls}">${text !== undefined ? text : ''}</${tag}>`;
     };
 
-    const ph = function(slot, cls) {
+    const ph = function(slot, cls, secId) {
       cls = cls || '';
-      const imgUrl = (SB.IMG && SB.IMG[slot]) || (SB.DEF && SB.DEF[slot]) || (slot && slot.includes('/') ? slot : '');
       const s = (SB.state.imgStyles && SB.state.imgStyles[slot]) || {};
+      const sec = secId ? SB.state.sections.find(function(item){ return item.id === secId; }) : null;
+      if (sec && sec.hideImg) {
+        let dzStyle = '';
+        if (s.aspectRatio && s.aspectRatio !== 'auto') dzStyle += `aspect-ratio:${s.aspectRatio} !important;`;
+        if (s.height && s.height !== 'auto') dzStyle += `height:${s.height} !important;min-height:${s.height} !important;`;
+        if (s.maxWidth) dzStyle += `max-width:${s.maxWidth} !important;`;
+        if (s.radius !== undefined && s.radius !== '') dzStyle += `border-radius:${s.radius} !important;`;
+        return `
+          <div class="sb-ph-dropzone ${cls}" data-img-slot="${slot}" data-sec-id="${sec.id}" style="${dzStyle}" onclick="event.stopPropagation();SB.pick('${slot}','${sec.id}')" title="Click to browse or Drag &amp; Drop image here">
+            <div class="sb-ph-dropzone-inner">
+              <i class="fa fa-plus-circle"></i>
+              <div class="sb-ph-dropzone-title">+ Add Image</div>
+              <div class="sb-ph-dropzone-sub">Click to browse or Drag &amp; Drop image file here</div>
+            </div>
+          </div>
+        `;
+      }
+      const imgUrl = (SB.IMG && SB.IMG[slot]) || (SB.DEF && SB.DEF[slot]) || (slot && slot.includes('/') ? slot : '');
       let inlineStyle = `background-image:url('${imgUrl}');`;
       if (s.aspectRatio && s.aspectRatio !== 'auto') inlineStyle += `aspect-ratio:${s.aspectRatio} !important;`;
       if (s.height && s.height !== 'auto') inlineStyle += `height:${s.height} !important;min-height:${s.height} !important;`;
@@ -5928,11 +6295,12 @@ body.sb-fullscreen-active{overflow:hidden}
         if (shadows[s.shadow]) inlineStyle += `box-shadow:${shadows[s.shadow]} !important;`;
       }
       return `
-        <div class="sb-ph-wrap">
+        <div class="sb-ph-wrap" data-img-slot="${slot}" data-sec-id="${secId || ''}">
           <div class="ph ${cls}" data-img="${slot}" style="${inlineStyle}">
             <div class="sb-ph-overlay-actions">
               <button type="button" class="sb-ph-btn sb-ph-size-btn" onclick="event.stopPropagation();SB.openImgSizeModal('${slot}')" title="Modify image size &amp; style"><i class="fa fa-arrows-alt"></i> Size &amp; Style</button>
-              <button type="button" class="sb-ph-btn sb-ph-swap-btn" onclick="event.stopPropagation();SB.pick('${slot}')" title="Replace / swap photo"><i class="fa fa-picture-o"></i> Swap</button>
+              <button type="button" class="sb-ph-btn sb-ph-swap-btn" onclick="event.stopPropagation();SB.pick('${slot}','${secId || ''}')" title="Replace / swap photo"><i class="fa fa-picture-o"></i> Swap</button>
+              <button type="button" class="sb-ph-btn sb-ph-del-btn" onclick="event.stopPropagation();SB.removePhoto('${slot}','${secId || ''}')" title="Remove photo from section"><i class="fa fa-trash-o"></i> Remove</button>
             </div>
           </div>
         </div>
@@ -5991,12 +6359,12 @@ body.sb-fullscreen-active{overflow:hidden}
 
       case 'hero':
         inner = isModern
-          ? `<div class="hero"><div><div class="ey">${ed('ey', sec.ey)}</div><h1>${ed('heading', sec.heading)}</h1><p class="l">${ed('desc', sec.desc)}</p><span class="sbtn">${ed('btn1', sec.btn1)}</span><span class="sbtn o">${ed('btn2', sec.btn2)}</span></div>${ph(sec.img || 'hero')}</div>`
-          : `<div class="hero"><div class="tx"><div class="ey">${ed('ey', sec.ey)}</div><h1>${ed('heading', sec.heading)}</h1><p class="l">${ed('desc', sec.desc)}</p><span class="sbtn">${ed('btn1', sec.btn1)}</span><span class="sbtn o">${ed('btn2', sec.btn2)}</span></div>${ph(sec.img || 'hero')}</div>`;
+          ? `<div class="hero"><div><div class="ey">${ed('ey', sec.ey)}</div><h1>${ed('heading', sec.heading)}</h1><p class="l">${ed('desc', sec.desc)}</p><span class="sbtn">${ed('btn1', sec.btn1)}</span><span class="sbtn o">${ed('btn2', sec.btn2)}</span></div>${ph(sec.img || 'hero', '', sec.id)}</div>`
+          : `<div class="hero"><div class="tx"><div class="ey">${ed('ey', sec.ey)}</div><h1>${ed('heading', sec.heading)}</h1><p class="l">${ed('desc', sec.desc)}</p><span class="sbtn">${ed('btn1', sec.btn1)}</span><span class="sbtn o">${ed('btn2', sec.btn2)}</span></div>${ph(sec.img || 'hero', '', sec.id)}</div>`;
         break;
 
       case 'about':
-        inner = `<div class="s base"><div class="split rev">${ph(sec.img || 'about')}<div><div class="ey">${ed('ey', sec.ey)}</div><h2 style="font-size:clamp(26px,4.4cqw,38px)">${ed('heading', sec.heading)}</h2><p>${ed('desc', sec.desc)}</p></div></div></div>`;
+        inner = `<div class="s base"><div class="split rev">${ph(sec.img || 'about', '', sec.id)}<div><div class="ey">${ed('ey', sec.ey)}</div><h2 style="font-size:clamp(26px,4.4cqw,38px)">${ed('heading', sec.heading)}</h2><p>${ed('desc', sec.desc)}</p></div></div></div>`;
         break;
 
       case 'how':
@@ -6101,11 +6469,11 @@ body.sb-fullscreen-active{overflow:hidden}
         break;
 
       case 'contact':
-        inner = `<div class="s tn"><div class="split"><div><div class="ey">${ed('ey', sec.ey)}</div><h2 style="font-size:clamp(26px,4.4cqw,38px)">${ed('heading', sec.heading)}</h2><p style="margin-bottom:14px">${ed('desc', sec.desc)}</p><div style="color:var(--ink);line-height:1.8">${ed('details', sec.details || '<b>Friends of Fairview</b><br>(469) 331-2520<br>info@friendsoffairview.org', 'div')}</div></div>${ph(sec.img || 'map', 'map')}</div><p class="who" style="margin-top:12px;text-align:center">${ed('footerNote', sec.footerNote || 'Friends of Fairview’s service area is highlighted in red.')}</p></div>`;
+        inner = `<div class="s tn"><div class="split"><div><div class="ey">${ed('ey', sec.ey)}</div><h2 style="font-size:clamp(26px,4.4cqw,38px)">${ed('heading', sec.heading)}</h2><p style="margin-bottom:14px">${ed('desc', sec.desc)}</p><div style="color:var(--ink);line-height:1.8">${ed('details', sec.details || '<b>Friends of Fairview</b><br>(469) 331-2520<br>info@friendsoffairview.org', 'div')}</div></div>${ph(sec.img || 'map', 'map', sec.id)}</div><p class="who" style="margin-top:12px;text-align:center">${ed('footerNote', sec.footerNote || 'Friends of Fairview’s service area is highlighted in red.')}</p></div>`;
         break;
 
       case 'don':
-        inner = `<div class="s br"><div class="split">${ph(sec.img || 'dinner')}<div><div class="ey">${ed('ey', sec.ey)}</div><h2 style="font-size:clamp(26px,4.4cqw,38px)">${ed('heading', sec.heading)}</h2><p>${ed('desc', sec.desc)}</p><span class="sbtn">${ed('btn1', sec.btn1 || 'Donate')}</span><span class="sbtn o">${ed('btn2', sec.btn2 || 'Read more (PDF)')}</span></div></div></div>`;
+        inner = `<div class="s br"><div class="split">${ph(sec.img || 'dinner', '', sec.id)}<div><div class="ey">${ed('ey', sec.ey)}</div><h2 style="font-size:clamp(26px,4.4cqw,38px)">${ed('heading', sec.heading)}</h2><p>${ed('desc', sec.desc)}</p><span class="sbtn">${ed('btn1', sec.btn1 || 'Donate')}</span><span class="sbtn o">${ed('btn2', sec.btn2 || 'Read more (PDF)')}</span></div></div></div>`;
         break;
 
       case 'text':
@@ -6157,7 +6525,7 @@ body.sb-fullscreen-active{overflow:hidden}
     }
 
     return `
-      <div class="sb-sec-wrap ${sec.hidden ? 'hidden-preview' : ''} ${customBgCls} ${settings.customClass || ''}" id="${sec.id}" data-sec-type="${sec.type}" style="${secStyle}">
+      <div class="sb-sec-wrap ${sec.hidden ? 'hidden-preview' : ''} ${customBgCls} ${settings.customClass || ''}" id="${sec.id}" data-sec-type="${sec.type}" data-sec-id="${sec.id}" draggable="true" style="${secStyle}">
         <div class="sb-sec-bar">
           <span class="sb-sec-tag">${sec.title || sec.type}</span>
           <button type="button" onclick="SB.openAddDrawer('elements', null, '${sec.id}')" title="Add element to section" style="background:#4f46e5;color:#fff;border-radius:3px"><i class="fa fa-cube"></i> + Element</button>
@@ -6215,9 +6583,10 @@ body.sb-fullscreen-active{overflow:hidden}
   ${SB.state.sections.map(function(sec, idx){
     const isHidden = !!sec.hidden;
     const elCount = (sec.elements && sec.elements.length) || 0;
-    return `<div class="sb-sec-row">
+    return `<div class="sb-sec-row" draggable="true" data-sec-id="${sec.id}" data-sec-idx="${idx}">
       <!-- 1st Row: Switch and Name -->
       <div class="sb-sec-row-main">
+        <span class="sb-drag-handle" title="Drag to reorder"><i class="fa fa-bars"></i></span>
         <div class="sb-sw ${isHidden ? '' : 'on'}" onclick="SB.toggleSection('${sec.id}')" title="${isHidden ? 'Show section' : 'Hide section'}"></div>
         <span class="sb-sec-name" style="${isHidden ? 'color:var(--muted);text-decoration:line-through' : ''}" title="${sec.title || sec.type}">
           ${sec.title || sec.type}
@@ -6246,12 +6615,22 @@ body.sb-fullscreen-active{overflow:hidden}
 ${SB.SLOTS.map(function(s){
   const k = s[0], l = s[1];
   const hasCustomSize = SB.state.imgStyles && SB.state.imgStyles[k];
-  return `<div class="sb-im">
-    <img src="${SB.IMG[k]}" alt="${l}">
-    <span>${l}${hasCustomSize ? ' <small style="color:#2563eb;font-weight:700">(Custom Size)</small>' : ''}</span>
-    <button type="button" class="sb-tool-size-btn" onclick="SB.openImgSizeModal('${k}')" title="Modify image size &amp; dimensions"><i class="fa fa-arrows-alt"></i> Size</button>
-    <button type="button" onclick="SB.pick('${k}')">Replace</button>
-    ${SB.IMG[k] !== SB.DEF[k] ? `<button type="button" onclick="SB.resetImage('${k}')">Reset</button>` : ''}
+  const associatedSec = SB.state.sections.find(function(sec){ return (sec.img === k) || (k === 'hero' && sec.type === 'hero') || (k === 'about' && sec.type === 'about') || (k === 'dinner' && sec.type === 'dinner') || (k === 'map' && sec.type === 'contact'); });
+  const isHiddenInSec = associatedSec && associatedSec.hideImg;
+  return `<div class="sb-im" style="${isHiddenInSec ? 'opacity:.65' : ''}">
+    <img src="${SB.IMG[k]}" alt="${l}" style="${isHiddenInSec ? 'filter:grayscale(1)' : ''}">
+    <span>
+      ${l}
+      ${hasCustomSize ? ' <small style="color:#2563eb;font-weight:700">(Custom Size)</small>' : ''}
+      ${isHiddenInSec ? ' <small style="color:#ef4444;font-weight:700">(Removed)</small>' : ''}
+    </span>
+    ${isHiddenInSec
+      ? `<button type="button" onclick="SB.restorePhoto('${k}', '${associatedSec.id}')" title="Restore photo to section" style="background:#10b981;color:#fff;border-color:#10b981"><i class="fa fa-plus"></i> Add</button>`
+      : `<button type="button" class="sb-tool-size-btn" onclick="SB.openImgSizeModal('${k}')" title="Modify image size &amp; dimensions"><i class="fa fa-arrows-alt"></i> Size</button>
+         <button type="button" onclick="SB.pick('${k}', '${associatedSec ? associatedSec.id : ''}')">Replace</button>
+         <button type="button" onclick="SB.removePhoto('${k}', '${associatedSec ? associatedSec.id : ''}')" title="Remove photo from section" style="color:#ef4444;padding:3px 6px"><i class="fa fa-trash-o"></i></button>`
+    }
+    ${SB.IMG[k] !== SB.DEF[k] ? `<button type="button" onclick="SB.resetImage('${k}')" title="Reset image">Reset</button>` : ''}
   </div>`;
 }).join('')}
 
@@ -6265,6 +6644,8 @@ ${SB.SLOTS.map(function(s){
     f.style.width = SB.state.dev === 'm' ? '390px' : '100%';
     f.classList.toggle('m', SB.state.dev === 'm');
     SB.panel();
+    // Init drag & drop after DOM is updated
+    setTimeout(function(){ if(typeof SB.initDragDrop === 'function') SB.initDragDrop(); }, 50);
   };
 
   SB.render = function(){
@@ -6368,6 +6749,8 @@ ${SB.SLOTS.map(function(s){
     };
 
     SB.panel();
+    // Init drag & drop after DOM is updated
+    setTimeout(function(){ if(typeof SB.initDragDrop === 'function') SB.initDragDrop(); }, 50);
   };
 
   SB.save = function(){
@@ -6449,25 +6832,32 @@ ${SB.SLOTS.map(function(s){
   };
 
   SB.resetToDefaults = function(){
-    if (confirm('Reset Homepage Design to factory defaults? Your custom edits and added sections will be reverted.')) {
-      localStorage.removeItem('hwf_sitebuilder_design');
-      SB.state = {
-        tpl: 'modern',
-        brand: { modern: '#3f51b5', classic: '#3f51b5' },
-        dev: 'd',
-        navBrand: 'Friends of Fairview',
-        navLogin: 'Already subscribed? Log in',
-        sections: SB.defaultSections(),
-        imgStyles: {}
-      };
-      SB.SLOTS.forEach(function(s){ SB.DEF[s[0]] = SB.IMG[s[0]] = uri(s[2]); });
-      SB.tplCards();
-      SB.frame();
-      SB.render();
-      dirty = false;
-      $('#saveSt').textContent = 'Changes reset to default.';
-      toast('Design reset to default');
-    }
+    sbConfirm({
+      title: 'Reset to Defaults?',
+      text: 'Reset Homepage Design to factory defaults? Your custom edits and added sections will be reverted.',
+      confirmButtonText: 'Yes, reset to default',
+      isDanger: true
+    }).then(function(confirmed){
+      if (confirmed) {
+        localStorage.removeItem('hwf_sitebuilder_design');
+        SB.state = {
+          tpl: 'modern',
+          brand: { modern: '#3f51b5', classic: '#3f51b5' },
+          dev: 'd',
+          navBrand: 'Friends of Fairview',
+          navLogin: 'Already subscribed? Log in',
+          sections: SB.defaultSections(),
+          imgStyles: {}
+        };
+        SB.SLOTS.forEach(function(s){ SB.DEF[s[0]] = SB.IMG[s[0]] = uri(s[2]); });
+        SB.tplCards();
+        SB.frame();
+        SB.render();
+        dirty = false;
+        $('#saveSt').textContent = 'Changes reset to default.';
+        toast('Design reset to default');
+      }
+    });
   };
 
   SB.inited = false;
@@ -6497,5 +6887,10 @@ ${SB.SLOTS.map(function(s){
 
 })();
 </script>
+<!-- Drag-to-delete trash zone -->
+<div id="sb-trash-zone" class="sb-trash-zone" title="Drop here to delete section">
+  <i class="fa fa-trash-o"></i>
+  <span>Delete</span>
+</div>
 </body>
 </html>

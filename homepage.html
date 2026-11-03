@@ -211,6 +211,8 @@
     .sb-site.sb-classic .hero .ey { color: #f0c3bb; }
     .sb-site.sb-classic .hero .sbtn { background: var(--red); }
     .sb-site.sb-classic .hero .ph { aspect-ratio: 21/8; border-radius: 0; box-shadow: none; }
+    .sb-site .hero.no-img { grid-template-columns: 1fr; max-width: 860px; }
+    .sb-site .split.no-img { grid-template-columns: 1fr; }
 
     /* Photos */
     .sb-site .ph {
@@ -895,13 +897,15 @@
           break;
 
         case 'hero':
+          const hasHeroImg = !sec.hideImg;
           inner = (isModern
-            ? `<div class="hero"><div><div class="ey">${sec.ey || "Friends of Fairview · Fairview, TX"}</div><h1>${sec.heading || "Flags on every holiday, placed by your neighbors."}</h1><p class="l">${sec.desc || "Volunteers place a full-size American flag at your home or business before each national holiday and collect it afterward. Every subscription supports Fairview’s first responders."}</p><button class="sbtn" onclick="openSubscribeModal()">${sec.btn1 || "Subscribe now"}</button><button class="sbtn o" onclick="openManageModal()">${sec.btn2 || "Manage my subscription"}</button></div>${ph(sec.img || 'hero')}</div>`
-            : `<div class="hero"><div class="tx"><div class="ey">${sec.ey || "Friends of Fairview · Stars & Stripes Flag Program"}</div><h1>${sec.heading || "Fly the flag on every holiday that matters."}</h1><p class="l">${sec.desc || "Volunteers place a full-size American flag at your home or business before each national holiday and collect it afterward. Every subscription supports Fairview’s first responders."}</p><button class="sbtn" onclick="openSubscribeModal()">${sec.btn1 || "Subscribe now"}</button><button class="sbtn o" onclick="openManageModal()">${sec.btn2 || "Manage my subscription"}</button></div>${ph(sec.img || 'hero')}</div>`) + elementsHTML;
+            ? `<div class="hero ${!hasHeroImg ? 'no-img' : ''}"><div><div class="ey">${sec.ey || "Friends of Fairview · Fairview, TX"}</div><h1>${sec.heading || "Flags on every holiday, placed by your neighbors."}</h1><p class="l">${sec.desc || "Volunteers place a full-size American flag at your home or business before each national holiday and collect it afterward. Every subscription supports Fairview’s first responders."}</p><button class="sbtn" onclick="openSubscribeModal()">${sec.btn1 || "Subscribe now"}</button><button class="sbtn o" onclick="openManageModal()">${sec.btn2 || "Manage my subscription"}</button></div>${hasHeroImg ? ph(sec.img || 'hero') : ''}</div>`
+            : `<div class="hero ${!hasHeroImg ? 'no-img' : ''}"><div class="tx"><div class="ey">${sec.ey || "Friends of Fairview · Stars & Stripes Flag Program"}</div><h1>${sec.heading || "Fly the flag on every holiday that matters."}</h1><p class="l">${sec.desc || "Volunteers place a full-size American flag at your home or business before each national holiday and collect it afterward. Every subscription supports Fairview’s first responders."}</p><button class="sbtn" onclick="openSubscribeModal()">${sec.btn1 || "Subscribe now"}</button><button class="sbtn o" onclick="openManageModal()">${sec.btn2 || "Manage my subscription"}</button></div>${hasHeroImg ? ph(sec.img || 'hero') : ''}</div>`) + elementsHTML;
           break;
 
         case 'about':
-          inner = `<div class="s base" id="about"><div class="split rev">${ph(sec.img || 'about')}<div><div class="ey">${sec.ey || "About the program"}</div><h2 style="font-size:clamp(26px,4.4cqw,38px)">${sec.heading || "Fairview’s way to say thank you"}</h2><p>${sec.desc || "Friends of Fairview Fire Fighters Association is a volunteer group that supports Fairview’s Police, Fire and EMS. The flag program brings red, white and blue to our streets and funds the community events that honor those who serve."}</p></div></div>${elementsHTML}</div>`;
+          const hasAboutImg = !sec.hideImg;
+          inner = `<div class="s base" id="about"><div class="split rev ${!hasAboutImg ? 'no-img' : ''}">${hasAboutImg ? ph(sec.img || 'about') : ''}<div><div class="ey">${sec.ey || "About the program"}</div><h2 style="font-size:clamp(26px,4.4cqw,38px)">${sec.heading || "Fairview’s way to say thank you"}</h2><p>${sec.desc || "Friends of Fairview Fire Fighters Association is a volunteer group that supports Fairview’s Police, Fire and EMS. The flag program brings red, white and blue to our streets and funds the community events that honor those who serve."}</p></div></div>${elementsHTML}</div>`;
           break;
 
         case 'how':
@@ -963,11 +967,13 @@
           break;
 
         case 'contact':
-          inner = `<div class="s tn" id="contact"><div class="split"><div><div class="ey">${sec.ey || "Contact"}</div><h2 style="font-size:clamp(26px,4.4cqw,38px)">${sec.heading || "Questions? We’re happy to help."}</h2><p style="margin-bottom:14px">${sec.desc || "Note: Please check the service map to verify we service your address."}</p><div style="color:var(--ink);line-height:1.8">${sec.details || "<b>Friends of Fairview</b><br>(469) 331-2520<br>SMS: (972) 968-8140. Text us, it’s faster and easier.<br>510 State HWY 5, Fairview, TX 75069<br>info@friendsoffairview.org"}</div><div style="margin-top:20px"><button class="sbtn" onclick="openSubscribeModal()">Get Started</button></div></div>${ph(sec.img || 'map', 'map')}</div>${sec.footerNote ? `<p class="who" style="margin-top:14px;text-align:center">${sec.footerNote}</p>` : ''}${elementsHTML}</div>`;
+          const hasContactImg = !sec.hideImg;
+          inner = `<div class="s tn" id="contact"><div class="split ${!hasContactImg ? 'no-img' : ''}"><div><div class="ey">${sec.ey || "Contact"}</div><h2 style="font-size:clamp(26px,4.4cqw,38px)">${sec.heading || "Questions? We’re happy to help."}</h2><p style="margin-bottom:14px">${sec.desc || "Note: Please check the service map to verify we service your address."}</p><div style="color:var(--ink);line-height:1.8">${sec.details || "<b>Friends of Fairview</b><br>(469) 331-2520<br>SMS: (972) 968-8140. Text us, it’s faster and easier.<br>510 State HWY 5, Fairview, TX 75069<br>info@friendsoffairview.org"}</div><div style="margin-top:20px"><button class="sbtn" onclick="openSubscribeModal()">Get Started</button></div></div>${hasContactImg ? ph(sec.img || 'map', 'map') : ''}</div>${sec.footerNote ? `<p class="who" style="margin-top:14px;text-align:center">${sec.footerNote}</p>` : ''}${elementsHTML}</div>`;
           break;
 
         case 'don':
-          inner = `<div class="s br" id="dinner"><div class="split">${ph(sec.img || 'dinner')}<div><div class="ey">${sec.ey || "Additional donation"}</div><h2 style="font-size:clamp(26px,4.4cqw,38px)">${sec.heading || "First Responders Appreciation Dinner"}</h2><p>${sec.desc || "Each year, we host an Appreciation Dinner to honor all of Fairview’s first responders (Police, Fire and EMS), and we’d be grateful for your support."}</p><button class="sbtn" onclick="openDonateModal()">${sec.btn1 || "Donate"}</button><a href="#" class="sbtn o" onclick="showToast('Annual Appreciation Dinner PDF flyer will download');return false;">${sec.btn2 || "Read more (PDF)"}</a></div></div>${elementsHTML}</div>`;
+          const hasDonImg = !sec.hideImg;
+          inner = `<div class="s br" id="dinner"><div class="split ${!hasDonImg ? 'no-img' : ''}">${hasDonImg ? ph(sec.img || 'dinner') : ''}<div><div class="ey">${sec.ey || "Additional donation"}</div><h2 style="font-size:clamp(26px,4.4cqw,38px)">${sec.heading || "First Responders Appreciation Dinner"}</h2><p>${sec.desc || "Each year, we host an Appreciation Dinner to honor all of Fairview’s first responders (Police, Fire and EMS), and we’d be grateful for your support."}</p><button class="sbtn" onclick="openDonateModal()">${sec.btn1 || "Donate"}</button><a href="#" class="sbtn o" onclick="showToast('Annual Appreciation Dinner PDF flyer will download');return false;">${sec.btn2 || "Read more (PDF)"}</a></div></div>${elementsHTML}</div>`;
           break;
 
         case 'text':
