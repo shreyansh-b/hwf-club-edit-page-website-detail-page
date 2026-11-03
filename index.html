@@ -613,6 +613,55 @@ main{min-width:0;padding:6px 12px 24px}
 /* Custom HTML / Embed Element */
 .sb-el-custom-html{width:100%;min-height:50px;position:relative}
 
+/* Modular Form Elements: Input, Textarea, Select, Checkbox, Radio */
+.sb-el-form-field{max-width:680px;margin:0 auto;background:var(--sf,#fff);border:1px solid var(--ln,#e2e8f0);border-radius:var(--r,12px);padding:22px 24px;box-shadow:0 4px 16px rgba(0,0,0,.02);text-align:left;transition:border-color .15s,box-shadow .15s}
+.sb-el-form-field:hover{border-color:#cbd5e1}
+.sb-el-form-field-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:8px}
+.sb-el-form-label{font-family:var(--d,inherit);font-size:15px;font-weight:700;color:var(--ink,#0f172a);display:inline-flex;align-items:center;gap:4px}
+.sb-req{color:#ef4444;font-weight:800;font-size:14px;margin-left:2px}
+.sb-el-cfg-btn{display:inline-flex;align-items:center;gap:5px;background:#f1f5f9;border:1px solid #cbd5e1;color:#475569;font-size:11px;font-weight:600;padding:3px 9px;border-radius:99px;cursor:pointer;transition:all .15s ease}
+.sb-el-cfg-btn:hover{background:#2563eb;border-color:#2563eb;color:#fff}
+.sb-form-input,.sb-form-textarea,.sb-form-select{width:100%;padding:11px 14px;border:1.5px solid var(--ln,#cbd5e1);border-radius:var(--br,8px);font-size:14px;color:var(--ink,#0f172a);background:#fff;font-family:inherit;outline:none;box-sizing:border-box;transition:border-color .15s,box-shadow .15s}
+.sb-form-input:focus,.sb-form-textarea:focus,.sb-form-select:focus{border-color:var(--brand,#2563eb);box-shadow:0 0 0 3px rgba(37,99,235,.12)}
+.sb-form-textarea{resize:vertical;min-height:80px;line-height:1.5}
+.sb-form-select{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%2364748b' viewBox='0 0 24 24'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;background-size:18px;padding-right:36px;appearance:none;-webkit-appearance:none}
+.sb-form-choice-list{display:flex;flex-direction:column;gap:8px}
+.sb-form-choice-list.sb-form-choice-inline{flex-direction:row;flex-wrap:wrap;gap:12px}
+.sb-form-choice-item{display:flex;align-items:center;gap:10px;padding:10px 14px;background:#fff;border:1.5px solid var(--ln,#e2e8f0);border-radius:var(--br,8px);cursor:pointer;transition:all .15s;user-select:none}
+.sb-form-choice-item:hover{border-color:var(--brand,#2563eb);background:#f8fafc}
+.sb-form-choice-item input[type="checkbox"],.sb-form-choice-item input[type="radio"]{width:17px;height:17px;cursor:pointer;margin:0;accent-color:var(--brand,#2563eb)}
+.sb-form-choice-label{font-size:14px;color:var(--ink,#0f172a);flex:1}
+.sb-form-help{font-size:12px;color:var(--mt,#64748b);margin-top:6px;line-height:1.45}
+.sb-el-attr-bar{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:12px;padding-top:10px;border-top:1px dashed #e2e8f0;font-size:11px}
+.sb-el-attr-pill{display:inline-flex;align-items:center;gap:4px;padding:2px 7px;background:#f1f5f9;color:#475569;border-radius:4px;font-family:monospace;font-size:10.5px;cursor:pointer;transition:background .12s,color .12s}
+.sb-el-attr-pill:hover{background:#e2e8f0;color:#0f172a}
+.sb-el-attr-edit-action{margin-left:auto;border:0;background:transparent;color:#2563eb;font-size:11px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:4px;padding:2px 6px;border-radius:4px}
+.sb-el-attr-edit-action:hover{background:rgba(37,99,235,.08)}
+
+/* Element Attributes Modal */
+.sb-el-modal-backdrop{position:fixed;inset:0;background:rgba(15,23,42,.7);z-index:10000;display:none;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(3px)}
+.sb-el-modal{background:#fff;color:#0f172a;border-radius:12px;width:100%;max-width:680px;max-height:90vh;display:flex;flex-direction:column;box-shadow:0 24px 60px rgba(0,0,0,.25);border:1px solid #e2e8f0;overflow:hidden}
+.sb-el-modal-head{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid #e2e8f0;background:#f8fafc}
+.sb-el-modal-head h3{margin:0;font-size:16px;font-weight:700;color:#0f172a;display:flex;align-items:center;gap:8px}
+.sb-el-modal-body{padding:20px;overflow-y:auto;display:flex;flex-direction:column;gap:16px}
+.sb-el-modal-foot{display:flex;align-items:center;justify-content:space-between;padding:14px 20px;border-top:1px solid #e2e8f0;background:#f8fafc}
+.sb-el-attr-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.sb-el-attr-group{display:flex;flex-direction:column;gap:5px}
+.sb-el-attr-group label{font-size:12px;font-weight:600;color:#475569}
+.sb-el-attr-group input[type="text"],.sb-el-attr-group input[type="number"],.sb-el-attr-group select,.sb-el-attr-group textarea{width:100%;padding:8px 12px;border:1px solid #cbd5e1;border-radius:6px;font-size:13px;font-family:inherit;outline:none;box-sizing:border-box}
+.sb-el-attr-group input:focus,.sb-el-attr-group select:focus,.sb-el-attr-group textarea:focus{border-color:#2563eb;box-shadow:0 0 0 2px rgba(37,99,235,.15)}
+.sb-el-opt-table{width:100%;border-collapse:collapse;margin-top:6px}
+.sb-el-opt-table th{text-align:left;font-size:11px;text-transform:uppercase;color:#64748b;padding:6px 8px;border-bottom:1.5px solid #e2e8f0}
+.sb-el-opt-table td{padding:6px 4px}
+.sb-el-opt-table input[type="text"]{width:100%;padding:6px 10px;border:1px solid #cbd5e1;border-radius:4px;font-size:12px}
+.sb-el-opt-del-btn{background:transparent;border:0;color:#94a3b8;cursor:pointer;padding:4px 6px;border-radius:4px;font-size:12px;transition:color .12s,background .12s}
+.sb-el-opt-del-btn:hover{color:#ef4444;background:#fef2f2}
+.sb-el-add-opt-btn{display:inline-flex;align-items:center;gap:5px;padding:6px 12px;font-size:12px;font-weight:600;color:#2563eb;background:#eff6ff;border:1px dashed #bfdbfe;border-radius:6px;cursor:pointer;margin-top:6px}
+.sb-el-add-opt-btn:hover{background:#dbeafe;border-color:#93c5fd}
+.sb-el-checkbox-label{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:#1e293b;cursor:pointer;user-select:none}
+.sb-el-checkbox-label input{width:16px;height:16px;accent-color:#2563eb;cursor:pointer}
+
+
 /* Top Builder Action Toolbar Buttons */
 .sb-top-tool-btn{display:inline-flex;align-items:center;gap:6px;background:#f8fafc;color:#1e293b;border:1px solid #cbd5e1;padding:7px 12px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;transition:all .15s}
 .sb-top-tool-btn:hover{background:#f1f5f9;border-color:#94a3b8;color:#0f172a}
@@ -720,8 +769,38 @@ body.sb-fullscreen-active{overflow:hidden}
 .sb-site.sb-classic .hero .ey{color:#f0c3bb}
 .sb-site.sb-classic .hero .sbtn{background:var(--red)}
 .sb-site.sb-classic .hero .ph{aspect-ratio:21/8;border-radius:0}
-.sb-site .ph{background-size:cover;background-position:center;position:relative;cursor:pointer}
-.sb-site .ph:hover:after{content:"Replace image";position:absolute;right:10px;bottom:10px;background:#000a;color:#fff;font:500 11px Roboto;padding:5px 10px;border-radius:6px}
+.sb-site .ph{background-size:cover;background-position:center;position:relative;cursor:pointer;transition:transform .15s ease,box-shadow .15s ease}
+.sb-site .ph:hover{outline:2px dashed rgba(59,130,246,.75);outline-offset:-2px}
+.sb-ph-wrap{position:relative;display:block;width:100%}
+.sb-ph-overlay-actions{position:absolute;top:10px;right:10px;display:flex;align-items:center;gap:6px;opacity:0;transform:translateY(-4px);transition:opacity .18s ease,transform .18s ease;z-index:10;pointer-events:none}
+.sb-site .ph:hover .sb-ph-overlay-actions,.sb-ph-wrap:hover .sb-ph-overlay-actions{opacity:1;transform:translateY(0);pointer-events:auto}
+.sb-ph-btn{display:inline-flex;align-items:center;gap:5px;padding:6px 12px;background:rgba(15,23,42,.88);backdrop-filter:blur(6px);color:#fff;font:600 11px system-ui,-apple-system,sans-serif;border:1px solid rgba(255,255,255,.25);border-radius:6px;cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,.25);transition:all .15s ease}
+.sb-ph-btn:hover{background:#2563eb;border-color:#3b82f6;transform:translateY(-1px)}
+.sb-ph-size-btn{background:rgba(30,58,138,.92);border-color:rgba(147,197,253,.35)}
+.sb-ph-size-btn:hover{background:#1d4ed8;border-color:#60a5fa}
+.sb-tool-size-btn{display:inline-flex;align-items:center;gap:4px;padding:3px 8px;font-size:11px;font-weight:600;border:1px solid #cbd5e1;background:#f8fafc;border-radius:4px;cursor:pointer;color:#334155;transition:all .15s}
+.sb-tool-size-btn:hover{background:#eff6ff;border-color:#3b82f6;color:#1d4ed8}
+.sb-img-modal-backdrop{position:fixed;inset:0;z-index:10005;background:rgba(15,23,42,.65);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;padding:20px}
+.sb-img-modal{background:#ffffff;border-radius:14px;box-shadow:0 25px 60px -15px rgba(0,0,0,.35);width:100%;max-width:760px;max-height:92vh;display:flex;flex-direction:column;overflow:hidden;border:1px solid #e2e8f0;animation:sbFadeInScale .2s cubic-bezier(.16,1,.3,1)}
+.sb-img-modal-head{display:flex;align-items:center;justify-content:space-between;padding:16px 22px;border-bottom:1px solid #e2e8f0;background:#f8fafc}
+.sb-img-modal-head h3{margin:0;font-size:17px;font-weight:700;color:#0f172a;display:flex;align-items:center;gap:8px}
+.sb-img-modal-body{padding:20px 24px;overflow-y:auto;display:flex;flex-direction:column;gap:18px}
+.sb-img-preview-box{background:repeating-conic-gradient(#f1f5f9 0% 25%, #ffffff 0% 50%) 50% / 16px 16px;border:1px solid #cbd5e1;border-radius:10px;padding:16px;display:flex;align-items:center;justify-content:center;min-height:190px;max-height:260px;overflow:hidden}
+.sb-img-preview-canvas{width:100%;max-width:440px;height:180px;background-size:cover;background-position:center;transition:all .2s ease;box-shadow:0 4px 14px rgba(0,0,0,.1)}
+.sb-ratio-chips{display:flex;flex-wrap:wrap;gap:6px}
+.sb-ratio-btn{padding:5px 11px;border-radius:6px;border:1px solid #cbd5e1;background:#f8fafc;font-size:12px;font-weight:600;color:#334155;cursor:pointer;transition:all .15s}
+.sb-ratio-btn:hover{background:#e2e8f0;border-color:#94a3b8}
+.sb-ratio-btn.active{background:#2563eb;color:#fff;border-color:#1d4ed8;box-shadow:0 2px 6px rgba(37,99,235,.3)}
+.sb-rte-img-pop{position:absolute;z-index:100;display:flex;align-items:center;gap:4px;background:#0f172a;color:#fff;padding:4px 8px;border-radius:8px;box-shadow:0 10px 25px -5px rgba(0,0,0,.35);font-size:11px;pointer-events:auto}
+.sb-rte-img-pop button{background:rgba(255,255,255,.12);border:0;color:#fff;padding:3px 7px;border-radius:4px;font-size:11px;font-weight:600;cursor:pointer;transition:background .12s}
+.sb-rte-img-pop button:hover{background:#2563eb}
+.sb-rte-img-pop .sep{width:1px;height:14px;background:rgba(255,255,255,.2);margin:0 2px}
+.sb-el-image-card{width:100%;margin:0 auto;padding:12px 0}
+.sb-el-img-box{width:100%;background-size:cover;background-position:center;transition:all .2s;position:relative}
+.sb-el-img-caption{margin-top:8px;font-size:13px;color:var(--mt);text-align:center;line-height:1.4}
+.sb-el-img-quick-bar{display:flex;align-items:center;justify-content:center;gap:5px;margin-top:8px;flex-wrap:wrap}
+.sb-el-img-quick-btn{display:inline-flex;align-items:center;gap:4px;padding:3px 8px;font-size:11px;font-weight:600;border:1px solid #cbd5e1;background:#f8fafc;border-radius:4px;cursor:pointer;color:#334155;transition:all .15s}
+.sb-el-img-quick-btn:hover{background:#2563eb;color:#fff;border-color:#2563eb}
 .sb-site .cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px}
 .sb-site .card{background:var(--sf);border:1px solid var(--ln);border-radius:var(--r);padding:22px}
 .sb-site .s.sf .card{background:var(--base)}
@@ -1361,6 +1440,10 @@ body.sb-fullscreen-active{overflow:hidden}
     if (name === 'sitebuilder' && window.SB && window.SB.init) {
       try { window.SB.init(); } catch(e){ console.error('SB.init error:', e); }
     }
+    if (location.hash.replace('#', '') !== name) {
+      history.replaceState(null, '', '#' + name);
+    }
+    try { localStorage.setItem('hwf_active_tab', name); } catch(e){}
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
   window.switchTab = window.gotoTab = switchTab;
@@ -1444,8 +1527,76 @@ body.sb-fullscreen-active{overflow:hidden}
       if(f.size>3*1048576){ toast('Image must be under 3 MB.',true); file.value=''; return; }
       var r=new FileReader(); r.onload=function(){ exec('insertImage',r.result); }; r.readAsDataURL(f); file.value='';
     });
-    document.addEventListener('click',function(e){ if(!e.target.closest('.pop')&&!e.target.closest('[data-act=emoji],[data-act=symbol]')) closePop(); });
-    document.addEventListener('keydown',function(e){ if(e.key==='Escape') wrap.classList.remove('fs'); });
+
+    function closeImgPop(){ var p=$('.sb-rte-img-pop',wrap); if(p) p.remove(); }
+    ed.addEventListener('click', function(ev){
+      var img = ev.target.closest('img');
+      if (!img) { closeImgPop(); return; }
+      closePop();
+      closeImgPop();
+      var p = document.createElement('div');
+      p.className = 'sb-rte-img-pop';
+      p.innerHTML = '<span style="font-weight:700;color:#94a3b8;margin-right:2px">Size:</span>' +
+        '<button type="button" data-sz="25%">25%</button>' +
+        '<button type="button" data-sz="50%">50%</button>' +
+        '<button type="button" data-sz="75%">75%</button>' +
+        '<button type="button" data-sz="100%">100%</button>' +
+        '<button type="button" data-sz="auto">Auto</button>' +
+        '<span class="sep"></span>' +
+        '<button type="button" data-al="left" title="Float Left"><i class="fa fa-align-left"></i></button>' +
+        '<button type="button" data-al="center" title="Center"><i class="fa fa-align-center"></i></button>' +
+        '<button type="button" data-al="right" title="Float Right"><i class="fa fa-align-right"></i></button>' +
+        '<span class="sep"></span>' +
+        '<button type="button" data-del="1" style="background:#ef4444;color:#fff" title="Remove image"><i class="fa fa-trash-o"></i></button>';
+      wrap.appendChild(p);
+      var rect = img.getBoundingClientRect();
+      var wrapRect = wrap.getBoundingClientRect();
+      var top = (rect.top - wrapRect.top - 36);
+      if (top < 0) top = (rect.bottom - wrapRect.top + 6);
+      var left = Math.max(4, Math.min(rect.left - wrapRect.left, wrapRect.width - 320));
+      p.style.top = top + 'px';
+      p.style.left = left + 'px';
+
+      p.querySelectorAll('button').forEach(function(b){
+        b.addEventListener('mousedown', function(e){ e.preventDefault(); });
+        b.addEventListener('click', function(e){
+          e.stopPropagation();
+          if (b.dataset.sz) {
+            if (b.dataset.sz === 'auto') {
+              img.style.width = '';
+              img.style.height = '';
+            } else {
+              img.style.width = b.dataset.sz;
+              img.style.height = 'auto';
+            }
+          } else if (b.dataset.al) {
+            if (b.dataset.al === 'left') {
+              img.style.float = 'left';
+              img.style.margin = '0 16px 14px 0';
+              img.style.display = '';
+            } else if (b.dataset.al === 'right') {
+              img.style.float = 'right';
+              img.style.margin = '0 0 14px 16px';
+              img.style.display = '';
+            } else if (b.dataset.al === 'center') {
+              img.style.float = 'none';
+              img.style.margin = '14px auto';
+              img.style.display = 'block';
+            }
+          } else if (b.dataset.del) {
+            img.remove();
+          }
+          closeImgPop();
+          fire();
+        });
+      });
+    });
+
+    document.addEventListener('click',function(e){
+      if(!e.target.closest('.pop')&&!e.target.closest('[data-act=emoji],[data-act=symbol]')) closePop();
+      if(!e.target.closest('.sb-rte-img-pop')&&!e.target.closest('.editor img')) closeImgPop();
+    });
+    document.addEventListener('keydown',function(e){ if(e.key==='Escape') { wrap.classList.remove('fs'); closeImgPop(); } });
   }
   $$('.rte').forEach(makeRte);
 
@@ -2743,6 +2894,131 @@ body.sb-fullscreen-active{overflow:hidden}
   /* Modular In-Section Elements Catalog */
   SB.ELEMENTS_CATALOG = [
     {
+      type: 'input',
+      category: 'forms',
+      title: 'Text Input Field',
+      desc: 'Single-line field for names, emails, phone numbers, or custom inputs.',
+      icon: 'fa-pencil-square-o',
+      previewHTML: `<div style="width:85%;background:#fff;border:1px solid #cbd5e1;border-radius:6px;padding:8px;text-align:left"><div style="display:flex;align-items:center;gap:3px;margin-bottom:5px"><div style="width:40%;height:5px;background:#0f172a"></div><div style="width:4px;height:4px;background:#ef4444;border-radius:50%"></div></div><div style="width:100%;height:14px;border:1px solid #cbd5e1;border-radius:3px;background:#f8fafc;padding:2px 4px;display:flex;align-items:center"><div style="width:50%;height:4px;background:#94a3b8"></div></div></div>`,
+      create: function() {
+        return {
+          type: 'input',
+          title: 'Text Input',
+          label: 'Full Name',
+          placeholder: 'Enter your full name...',
+          name: 'full_name',
+          id: 'input_' + Date.now().toString(36),
+          inputType: 'text',
+          required: true,
+          defaultValue: '',
+          helpText: 'Please enter your full name as it appears on records.',
+          width: '100%'
+        };
+      }
+    },
+    {
+      type: 'textarea',
+      category: 'forms',
+      title: 'Multiline Textarea',
+      desc: 'Multi-line text box for messages, comments, instructions, or inquiries.',
+      icon: 'fa-align-left',
+      previewHTML: `<div style="width:85%;background:#fff;border:1px solid #cbd5e1;border-radius:6px;padding:8px;text-align:left"><div style="width:45%;height:5px;background:#0f172a;margin-bottom:5px"></div><div style="width:100%;height:24px;border:1px solid #cbd5e1;border-radius:3px;background:#f8fafc;padding:4px"><div style="width:75%;height:4px;background:#94a3b8;margin-bottom:3px"></div><div style="width:50%;height:4px;background:#94a3b8"></div></div></div>`,
+      create: function() {
+        return {
+          type: 'textarea',
+          title: 'Multiline Textarea',
+          label: 'Special Instructions / Notes',
+          placeholder: 'Enter any gate access codes, sprinkler notes, or flag placement instructions...',
+          name: 'special_notes',
+          id: 'textarea_' + Date.now().toString(36),
+          rows: 4,
+          required: false,
+          defaultValue: '',
+          helpText: 'Optional instructions or directions for our volunteer placement crew.',
+          width: '100%'
+        };
+      }
+    },
+    {
+      type: 'select',
+      category: 'forms',
+      title: 'Dropdown Select Menu',
+      desc: 'Select dropdown picker allowing visitors to choose from multiple options.',
+      icon: 'fa-caret-square-o-down',
+      previewHTML: `<div style="width:85%;background:#fff;border:1px solid #cbd5e1;border-radius:6px;padding:8px;text-align:left"><div style="width:45%;height:5px;background:#0f172a;margin-bottom:5px"></div><div style="width:100%;height:14px;border:1px solid #cbd5e1;border-radius:3px;background:#f8fafc;padding:0 5px;display:flex;align-items:center;justify-content:space-between"><div style="width:55%;height:4px;background:#94a3b8"></div><i class="fa fa-caret-down" style="font-size:8px;color:#64748b"></i></div></div>`,
+      create: function() {
+        return {
+          type: 'select',
+          title: 'Dropdown Select',
+          label: 'Flag Subscription Plan',
+          placeholder: '-- Select a subscription option --',
+          name: 'subscription_plan',
+          id: 'select_' + Date.now().toString(36),
+          required: true,
+          defaultValue: 'standard',
+          options: [
+            { label: 'Standard Single Flag ($50 / year)', value: 'standard' },
+            { label: 'Corner Lot Double Flags ($90 / year)', value: 'corner_lot' },
+            { label: 'Commercial / Business Sponsorship ($250 / year)', value: 'commercial' }
+          ],
+          helpText: 'Choose the placement package for your property.',
+          width: '100%'
+        };
+      }
+    },
+    {
+      type: 'checkbox',
+      category: 'forms',
+      title: 'Checkbox Options',
+      desc: 'Single checkbox or multi-select option group for consents and preferences.',
+      icon: 'fa-check-square-o',
+      previewHTML: `<div style="width:85%;background:#fff;border:1px solid #cbd5e1;border-radius:6px;padding:8px;text-align:left"><div style="width:50%;height:5px;background:#0f172a;margin-bottom:6px"></div><div style="display:flex;align-items:center;gap:4px;margin-bottom:4px"><div style="width:8px;height:8px;background:#2563eb;border-radius:2px;display:flex;align-items:center;justify-content:center"><i class="fa fa-check" style="color:#fff;font-size:6px"></i></div><div style="width:65%;height:4px;background:#94a3b8"></div></div><div style="display:flex;align-items:center;gap:4px"><div style="width:8px;height:8px;border:1px solid #cbd5e1;border-radius:2px"></div><div style="width:55%;height:4px;background:#94a3b8"></div></div></div>`,
+      create: function() {
+        return {
+          type: 'checkbox',
+          title: 'Checkbox Group',
+          label: 'Notification & Delivery Preferences',
+          name: 'delivery_preferences',
+          id: 'checkbox_' + Date.now().toString(36),
+          required: false,
+          helpText: 'Select all preferences that you wish to opt in to.',
+          width: '100%',
+          options: [
+            { label: 'Send SMS / Text reminder the evening before flag placement', value: 'sms_alert', checked: true },
+            { label: 'Include annual Fairview Volunteer Supporter window cling', value: 'window_cling', checked: false },
+            { label: 'I would like to volunteer on flag placement delivery routes', value: 'volunteer', checked: false }
+          ]
+        };
+      }
+    },
+    {
+      type: 'radio',
+      category: 'forms',
+      title: 'Radio Button Choices',
+      desc: 'Single-choice selector group for selecting one option from a list.',
+      icon: 'fa-dot-circle-o',
+      previewHTML: `<div style="width:85%;background:#fff;border:1px solid #cbd5e1;border-radius:6px;padding:8px;text-align:left"><div style="width:50%;height:5px;background:#0f172a;margin-bottom:6px"></div><div style="display:flex;align-items:center;gap:4px;margin-bottom:4px"><div style="width:8px;height:8px;border-radius:50%;background:#2563eb;display:flex;align-items:center;justify-content:center"><div style="width:3px;height:3px;border-radius:50%;background:#fff"></div></div><div style="width:65%;height:4px;background:#94a3b8"></div></div><div style="display:flex;align-items:center;gap:4px"><div style="width:8px;height:8px;border-radius:50%;border:1px solid #cbd5e1"></div><div style="width:50%;height:4px;background:#94a3b8"></div></div></div>`,
+      create: function() {
+        return {
+          type: 'radio',
+          title: 'Radio Choices',
+          label: 'Flag Installation Location on Lawn',
+          name: 'flag_location',
+          id: 'radio_' + Date.now().toString(36),
+          required: true,
+          defaultValue: 'front_walkway',
+          layout: 'stacked',
+          helpText: 'Select where on your front yard you want the flag socket installed.',
+          width: '100%',
+          options: [
+            { label: 'Front Walkway / Near Front Porch', value: 'front_walkway' },
+            { label: 'Near Mailbox / Driveway Entrance', value: 'mailbox' },
+            { label: 'Property Corner (Street Intersection)', value: 'corner' }
+          ]
+        };
+      }
+    },
+    {
       type: 'newsletter',
       category: 'forms',
       title: 'Newsletter Signup Box',
@@ -2775,6 +3051,31 @@ body.sb-fullscreen-active{overflow:hidden}
             { num: '6', lbl: 'Holidays a Year' },
             { num: '100%', lbl: 'Volunteer Run' }
           ]
+        };
+      }
+    },
+    {
+      type: 'image-card',
+      category: 'media',
+      title: 'Image / Photo Showcase',
+      desc: 'High-impact photo box with customizable size, aspect ratio, caption, and shadow.',
+      icon: 'fa-picture-o',
+      previewHTML: `<div style="width:85%;background:#fff;border:1px solid #cbd5e1;border-radius:6px;overflow:hidden"><div style="width:100%;height:32px;background:linear-gradient(135deg,#3b82f6,#1d4ed8);display:flex;align-items:center;justify-content:center;color:#fff"><i class="fa fa-picture-o"></i></div><div style="padding:4px 6px"><div style="width:60%;height:4px;background:#94a3b8"></div></div></div>`,
+      create: function() {
+        return {
+          type: 'image-card',
+          title: 'Photo Showcase',
+          url: 'https://images.unsplash.com/photo-1508847154043-be5407fcaa5a?w=1200&q=80',
+          alt: 'American flag waving proudly in neighborhood lawn',
+          caption: 'Over 1,400 American flags proudly placed by neighborhood volunteers across Fairview.',
+          width: '100%',
+          maxWidth: '850px',
+          height: '380px',
+          aspectRatio: '16/9',
+          fit: 'cover',
+          align: 'center',
+          radius: '16px',
+          shadow: 'md'
         };
       }
     },
@@ -2932,7 +3233,8 @@ body.sb-fullscreen-active{overflow:hidden}
     dev: 'd',
     navBrand: 'Friends of Fairview',
     navLogin: 'Already subscribed? Log in, no password needed',
-    sections: SB.defaultSections()
+    sections: SB.defaultSections(),
+    imgStyles: {}
   };
 
   SB.TPL = [
@@ -3131,7 +3433,7 @@ body.sb-fullscreen-active{overflow:hidden}
         <div class="sb-drawer-search-bar">
           <div class="sb-drawer-search-box">
             <i class="fa fa-search" style="color:#94a3b8"></i>
-            <input type="text" id="sbSearchInput" value="${sbDrawerState.searchQuery}" placeholder="Search ${isSections ? 'sections (hero, about, plans, faq, features...)' : 'elements (newsletter, stats, video, social, button...)'}..." oninput="SB.handleDrawerSearch(this.value)">
+            <input type="text" id="sbSearchInput" value="${sbDrawerState.searchQuery}" placeholder="Search ${isSections ? 'sections (hero, about, plans, faq, features...)' : 'elements (input, textarea, select, checkbox, radio, newsletter, stats, video...)'}..." oninput="SB.handleDrawerSearch(this.value)">
           </div>
         </div>
         <div class="sb-drawer-body">
@@ -3563,7 +3865,20 @@ body.sb-fullscreen-active{overflow:hidden}
     if (secId && elIdx !== undefined && elField) {
       const sec = SB.state.sections.find(function(s){ return s.id === secId; });
       if (sec && sec.elements && sec.elements[elIdx]) {
-        sec.elements[elIdx][elField] = el.innerHTML;
+        const targetEl = sec.elements[elIdx];
+        if (elField.startsWith('stats[')) {
+          const match = elField.match(/^stats\[(\d+)\]\.(.+)$/);
+          if (match && targetEl.stats && targetEl.stats[match[1]]) {
+            targetEl.stats[match[1]][match[2]] = el.innerHTML;
+          }
+        } else if (elField.startsWith('options[')) {
+          const match = elField.match(/^options\[(\d+)\]\.(.+)$/);
+          if (match && targetEl.options && targetEl.options[match[1]]) {
+            targetEl.options[match[1]][match[2]] = el.innerText || el.textContent;
+          }
+        } else {
+          targetEl[elField] = el.innerHTML;
+        }
         markDirty();
       }
       return;
@@ -4151,6 +4466,670 @@ body.sb-fullscreen-active{overflow:hidden}
   };
 
   /* ============================================================
+     4b. Modular Element Attributes & Settings Modal
+     ============================================================ */
+  let sbActiveElContext = { secId: null, elIdx: null };
+
+  function ensureElSettingsModalDOM() {
+    let m = document.getElementById('sbElSettingsModalBackdrop');
+    if (!m) {
+      m = document.createElement('div');
+      m.id = 'sbElSettingsModalBackdrop';
+      m.className = 'sb-el-modal-backdrop';
+      m.innerHTML = `
+        <div class="sb-el-modal">
+          <div class="sb-el-modal-head">
+            <h3 id="sbElModalTitle"><i class="fa fa-sliders"></i> Edit Form Element Attributes</h3>
+            <button type="button" class="sb-drawer-close-btn" onclick="SB.closeElSettingsModal()" style="font-size:18px;border:0;background:none;color:#64748b;cursor:pointer"><i class="fa fa-times"></i></button>
+          </div>
+          <div class="sb-el-modal-body" id="sbElModalBody">
+            <!-- Common Attributes Section -->
+            <div style="background:#f8fafc;padding:14px;border-radius:8px;border:1px solid #e2e8f0;display:flex;flex-direction:column;gap:10px">
+              <div style="font-size:11px;font-weight:700;text-transform:uppercase;color:#475569;letter-spacing:.04em"><i class="fa fa-tag"></i> General Field Attributes</div>
+              <div class="sb-el-attr-grid">
+                <div class="sb-el-attr-group">
+                  <label>Field Label / Title <span class="rq">*</span></label>
+                  <input type="text" id="sbElAttrLabel" placeholder="e.g. Full Name, Email Address, Delivery Option">
+                </div>
+                <div class="sb-el-attr-group">
+                  <label>Field Name Attribute (name="...")</label>
+                  <input type="text" id="sbElAttrName" placeholder="e.g. full_name, email, plan_type">
+                </div>
+              </div>
+              <div class="sb-el-attr-grid">
+                <div class="sb-el-attr-group">
+                  <label>Field ID Attribute (id="...")</label>
+                  <input type="text" id="sbElAttrId" placeholder="e.g. input_full_name">
+                </div>
+                <div class="sb-el-attr-group">
+                  <label>Field Width / Layout</label>
+                  <select id="sbElAttrWidth">
+                    <option value="100%">100% Full Width (Default)</option>
+                    <option value="50%">50% Half Width (Two-Column Grid)</option>
+                    <option value="33.333%">33% One-Third Width (Three-Column Grid)</option>
+                  </select>
+                </div>
+              </div>
+              <div style="display:flex;align-items:center;gap:20px;padding-top:4px;flex-wrap:wrap">
+                <label class="sb-el-checkbox-label">
+                  <input type="checkbox" id="sbElAttrRequired">
+                  <span>Required Field (Displays <b style="color:#ef4444">*</b> and validates input)</span>
+                </label>
+                <label class="sb-el-checkbox-label">
+                  <input type="checkbox" id="sbElAttrDisabled">
+                  <span>Disabled / Readonly</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Specific Type Panels -->
+            <!-- 1. Text Input Panel -->
+            <div id="sbElInputPanel" class="sb-el-type-panel" style="display:none;flex-direction:column;gap:10px">
+              <div style="font-size:11px;font-weight:700;text-transform:uppercase;color:#475569;letter-spacing:.04em"><i class="fa fa-keyboard-o"></i> Text Input Attributes</div>
+              <div class="sb-el-attr-grid">
+                <div class="sb-el-attr-group">
+                  <label>HTML Input Type (type="...")</label>
+                  <select id="sbElAttrInputType">
+                    <option value="text">Text (Single line text)</option>
+                    <option value="email">Email (Email address)</option>
+                    <option value="tel">Telephone / Phone Number</option>
+                    <option value="number">Number (Numeric input)</option>
+                    <option value="date">Date (Calendar date picker)</option>
+                    <option value="url">URL (Website address)</option>
+                    <option value="password">Password (Masked characters)</option>
+                  </select>
+                </div>
+                <div class="sb-el-attr-group">
+                  <label>Placeholder Text (placeholder="...")</label>
+                  <input type="text" id="sbElAttrPlaceholder" placeholder="e.g. Enter your full name...">
+                </div>
+              </div>
+              <div class="sb-el-attr-group">
+                <label>Default / Pre-filled Value (value="...")</label>
+                <input type="text" id="sbElAttrDefaultValue" placeholder="Optional pre-filled default value">
+              </div>
+            </div>
+
+            <!-- 2. Textarea Panel -->
+            <div id="sbElTextareaPanel" class="sb-el-type-panel" style="display:none;flex-direction:column;gap:10px">
+              <div style="font-size:11px;font-weight:700;text-transform:uppercase;color:#475569;letter-spacing:.04em"><i class="fa fa-align-left"></i> Textarea Attributes</div>
+              <div class="sb-el-attr-grid">
+                <div class="sb-el-attr-group">
+                  <label>Placeholder Text (placeholder="...")</label>
+                  <input type="text" id="sbElAttrTextareaPlaceholder" placeholder="e.g. Enter any special instructions...">
+                </div>
+                <div class="sb-el-attr-group">
+                  <label>Visible Rows / Height (rows="...")</label>
+                  <select id="sbElAttrTextareaRows">
+                    <option value="2">2 Rows (Compact)</option>
+                    <option value="3">3 Rows (Standard)</option>
+                    <option value="4">4 Rows (Spacious)</option>
+                    <option value="6">6 Rows (Large)</option>
+                    <option value="8">8 Rows (Extra Large)</option>
+                  </select>
+                </div>
+              </div>
+              <div class="sb-el-attr-group">
+                <label>Default Value / Content</label>
+                <textarea id="sbElAttrTextareaDefaultValue" rows="2" placeholder="Optional pre-filled multiline text"></textarea>
+              </div>
+            </div>
+
+            <!-- 3. Select Dropdown Panel -->
+            <div id="sbElSelectPanel" class="sb-el-type-panel" style="display:none;flex-direction:column;gap:10px">
+              <div style="font-size:11px;font-weight:700;text-transform:uppercase;color:#475569;letter-spacing:.04em"><i class="fa fa-caret-square-o-down"></i> Select Dropdown Attributes &amp; Options</div>
+              <div class="sb-el-attr-group">
+                <label>Placeholder / Unselected Option Prompt</label>
+                <input type="text" id="sbElAttrSelectPlaceholder" placeholder="e.g. -- Choose an option --">
+              </div>
+              <div class="sb-el-attr-group">
+                <div style="display:flex;align-items:center;justify-content:space-between">
+                  <label>Dropdown Options List</label>
+                  <button type="button" class="sb-el-add-opt-btn" onclick="SB.addSelectOptionRow()"><i class="fa fa-plus"></i> Add Option</button>
+                </div>
+                <table class="sb-el-opt-table" id="sbElSelectOptionsTable">
+                  <thead>
+                    <tr>
+                      <th style="width:48%">Option Label</th>
+                      <th style="width:36%">Option Value</th>
+                      <th style="width:10%;text-align:center">Default</th>
+                      <th style="width:6%"></th>
+                    </tr>
+                  </thead>
+                  <tbody></tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- 4. Checkbox Group Panel -->
+            <div id="sbElCheckboxPanel" class="sb-el-type-panel" style="display:none;flex-direction:column;gap:10px">
+              <div style="font-size:11px;font-weight:700;text-transform:uppercase;color:#475569;letter-spacing:.04em"><i class="fa fa-check-square-o"></i> Checkbox Choices</div>
+              <div class="sb-el-attr-group">
+                <div style="display:flex;align-items:center;justify-content:space-between">
+                  <label>Checkbox Options List</label>
+                  <button type="button" class="sb-el-add-opt-btn" onclick="SB.addCheckboxOptionRow()"><i class="fa fa-plus"></i> Add Choice</button>
+                </div>
+                <table class="sb-el-opt-table" id="sbElCheckboxOptionsTable">
+                  <thead>
+                    <tr>
+                      <th style="width:50%">Choice Label</th>
+                      <th style="width:34%">Value</th>
+                      <th style="width:10%;text-align:center">Checked</th>
+                      <th style="width:6%"></th>
+                    </tr>
+                  </thead>
+                  <tbody></tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- 5. Radio Button Panel -->
+            <div id="sbElRadioPanel" class="sb-el-type-panel" style="display:none;flex-direction:column;gap:10px">
+              <div style="font-size:11px;font-weight:700;text-transform:uppercase;color:#475569;letter-spacing:.04em"><i class="fa fa-dot-circle-o"></i> Radio Button Choices</div>
+              <div class="sb-el-attr-group">
+                <label>Layout Style</label>
+                <select id="sbElAttrRadioLayout">
+                  <option value="stacked">Vertical Stack (One choice per row)</option>
+                  <option value="inline">Horizontal Inline (Side-by-side chips)</option>
+                </select>
+              </div>
+              <div class="sb-el-attr-group">
+                <div style="display:flex;align-items:center;justify-content:space-between">
+                  <label>Radio Choices (Single selection)</label>
+                  <button type="button" class="sb-el-add-opt-btn" onclick="SB.addRadioOptionRow()"><i class="fa fa-plus"></i> Add Choice</button>
+                </div>
+                <table class="sb-el-opt-table" id="sbElRadioOptionsTable">
+                  <thead>
+                    <tr>
+                      <th style="width:50%">Choice Label</th>
+                      <th style="width:34%">Value</th>
+                      <th style="width:10%;text-align:center">Selected</th>
+                      <th style="width:6%"></th>
+                    </tr>
+                  </thead>
+                  <tbody></tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- 6. Newsletter Panel -->
+            <div id="sbElNewsletterPanel" class="sb-el-type-panel" style="display:none;flex-direction:column;gap:10px">
+              <div style="font-size:11px;font-weight:700;text-transform:uppercase;color:#475569;letter-spacing:.04em"><i class="fa fa-envelope-o"></i> Newsletter Attributes</div>
+              <div class="sb-el-attr-grid">
+                <div class="sb-el-attr-group">
+                  <label>Card Title</label>
+                  <input type="text" id="sbElAttrNewsletterTitle">
+                </div>
+                <div class="sb-el-attr-group">
+                  <label>Button Text</label>
+                  <input type="text" id="sbElAttrNewsletterBtn">
+                </div>
+              </div>
+              <div class="sb-el-attr-group">
+                <label>Description</label>
+                <textarea id="sbElAttrNewsletterDesc" rows="2"></textarea>
+              </div>
+              <div class="sb-el-attr-group">
+                <label>Email Input Placeholder</label>
+                <input type="text" id="sbElAttrNewsletterPlaceholder">
+              </div>
+            </div>
+
+            <!-- 7. Quick Contact Form Panel -->
+            <div id="sbElFormPanel" class="sb-el-type-panel" style="display:none;flex-direction:column;gap:10px">
+              <div style="font-size:11px;font-weight:700;text-transform:uppercase;color:#475569;letter-spacing:.04em"><i class="fa fa-wpforms"></i> Quick Inquiry Form Attributes</div>
+              <div class="sb-el-attr-grid">
+                <div class="sb-el-attr-group">
+                  <label>Form Title</label>
+                  <input type="text" id="sbElAttrFormTitle">
+                </div>
+                <div class="sb-el-attr-group">
+                  <label>Submit Button Text</label>
+                  <input type="text" id="sbElAttrFormBtn">
+                </div>
+              </div>
+              <div class="sb-el-attr-group">
+                <label>Description</label>
+                <textarea id="sbElAttrFormDesc" rows="2"></textarea>
+              </div>
+            </div>
+
+            <!-- 8. Modular Image / Photo Showcase Panel -->
+            <div id="sbElImageCardPanel" class="sb-el-type-panel" style="display:none;flex-direction:column;gap:12px">
+              <div style="font-size:11px;font-weight:700;text-transform:uppercase;color:#475569;letter-spacing:.04em"><i class="fa fa-picture-o"></i> Photo Showcase Dimensions &amp; Style</div>
+              <div class="sb-el-attr-group">
+                <label>Image URL (Web Address or Data URI)</label>
+                <input type="text" id="sbElAttrImgUrl" placeholder="https://... or data:image/...">
+              </div>
+              <div class="sb-el-attr-grid">
+                <div class="sb-el-attr-group">
+                  <label>Alt Text / Accessibility Description</label>
+                  <input type="text" id="sbElAttrImgAlt" placeholder="Descriptive image summary">
+                </div>
+                <div class="sb-el-attr-group">
+                  <label>Aspect Ratio</label>
+                  <select id="sbElAttrImgRatio">
+                    <option value="16/9">16:9 Widescreen (Recommended)</option>
+                    <option value="4/3">4:3 Standard</option>
+                    <option value="1/1">1:1 Square</option>
+                    <option value="3/2">3:2 Classic 35mm</option>
+                    <option value="21/9">21:9 Ultrawide Banner</option>
+                    <option value="auto">Auto / Unconstrained</option>
+                  </select>
+                </div>
+              </div>
+              <div class="sb-el-attr-grid">
+                <div class="sb-el-attr-group">
+                  <label>Display Height</label>
+                  <select id="sbElAttrImgHeight">
+                    <option value="260px">Compact (260px)</option>
+                    <option value="320px">Small (320px)</option>
+                    <option value="380px" selected>Standard (380px)</option>
+                    <option value="460px">Large (460px)</option>
+                    <option value="560px">Hero Tall (560px)</option>
+                    <option value="auto">Auto (Driven by Aspect Ratio)</option>
+                  </select>
+                </div>
+                <div class="sb-el-attr-group">
+                  <label>Max Width</label>
+                  <select id="sbElAttrImgMaxWidth">
+                    <option value="100%">100% Container Width</option>
+                    <option value="960px">960px (Standard Large)</option>
+                    <option value="850px" selected>850px (Medium Showcase)</option>
+                    <option value="680px">680px (Centered Focus)</option>
+                    <option value="500px">500px (Compact Center)</option>
+                  </select>
+                </div>
+              </div>
+              <div class="sb-el-attr-grid">
+                <div class="sb-el-attr-group">
+                  <label>Image Scaling / Fit</label>
+                  <select id="sbElAttrImgFit">
+                    <option value="cover" selected>Cover (Fill &amp; crop nicely)</option>
+                    <option value="contain">Contain (Fit entire photo, no crop)</option>
+                    <option value="100% 100%">Fill (Stretch to fit)</option>
+                  </select>
+                </div>
+                <div class="sb-el-attr-group">
+                  <label>Corner Radius</label>
+                  <select id="sbElAttrImgRadius">
+                    <option value="0px">0px (Sharp Corners)</option>
+                    <option value="8px">8px (Subtle)</option>
+                    <option value="16px" selected>16px (Modern Rounded)</option>
+                    <option value="24px">24px (Soft Pillows)</option>
+                    <option value="999px">Oval / Pill</option>
+                  </select>
+                </div>
+              </div>
+              <div class="sb-el-attr-grid">
+                <div class="sb-el-attr-group">
+                  <label>Card Shadow &amp; Elevation</label>
+                  <select id="sbElAttrImgShadow">
+                    <option value="none">None (Flat)</option>
+                    <option value="sm">Subtle Shadow (sm)</option>
+                    <option value="md" selected>Medium Card Shadow (md)</option>
+                    <option value="lg">Deep Elevation Shadow (lg)</option>
+                    <option value="glow">Accent Glow</option>
+                  </select>
+                </div>
+                <div class="sb-el-attr-group">
+                  <label>Horizontal Alignment</label>
+                  <select id="sbElAttrImgAlign">
+                    <option value="center" selected>Center</option>
+                    <option value="left">Left</option>
+                    <option value="right">Right</option>
+                  </select>
+                </div>
+              </div>
+              <div class="sb-el-attr-group">
+                <label>Photo Caption Text (appears below image)</label>
+                <textarea id="sbElAttrImgCaption" rows="2" placeholder="Optional photo caption or photographer credits..."></textarea>
+              </div>
+            </div>
+
+            <!-- Helper / Subtitle text (common) -->
+            <div class="sb-el-attr-group" id="sbElHelpTextGroup">
+              <label>Help Text / Instructions (appears under field)</label>
+              <input type="text" id="sbElAttrHelpText" placeholder="e.g. Please provide your official street address for delivery.">
+            </div>
+          </div>
+          <div class="sb-el-modal-foot">
+            <button type="button" class="btn ghost" onclick="SB.closeElSettingsModal()">Cancel</button>
+            <button type="button" class="btn primary" onclick="SB.saveElSettings()"><i class="fa fa-save"></i> Save Attributes</button>
+          </div>
+        </div>
+      `;
+      document.body.appendChild(m);
+      m.onclick = function(e){ if (e.target === m) SB.closeElSettingsModal(); };
+    }
+    return m;
+  }
+
+  SB.addSelectOptionRow = function(label, val, isDef) {
+    label = label !== undefined ? label : 'New Option';
+    val = val !== undefined ? val : ('opt_' + Date.now().toString(36));
+    const tbody = document.querySelector('#sbElSelectOptionsTable tbody');
+    if (!tbody) return;
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td><input type="text" class="sb-opt-label" value="${esc(label)}" placeholder="Option display label"></td>
+      <td><input type="text" class="sb-opt-val" value="${esc(val)}" placeholder="value_key"></td>
+      <td style="text-align:center"><input type="radio" name="sb_select_def_opt" class="sb-opt-def" ${isDef ? 'checked' : ''} title="Set as default option"></td>
+      <td style="text-align:center"><button type="button" class="sb-el-opt-del-btn" onclick="this.closest('tr').remove()" title="Delete option"><i class="fa fa-trash-o"></i></button></td>
+    `;
+    tbody.appendChild(tr);
+  };
+
+  SB.addCheckboxOptionRow = function(label, val, isChecked) {
+    label = label !== undefined ? label : 'New Choice';
+    val = val !== undefined ? val : ('chk_' + Date.now().toString(36));
+    const tbody = document.querySelector('#sbElCheckboxOptionsTable tbody');
+    if (!tbody) return;
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td><input type="text" class="sb-opt-label" value="${esc(label)}" placeholder="Choice display label"></td>
+      <td><input type="text" class="sb-opt-val" value="${esc(val)}" placeholder="value_key"></td>
+      <td style="text-align:center"><input type="checkbox" class="sb-opt-chk" ${isChecked ? 'checked' : ''} title="Checked by default"></td>
+      <td style="text-align:center"><button type="button" class="sb-el-opt-del-btn" onclick="this.closest('tr').remove()" title="Delete choice"><i class="fa fa-trash-o"></i></button></td>
+    `;
+    tbody.appendChild(tr);
+  };
+
+  SB.addRadioOptionRow = function(label, val, isSelected) {
+    label = label !== undefined ? label : 'New Choice';
+    val = val !== undefined ? val : ('rad_' + Date.now().toString(36));
+    const tbody = document.querySelector('#sbElRadioOptionsTable tbody');
+    if (!tbody) return;
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td><input type="text" class="sb-opt-label" value="${esc(label)}" placeholder="Choice display label"></td>
+      <td><input type="text" class="sb-opt-val" value="${esc(val)}" placeholder="value_key"></td>
+      <td style="text-align:center"><input type="radio" name="sb_radio_def_opt" class="sb-opt-rad" ${isSelected ? 'checked' : ''} title="Selected by default"></td>
+      <td style="text-align:center"><button type="button" class="sb-el-opt-del-btn" onclick="this.closest('tr').remove()" title="Delete choice"><i class="fa fa-trash-o"></i></button></td>
+    `;
+    tbody.appendChild(tr);
+  };
+
+  SB.openElSettingsModal = function(secId, elIdx) {
+    sbActiveElContext = { secId: secId, elIdx: elIdx };
+    const sec = SB.state.sections.find(function(s){ return s.id === secId; });
+    if (!sec || !sec.elements || !sec.elements[elIdx]) return;
+    const el = sec.elements[elIdx];
+
+    ensureElSettingsModalDOM();
+
+    // Reset panel displays
+    document.querySelectorAll('.sb-el-type-panel').forEach(function(p){ p.style.display = 'none'; });
+
+    // Set common attributes
+    const modalTitle = document.getElementById('sbElModalTitle');
+    if (modalTitle) modalTitle.innerHTML = `<i class="fa fa-sliders"></i> Edit Form Element Attributes: ${esc(el.title || el.label || el.type)}`;
+
+    const inLabel = document.getElementById('sbElAttrLabel');
+    if (inLabel) inLabel.value = el.label || el.title || '';
+
+    const inName = document.getElementById('sbElAttrName');
+    if (inName) inName.value = el.name || '';
+
+    const inId = document.getElementById('sbElAttrId');
+    if (inId) inId.value = el.id || '';
+
+    const inReq = document.getElementById('sbElAttrRequired');
+    if (inReq) inReq.checked = !!el.required;
+
+    const inDis = document.getElementById('sbElAttrDisabled');
+    if (inDis) inDis.checked = !!el.disabled;
+
+    const inWidth = document.getElementById('sbElAttrWidth');
+    if (inWidth) inWidth.value = el.width || '100%';
+
+    const inHelp = document.getElementById('sbElAttrHelpText');
+    if (inHelp) inHelp.value = el.helpText || '';
+
+    // Show and populate specific panels
+    if (el.type === 'input') {
+      const p = document.getElementById('sbElInputPanel');
+      if (p) p.style.display = 'flex';
+      const inType = document.getElementById('sbElAttrInputType');
+      if (inType) inType.value = el.inputType || 'text';
+      const inPh = document.getElementById('sbElAttrPlaceholder');
+      if (inPh) inPh.value = el.placeholder || '';
+      const inDef = document.getElementById('sbElAttrDefaultValue');
+      if (inDef) inDef.value = el.defaultValue || '';
+    } else if (el.type === 'textarea') {
+      const p = document.getElementById('sbElTextareaPanel');
+      if (p) p.style.display = 'flex';
+      const inPh = document.getElementById('sbElAttrTextareaPlaceholder');
+      if (inPh) inPh.value = el.placeholder || '';
+      const inRows = document.getElementById('sbElAttrTextareaRows');
+      if (inRows) inRows.value = el.rows || 4;
+      const inDef = document.getElementById('sbElAttrTextareaDefaultValue');
+      if (inDef) inDef.value = el.defaultValue || '';
+    } else if (el.type === 'select') {
+      const p = document.getElementById('sbElSelectPanel');
+      if (p) p.style.display = 'flex';
+      const inPh = document.getElementById('sbElAttrSelectPlaceholder');
+      if (inPh) inPh.value = el.placeholder || '';
+      const tbody = document.querySelector('#sbElSelectOptionsTable tbody');
+      if (tbody) {
+        tbody.innerHTML = '';
+        (el.options || []).forEach(function(opt){
+          SB.addSelectOptionRow(opt.label, opt.value, opt.value === el.defaultValue);
+        });
+        if (!el.options || el.options.length === 0) {
+          SB.addSelectOptionRow('Option 1', 'opt1', true);
+          SB.addSelectOptionRow('Option 2', 'opt2', false);
+        }
+      }
+    } else if (el.type === 'checkbox') {
+      const p = document.getElementById('sbElCheckboxPanel');
+      if (p) p.style.display = 'flex';
+      const tbody = document.querySelector('#sbElCheckboxOptionsTable tbody');
+      if (tbody) {
+        tbody.innerHTML = '';
+        (el.options || []).forEach(function(opt){
+          SB.addCheckboxOptionRow(opt.label, opt.value, !!opt.checked);
+        });
+        if (!el.options || el.options.length === 0) {
+          SB.addCheckboxOptionRow('Option 1', 'opt1', true);
+          SB.addCheckboxOptionRow('Option 2', 'opt2', false);
+        }
+      }
+    } else if (el.type === 'radio') {
+      const p = document.getElementById('sbElRadioPanel');
+      if (p) p.style.display = 'flex';
+      const inLayout = document.getElementById('sbElAttrRadioLayout');
+      if (inLayout) inLayout.value = el.layout || 'stacked';
+      const tbody = document.querySelector('#sbElRadioOptionsTable tbody');
+      if (tbody) {
+        tbody.innerHTML = '';
+        (el.options || []).forEach(function(opt){
+          SB.addRadioOptionRow(opt.label, opt.value, opt.value === el.defaultValue);
+        });
+        if (!el.options || el.options.length === 0) {
+          SB.addRadioOptionRow('Choice 1', 'opt1', true);
+          SB.addRadioOptionRow('Choice 2', 'opt2', false);
+        }
+      }
+    } else if (el.type === 'newsletter') {
+      const p = document.getElementById('sbElNewsletterPanel');
+      if (p) p.style.display = 'flex';
+      const tIn = document.getElementById('sbElAttrNewsletterTitle'); if (tIn) tIn.value = el.title || '';
+      const dIn = document.getElementById('sbElAttrNewsletterDesc'); if (dIn) dIn.value = el.desc || '';
+      const phIn = document.getElementById('sbElAttrNewsletterPlaceholder'); if (phIn) phIn.value = el.placeholder || '';
+      const bIn = document.getElementById('sbElAttrNewsletterBtn'); if (bIn) bIn.value = el.btn || '';
+    } else if (el.type === 'form') {
+      const p = document.getElementById('sbElFormPanel');
+      if (p) p.style.display = 'flex';
+      const tIn = document.getElementById('sbElAttrFormTitle'); if (tIn) tIn.value = el.title || '';
+      const dIn = document.getElementById('sbElAttrFormDesc'); if (dIn) dIn.value = el.desc || '';
+      const bIn = document.getElementById('sbElAttrFormBtn'); if (bIn) bIn.value = el.btn || '';
+    } else if (el.type === 'image-card') {
+      const p = document.getElementById('sbElImageCardPanel');
+      if (p) p.style.display = 'flex';
+      const uIn = document.getElementById('sbElAttrImgUrl'); if (uIn) uIn.value = el.url || '';
+      const aIn = document.getElementById('sbElAttrImgAlt'); if (aIn) aIn.value = el.alt || '';
+      const cIn = document.getElementById('sbElAttrImgCaption'); if (cIn) cIn.value = el.caption || '';
+      const hIn = document.getElementById('sbElAttrImgHeight'); if (hIn) hIn.value = el.height || '380px';
+      const rIn = document.getElementById('sbElAttrImgRatio'); if (rIn) rIn.value = el.aspectRatio || '16/9';
+      const fIn = document.getElementById('sbElAttrImgFit'); if (fIn) fIn.value = el.fit || 'cover';
+      const radIn = document.getElementById('sbElAttrImgRadius'); if (radIn) radIn.value = el.radius || '16px';
+      const sIn = document.getElementById('sbElAttrImgShadow'); if (sIn) sIn.value = el.shadow || 'md';
+      const alIn = document.getElementById('sbElAttrImgAlign'); if (alIn) alIn.value = el.align || 'center';
+      const mwIn = document.getElementById('sbElAttrImgMaxWidth'); if (mwIn) mwIn.value = el.maxWidth || '850px';
+    }
+
+    const modal = document.getElementById('sbElSettingsModalBackdrop');
+    if (modal) modal.style.display = 'flex';
+  };
+
+  SB.closeElSettingsModal = function() {
+    const modal = document.getElementById('sbElSettingsModalBackdrop');
+    if (modal) modal.style.display = 'none';
+  };
+
+  SB.saveElSettings = function() {
+    if (!sbActiveElContext.secId || sbActiveElContext.elIdx === null) return;
+    const sec = SB.state.sections.find(function(s){ return s.id === sbActiveElContext.secId; });
+    if (!sec || !sec.elements || !sec.elements[sbActiveElContext.elIdx]) return;
+    const el = sec.elements[sbActiveElContext.elIdx];
+
+    // Common attributes
+    const inLabel = document.getElementById('sbElAttrLabel');
+    if (inLabel) el.label = inLabel.value.trim() || el.label || el.type;
+    el.title = el.label;
+
+    const inName = document.getElementById('sbElAttrName');
+    if (inName) el.name = inName.value.trim() || (el.label.toLowerCase().replace(/[^a-z0-9_]/g, '_'));
+
+    const inId = document.getElementById('sbElAttrId');
+    if (inId) el.id = inId.value.trim() || ('field_' + el.name);
+
+    const inReq = document.getElementById('sbElAttrRequired');
+    if (inReq) el.required = inReq.checked;
+
+    const inDis = document.getElementById('sbElAttrDisabled');
+    if (inDis) el.disabled = inDis.checked;
+
+    const inWidth = document.getElementById('sbElAttrWidth');
+    if (inWidth) el.width = inWidth.value;
+
+    const inHelp = document.getElementById('sbElAttrHelpText');
+    if (inHelp) el.helpText = inHelp.value.trim();
+
+    // Specific panel attributes
+    if (el.type === 'input') {
+      const inType = document.getElementById('sbElAttrInputType'); if (inType) el.inputType = inType.value;
+      const inPh = document.getElementById('sbElAttrPlaceholder'); if (inPh) el.placeholder = inPh.value;
+      const inDef = document.getElementById('sbElAttrDefaultValue'); if (inDef) el.defaultValue = inDef.value;
+    } else if (el.type === 'textarea') {
+      const inPh = document.getElementById('sbElAttrTextareaPlaceholder'); if (inPh) el.placeholder = inPh.value;
+      const inRows = document.getElementById('sbElAttrTextareaRows'); if (inRows) el.rows = parseInt(inRows.value, 10) || 4;
+      const inDef = document.getElementById('sbElAttrTextareaDefaultValue'); if (inDef) el.defaultValue = inDef.value;
+    } else if (el.type === 'select') {
+      const inPh = document.getElementById('sbElAttrSelectPlaceholder'); if (inPh) el.placeholder = inPh.value;
+      const rows = document.querySelectorAll('#sbElSelectOptionsTable tbody tr');
+      el.options = [];
+      el.defaultValue = '';
+      rows.forEach(function(row){
+        const lIn = row.querySelector('.sb-opt-label');
+        const vIn = row.querySelector('.sb-opt-val');
+        const dIn = row.querySelector('.sb-opt-def');
+        const lVal = lIn ? lIn.value.trim() : '';
+        const vVal = vIn ? vIn.value.trim() : '';
+        if (lVal || vVal) {
+          const finalVal = vVal || lVal.toLowerCase().replace(/[^a-z0-9_]/g, '_');
+          el.options.push({ label: lVal || finalVal, value: finalVal });
+          if (dIn && dIn.checked) el.defaultValue = finalVal;
+        }
+      });
+    } else if (el.type === 'checkbox') {
+      const rows = document.querySelectorAll('#sbElCheckboxOptionsTable tbody tr');
+      el.options = [];
+      rows.forEach(function(row){
+        const lIn = row.querySelector('.sb-opt-label');
+        const vIn = row.querySelector('.sb-opt-val');
+        const cIn = row.querySelector('.sb-opt-chk');
+        const lVal = lIn ? lIn.value.trim() : '';
+        const vVal = vIn ? vIn.value.trim() : '';
+        if (lVal || vVal) {
+          const finalVal = vVal || lVal.toLowerCase().replace(/[^a-z0-9_]/g, '_');
+          el.options.push({ label: lVal || finalVal, value: finalVal, checked: cIn ? cIn.checked : false });
+        }
+      });
+    } else if (el.type === 'radio') {
+      const inLayout = document.getElementById('sbElAttrRadioLayout'); if (inLayout) el.layout = inLayout.value;
+      const rows = document.querySelectorAll('#sbElRadioOptionsTable tbody tr');
+      el.options = [];
+      el.defaultValue = '';
+      rows.forEach(function(row){
+        const lIn = row.querySelector('.sb-opt-label');
+        const vIn = row.querySelector('.sb-opt-val');
+        const rIn = row.querySelector('.sb-opt-rad');
+        const lVal = lIn ? lIn.value.trim() : '';
+        const vVal = vIn ? vIn.value.trim() : '';
+        if (lVal || vVal) {
+          const finalVal = vVal || lVal.toLowerCase().replace(/[^a-z0-9_]/g, '_');
+          el.options.push({ label: lVal || finalVal, value: finalVal });
+          if (rIn && rIn.checked) el.defaultValue = finalVal;
+        }
+      });
+    } else if (el.type === 'newsletter') {
+      const tIn = document.getElementById('sbElAttrNewsletterTitle'); if (tIn) el.title = tIn.value.trim();
+      const dIn = document.getElementById('sbElAttrNewsletterDesc'); if (dIn) el.desc = dIn.value.trim();
+      const phIn = document.getElementById('sbElAttrNewsletterPlaceholder'); if (phIn) el.placeholder = phIn.value.trim();
+      const bIn = document.getElementById('sbElAttrNewsletterBtn'); if (bIn) el.btn = bIn.value.trim();
+    } else if (el.type === 'form') {
+      const tIn = document.getElementById('sbElAttrFormTitle'); if (tIn) el.title = tIn.value.trim();
+      const dIn = document.getElementById('sbElAttrFormDesc'); if (dIn) el.desc = dIn.value.trim();
+      const bIn = document.getElementById('sbElAttrFormBtn'); if (bIn) el.btn = bIn.value.trim();
+    } else if (el.type === 'image-card') {
+      const uIn = document.getElementById('sbElAttrImgUrl'); if (uIn) el.url = uIn.value.trim();
+      const aIn = document.getElementById('sbElAttrImgAlt'); if (aIn) el.alt = aIn.value.trim();
+      const cIn = document.getElementById('sbElAttrImgCaption'); if (cIn) el.caption = cIn.value.trim();
+      const hIn = document.getElementById('sbElAttrImgHeight'); if (hIn) el.height = hIn.value;
+      const rIn = document.getElementById('sbElAttrImgRatio'); if (rIn) el.aspectRatio = rIn.value;
+      const fIn = document.getElementById('sbElAttrImgFit'); if (fIn) el.fit = fIn.value;
+      const radIn = document.getElementById('sbElAttrImgRadius'); if (radIn) el.radius = radIn.value;
+      const sIn = document.getElementById('sbElAttrImgShadow'); if (sIn) el.shadow = sIn.value;
+      const alIn = document.getElementById('sbElAttrImgAlign'); if (alIn) el.align = alIn.value;
+      const mwIn = document.getElementById('sbElAttrImgMaxWidth'); if (mwIn) el.maxWidth = mwIn.value;
+    }
+
+    SB.pushHistory('Update Element Attributes');
+    try { markDirty(); } catch(e){ console.warn(e); }
+    SB.render();
+    SB.closeElSettingsModal();
+    toast(`Attributes updated for "${el.label || el.title}"!`);
+  };
+
+  SB.updateElFieldValue = function(secId, elIdx, val) {
+    const sec = SB.state.sections.find(function(s){ return s.id === secId; });
+    if (sec && sec.elements && sec.elements[elIdx]) {
+      sec.elements[elIdx].defaultValue = val;
+      markDirty();
+    }
+  };
+
+  SB.toggleElCheckbox = function(secId, elIdx, optIdx) {
+    const sec = SB.state.sections.find(function(s){ return s.id === secId; });
+    if (sec && sec.elements && sec.elements[elIdx] && sec.elements[elIdx].options && sec.elements[elIdx].options[optIdx]) {
+      sec.elements[elIdx].options[optIdx].checked = !sec.elements[elIdx].options[optIdx].checked;
+      markDirty();
+      SB.render();
+    }
+  };
+
+  SB.setElRadio = function(secId, elIdx, val) {
+    const sec = SB.state.sections.find(function(s){ return s.id === secId; });
+    if (sec && sec.elements && sec.elements[elIdx]) {
+      sec.elements[elIdx].defaultValue = val;
+      markDirty();
+      SB.render();
+    }
+  };
+
+  /* ============================================================
      5. Fullscreen Preview & Clean HTML Export
      ============================================================ */
   SB.toggleFullscreen = function() {
@@ -4209,6 +5188,406 @@ body.sb-fullscreen-active{overflow:hidden}
     toast('Standalone HTML webpage exported!');
   };
 
+  /* ============================================================
+     6. Section Image Size & Dimensions Modifier
+     ============================================================ */
+  SB.activeImgSlot = null;
+
+  function ensureImgSizeModalDOM() {
+    let m = document.getElementById('sbImgSizeModalBackdrop');
+    if (!m) {
+      m = document.createElement('div');
+      m.id = 'sbImgSizeModalBackdrop';
+      m.className = 'sb-img-modal-backdrop';
+      m.innerHTML = `
+        <div class="sb-img-modal">
+          <div class="sb-img-modal-head">
+            <h3 id="sbImgModalTitle"><i class="fa fa-arrows-alt"></i> Modify Image Size &amp; Dimensions</h3>
+            <button type="button" class="sb-drawer-close-btn" onclick="SB.closeImgSizeModal()" style="font-size:18px;border:0;background:none;color:#64748b;cursor:pointer"><i class="fa fa-times"></i></button>
+          </div>
+          <div class="sb-img-modal-body">
+            <!-- Live Preview Box -->
+            <div style="display:flex;flex-direction:column;gap:6px">
+              <div style="display:flex;align-items:center;justify-content:space-between">
+                <span style="font-size:11px;font-weight:700;text-transform:uppercase;color:#475569;letter-spacing:.04em"><i class="fa fa-eye"></i> Live Size Preview</span>
+                <span style="font-size:12px;color:#64748b" id="sbImgModalSlotInfo">Slot: <b>hero</b></span>
+              </div>
+              <div class="sb-img-preview-box">
+                <div id="sbImgModalPreviewCanvas" class="sb-img-preview-canvas"></div>
+              </div>
+            </div>
+
+            <!-- Aspect Ratio Selector -->
+            <div style="background:#f8fafc;padding:14px;border-radius:8px;border:1px solid #e2e8f0;display:flex;flex-direction:column;gap:10px">
+              <div style="font-size:11px;font-weight:700;text-transform:uppercase;color:#475569;letter-spacing:.04em"><i class="fa fa-columns"></i> Aspect Ratio (Proportions)</div>
+              <div class="sb-ratio-chips" id="sbImgRatioChips">
+                <button type="button" class="sb-ratio-btn active" data-ratio="auto" onclick="SB.setImgRatioPreset('auto')">Auto (Default)</button>
+                <button type="button" class="sb-ratio-btn" data-ratio="16/9" onclick="SB.setImgRatioPreset('16/9')">16:9 Widescreen</button>
+                <button type="button" class="sb-ratio-btn" data-ratio="4/3" onclick="SB.setImgRatioPreset('4/3')">4:3 Standard</button>
+                <button type="button" class="sb-ratio-btn" data-ratio="1/1" onclick="SB.setImgRatioPreset('1/1')">1:1 Square</button>
+                <button type="button" class="sb-ratio-btn" data-ratio="3/2" onclick="SB.setImgRatioPreset('3/2')">3:2 Photo</button>
+                <button type="button" class="sb-ratio-btn" data-ratio="5/4" onclick="SB.setImgRatioPreset('5/4')">5:4 Portrait</button>
+                <button type="button" class="sb-ratio-btn" data-ratio="21/9" onclick="SB.setImgRatioPreset('21/9')">21:9 Ultrawide Banner</button>
+                <button type="button" class="sb-ratio-btn" data-ratio="custom" onclick="SB.setImgRatioPreset('custom')">Custom Ratio</button>
+              </div>
+              <div id="sbImgCustomRatioWrap" style="display:none;margin-top:4px">
+                <label style="font-size:12px;color:#475569;display:block;margin-bottom:4px">Custom Aspect Ratio (e.g. 16/9, 21/8, 2/1, 3/4):</label>
+                <input type="text" id="sbImgModalCustomRatio" placeholder="e.g. 16/9 or 2/1" style="width:100%;max-width:240px;padding:6px 10px;border:1px solid #cbd5e1;border-radius:6px;font-size:13px" oninput="SB.updateImgModalPreview()">
+              </div>
+            </div>
+
+            <!-- Width & Height Dimensions -->
+            <div style="background:#f8fafc;padding:14px;border-radius:8px;border:1px solid #e2e8f0;display:flex;flex-direction:column;gap:12px">
+              <div style="font-size:11px;font-weight:700;text-transform:uppercase;color:#475569;letter-spacing:.04em"><i class="fa fa-arrows-alt"></i> Width &amp; Height Dimensions</div>
+
+              <!-- Width Controls -->
+              <div class="sb-el-attr-grid">
+                <div class="sb-el-attr-group">
+                  <label>Width Mode / Preset</label>
+                  <select id="sbImgModalWidthPreset" onchange="SB.onImgWidthPresetChange()">
+                    <option value="100%">100% Full Width (Default)</option>
+                    <option value="90%">90% Width</option>
+                    <option value="80%">80% Width</option>
+                    <option value="75%">75% (Three-Quarters)</option>
+                    <option value="66%">66% (Two-Thirds)</option>
+                    <option value="50%">50% (Half Width)</option>
+                    <option value="40%">40% Width</option>
+                    <option value="33%">33% (One-Third)</option>
+                    <option value="custom">Custom Width (px or %)</option>
+                  </select>
+                </div>
+                <div class="sb-el-attr-group" id="sbImgCustomWidthWrap">
+                  <label>Custom Width (px or %)</label>
+                  <input type="text" id="sbImgModalWidthPx" placeholder="e.g. 550px or 80%" oninput="SB.updateImgModalPreview()">
+                </div>
+              </div>
+
+              <!-- Height Controls -->
+              <div class="sb-el-attr-grid">
+                <div class="sb-el-attr-group">
+                  <label>Height Mode / Preset</label>
+                  <select id="sbImgModalHeightPreset" onchange="SB.onImgHeightPresetChange()">
+                    <option value="auto">Auto / Default Section Height</option>
+                    <option value="220px">Compact (220px)</option>
+                    <option value="320px">Small (320px)</option>
+                    <option value="420px">Medium (420px)</option>
+                    <option value="540px">Large (540px)</option>
+                    <option value="680px">Hero Tall (680px)</option>
+                    <option value="custom">Custom Height (px)</option>
+                  </select>
+                </div>
+                <div class="sb-el-attr-group" id="sbImgCustomHeightWrap">
+                  <label>Custom Height (px)</label>
+                  <input type="text" id="sbImgModalHeightPx" placeholder="e.g. 450px" oninput="SB.updateImgModalPreview()">
+                </div>
+              </div>
+
+              <!-- Max Width & Alignment -->
+              <div class="sb-el-attr-grid">
+                <div class="sb-el-attr-group">
+                  <label>Max Width Constraint</label>
+                  <select id="sbImgModalMaxWidth" onchange="SB.onImgMaxWidthChange()">
+                    <option value="100%">100% (No Constraint)</option>
+                    <option value="1400px">1400px (Extra Wide)</option>
+                    <option value="1200px">1200px (Wide)</option>
+                    <option value="960px">960px (Standard Large)</option>
+                    <option value="800px">800px (Medium Showcase)</option>
+                    <option value="640px">640px (Centered Focus)</option>
+                    <option value="480px">480px (Compact)</option>
+                    <option value="custom">Custom Max Width (px)</option>
+                  </select>
+                </div>
+                <div class="sb-el-attr-group">
+                  <label>Horizontal Alignment</label>
+                  <select id="sbImgModalAlign" onchange="SB.updateImgModalPreview()">
+                    <option value="center">Center (Default)</option>
+                    <option value="left">Left Aligned</option>
+                    <option value="right">Right Aligned</option>
+                  </select>
+                </div>
+              </div>
+              <div class="sb-el-attr-group" id="sbImgCustomMaxWidthWrap" style="display:none">
+                <label>Custom Max Width (px)</label>
+                <input type="text" id="sbImgModalMaxWidthPx" placeholder="e.g. 720px" oninput="SB.updateImgModalPreview()">
+              </div>
+            </div>
+
+            <!-- Image Fit & Styling -->
+            <div style="background:#f8fafc;padding:14px;border-radius:8px;border:1px solid #e2e8f0;display:flex;flex-direction:column;gap:10px">
+              <div style="font-size:11px;font-weight:700;text-transform:uppercase;color:#475569;letter-spacing:.04em"><i class="fa fa-paint-brush"></i> Crop, Fit &amp; Effects</div>
+              <div class="sb-el-attr-grid">
+                <div class="sb-el-attr-group">
+                  <label>Image Scaling / Fit</label>
+                  <select id="sbImgModalFit" onchange="SB.updateImgModalPreview()">
+                    <option value="cover">Cover (Fill &amp; crop nicely)</option>
+                    <option value="contain">Contain (Fit entire photo, no crop)</option>
+                    <option value="100% 100%">Fill (Stretch to exact size)</option>
+                  </select>
+                </div>
+                <div class="sb-el-attr-group">
+                  <label>Corner Radius</label>
+                  <select id="sbImgModalRadius" onchange="SB.updateImgModalPreview()">
+                    <option value="">Default Section Theme Radius</option>
+                    <option value="0px">0px (Sharp Rectangular)</option>
+                    <option value="8px">8px (Subtle Rounded)</option>
+                    <option value="16px">16px (Modern Rounded)</option>
+                    <option value="24px">24px (Soft Pillows)</option>
+                    <option value="999px">Oval / Pill</option>
+                  </select>
+                </div>
+              </div>
+              <div class="sb-el-attr-grid">
+                <div class="sb-el-attr-group">
+                  <label>Card Shadow &amp; Elevation</label>
+                  <select id="sbImgModalShadow" onchange="SB.updateImgModalPreview()">
+                    <option value="none">None (Flat)</option>
+                    <option value="sm">Subtle Shadow (sm)</option>
+                    <option value="md">Medium Card Shadow (md)</option>
+                    <option value="lg">Deep Elevation Shadow (lg)</option>
+                    <option value="glow">Accent Glow</option>
+                  </select>
+                </div>
+                <div class="sb-el-attr-group">
+                  <label>Quick Swap Photo</label>
+                  <button type="button" class="btn" style="width:100%;margin-top:2px" onclick="SB.pick(SB.activeImgSlot);SB.closeImgSizeModal();"><i class="fa fa-picture-o"></i> Replace Photo File / URL</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="sb-el-modal-foot" style="display:flex;align-items:center;justify-content:space-between">
+            <button type="button" class="btn" style="background:#fee2e2;color:#991b1b;border:1px solid #fca5a5" onclick="SB.resetCurrentImgSize()"><i class="fa fa-undo"></i> Reset to Default Size</button>
+            <div style="display:flex;align-items:center;gap:8px">
+              <button type="button" class="btn ghost" onclick="SB.closeImgSizeModal()">Cancel</button>
+              <button type="button" class="btn primary" onclick="SB.saveImgSize()"><i class="fa fa-check"></i> Apply Image Size</button>
+            </div>
+          </div>
+        </div>
+      `;
+      document.body.appendChild(m);
+      m.onclick = function(e){ if (e.target === m) SB.closeImgSizeModal(); };
+    }
+    return m;
+  }
+
+  SB.setImgRatioPreset = function(ratio) {
+    const customWrap = document.getElementById('sbImgCustomRatioWrap');
+    const customInput = document.getElementById('sbImgModalCustomRatio');
+    document.querySelectorAll('#sbImgRatioChips .sb-ratio-btn').forEach(function(b){
+      b.classList.toggle('active', b.dataset.ratio === ratio);
+    });
+    if (ratio === 'custom') {
+      if (customWrap) customWrap.style.display = 'block';
+      if (customInput && !customInput.value) customInput.value = '16/9';
+    } else {
+      if (customWrap) customWrap.style.display = 'none';
+      if (customInput) customInput.value = '';
+    }
+    SB.updateImgModalPreview();
+  };
+
+  SB.onImgHeightPresetChange = function() {
+    const sel = document.getElementById('sbImgModalHeightPreset');
+    const customWrap = document.getElementById('sbImgCustomHeightWrap');
+    const customIn = document.getElementById('sbImgModalHeightPx');
+    if (!sel) return;
+    if (sel.value === 'custom') {
+      if (customWrap) customWrap.style.opacity = '1';
+      if (customIn && !customIn.value) customIn.value = '420px';
+    } else {
+      if (customIn) customIn.value = sel.value === 'auto' ? '' : sel.value;
+      if (customWrap) customWrap.style.opacity = sel.value === 'auto' ? '.4' : '1';
+    }
+    SB.updateImgModalPreview();
+  };
+
+  SB.updateImgModalPreview = function() {
+    const canvas = document.getElementById('sbImgModalPreviewCanvas');
+    if (!canvas) return;
+    const url = (SB.IMG && SB.IMG[SB.activeImgSlot]) || (SB.DEF && SB.DEF[SB.activeImgSlot]) || '';
+    canvas.style.backgroundImage = `url('${url}')`;
+
+    // Ratio
+    const activeBtn = document.querySelector('#sbImgRatioChips .sb-ratio-btn.active');
+    const activeRatio = activeBtn ? activeBtn.dataset.ratio : 'auto';
+    const customRatio = document.getElementById('sbImgModalCustomRatio');
+    if (activeRatio === 'custom' && customRatio && customRatio.value.trim()) {
+      canvas.style.aspectRatio = customRatio.value.trim();
+    } else if (activeRatio && activeRatio !== 'auto') {
+      canvas.style.aspectRatio = activeRatio;
+    } else {
+      canvas.style.aspectRatio = '';
+    }
+
+    // Height
+    const heightIn = document.getElementById('sbImgModalHeightPx');
+    if (heightIn && heightIn.value.trim()) {
+      canvas.style.height = heightIn.value.trim();
+    } else {
+      canvas.style.height = activeRatio && activeRatio !== 'auto' ? 'auto' : '180px';
+    }
+
+    // Max Width
+    const mwSel = document.getElementById('sbImgModalMaxWidth');
+    canvas.style.maxWidth = (mwSel && mwSel.value) ? mwSel.value : '100%';
+
+    // Fit
+    const fitSel = document.getElementById('sbImgModalFit');
+    canvas.style.backgroundSize = (fitSel && fitSel.value) ? fitSel.value : 'cover';
+
+    // Radius
+    const radSel = document.getElementById('sbImgModalRadius');
+    canvas.style.borderRadius = (radSel && radSel.value) ? radSel.value : '12px';
+
+    // Shadow
+    const shadowSel = document.getElementById('sbImgModalShadow');
+    const shadows = {
+      none: 'none',
+      sm: '0 2px 6px rgba(0,0,0,.08)',
+      md: '0 8px 24px rgba(0,0,0,.14)',
+      lg: '0 20px 40px rgba(0,0,0,.22)',
+      glow: '0 0 25px rgba(59,130,246,.35)'
+    };
+    canvas.style.boxShadow = (shadowSel && shadows[shadowSel.value]) ? shadows[shadowSel.value] : '0 4px 14px rgba(0,0,0,.1)';
+  };
+
+  SB.openImgSizeModal = function(slot) {
+    SB.activeImgSlot = slot;
+    ensureImgSizeModalDOM();
+
+    const slotLabelMap = {};
+    SB.SLOTS.forEach(function(s){ slotLabelMap[s[0]] = s[1]; });
+    const slotLabel = slotLabelMap[slot] || slot;
+
+    const titleEl = document.getElementById('sbImgModalTitle');
+    if (titleEl) titleEl.innerHTML = `<i class="fa fa-arrows-alt"></i> Modify Image Size: ${esc(slotLabel)}`;
+
+    const slotInfo = document.getElementById('sbImgModalSlotInfo');
+    if (slotInfo) slotInfo.innerHTML = `Slot: <b>${esc(slotLabel)}</b> (<code>${esc(slot)}</code>)`;
+
+    const s = (SB.state.imgStyles && SB.state.imgStyles[slot]) || {};
+
+    // Restore ratio
+    const customRatio = document.getElementById('sbImgModalCustomRatio');
+    if (s.aspectRatio) {
+      const matchBtn = document.querySelector(`#sbImgRatioChips .sb-ratio-btn[data-ratio="${s.aspectRatio}"]`);
+      if (matchBtn) {
+        SB.setImgRatioPreset(s.aspectRatio);
+      } else {
+        SB.setImgRatioPreset('custom');
+        if (customRatio) customRatio.value = s.aspectRatio;
+      }
+    } else {
+      SB.setImgRatioPreset('auto');
+    }
+
+    // Restore height
+    const hPreset = document.getElementById('sbImgModalHeightPreset');
+    const hPx = document.getElementById('sbImgModalHeightPx');
+    if (s.height && s.height !== 'auto') {
+      if (hPreset) hPreset.value = ['220px','320px','420px','540px','680px'].includes(s.height) ? s.height : 'custom';
+      if (hPx) hPx.value = s.height;
+    } else {
+      if (hPreset) hPreset.value = 'auto';
+      if (hPx) hPx.value = '';
+    }
+    SB.onImgHeightPresetChange();
+
+    // Restore maxWidth
+    const mwSel = document.getElementById('sbImgModalMaxWidth');
+    if (mwSel) mwSel.value = s.maxWidth || '100%';
+
+    // Restore alignment
+    const alSel = document.getElementById('sbImgModalAlign');
+    if (alSel) alSel.value = s.align || 'center';
+
+    // Restore fit
+    const fitSel = document.getElementById('sbImgModalFit');
+    if (fitSel) fitSel.value = s.fit || 'cover';
+
+    // Restore radius
+    const radSel = document.getElementById('sbImgModalRadius');
+    if (radSel) radSel.value = s.radius !== undefined ? s.radius : '';
+
+    // Restore shadow
+    const shSel = document.getElementById('sbImgModalShadow');
+    if (shSel) shSel.value = s.shadow || 'none';
+
+    SB.updateImgModalPreview();
+
+    const m = document.getElementById('sbImgSizeModalBackdrop');
+    if (m) m.style.display = 'flex';
+  };
+
+  SB.closeImgSizeModal = function() {
+    const m = document.getElementById('sbImgSizeModalBackdrop');
+    if (m) m.style.display = 'none';
+  };
+
+  SB.saveImgSize = function() {
+    if (!SB.activeImgSlot) return;
+    if (!SB.state.imgStyles) SB.state.imgStyles = {};
+
+    const activeBtn = document.querySelector('#sbImgRatioChips .sb-ratio-btn.active');
+    const activeRatio = activeBtn ? activeBtn.dataset.ratio : 'auto';
+    const customRatio = document.getElementById('sbImgModalCustomRatio');
+    let finalRatio = activeRatio;
+    if (activeRatio === 'custom' && customRatio && customRatio.value.trim()) {
+      finalRatio = customRatio.value.trim();
+    }
+
+    const hIn = document.getElementById('sbImgModalHeightPx');
+    const mwSel = document.getElementById('sbImgModalMaxWidth');
+    const alSel = document.getElementById('sbImgModalAlign');
+    const fitSel = document.getElementById('sbImgModalFit');
+    const radSel = document.getElementById('sbImgModalRadius');
+    const shSel = document.getElementById('sbImgModalShadow');
+
+    SB.state.imgStyles[SB.activeImgSlot] = {
+      aspectRatio: finalRatio || 'auto',
+      height: (hIn && hIn.value.trim()) ? hIn.value.trim() : 'auto',
+      maxWidth: (mwSel && mwSel.value) ? mwSel.value : '100%',
+      align: (alSel && alSel.value) ? alSel.value : 'center',
+      fit: (fitSel && fitSel.value) ? fitSel.value : 'cover',
+      radius: (radSel && radSel.value !== undefined) ? radSel.value : '',
+      shadow: (shSel && shSel.value) ? shSel.value : 'none'
+    };
+
+    SB.pushHistory('Update Image Dimensions');
+    try { markDirty(); } catch(e){ console.warn(e); }
+    SB.render();
+    SB.panel();
+    SB.save();
+    SB.closeImgSizeModal();
+    toast(`Image size & styles applied to ${SB.activeImgSlot}!`);
+  };
+
+  SB.resetCurrentImgSize = function() {
+    if (!SB.activeImgSlot) return;
+    if (SB.state.imgStyles && SB.state.imgStyles[SB.activeImgSlot]) {
+      delete SB.state.imgStyles[SB.activeImgSlot];
+      SB.pushHistory('Reset Image Dimensions');
+      try { markDirty(); } catch(e){ console.warn(e); }
+      SB.render();
+      SB.panel();
+      SB.save();
+      SB.closeImgSizeModal();
+      toast(`Reset image ${SB.activeImgSlot} to default template size!`);
+    } else {
+      SB.closeImgSizeModal();
+    }
+  };
+
+  SB.quickResizeElImg = function(secId, elIdx, prop, val) {
+    const sec = SB.state.sections.find(function(s){ return s.id === secId; });
+    if (sec && sec.elements && sec.elements[elIdx]) {
+      sec.elements[elIdx][prop] = val;
+      SB.pushHistory('Quick Resize Image Element');
+      try { markDirty(); } catch(e){ console.warn(e); }
+      SB.render();
+      toast(`Set image ${prop} to ${val}!`);
+    }
+  };
+
   // Modular In-Section Element Renderer Helper
   function renderElementHTML(secId, el, elIdx, isModern) {
     const elEd = function(field, val, tag, extraStyle) {
@@ -4219,6 +5598,136 @@ body.sb-fullscreen-active{overflow:hidden}
 
     let inner = '';
     switch(el.type) {
+      case 'input':
+        inner = `
+          <div class="sb-el-form-field" style="width:${el.width || '100%'}">
+            <div class="sb-el-form-field-head">
+              <label class="sb-el-form-label">
+                ${elEd('label', el.label || 'Full Name')}
+                ${el.required ? '<span class="sb-req" title="Required field">*</span>' : ''}
+              </label>
+              <button type="button" class="sb-el-cfg-btn" onclick="SB.openElSettingsModal('${secId}', ${elIdx})" title="Configure input attributes"><i class="fa fa-sliders"></i> Attributes</button>
+            </div>
+            <input type="${el.inputType || 'text'}" class="sb-form-input" placeholder="${esc(el.placeholder || '')}" value="${esc(el.defaultValue || '')}" name="${esc(el.name || 'field')}" id="${esc(el.id || '')}" ${el.disabled ? 'disabled' : ''} oninput="SB.updateElFieldValue('${secId}', ${elIdx}, this.value)">
+            ${el.helpText || el.helpText === '' ? `<div class="sb-form-help">${elEd('helpText', el.helpText || 'Help text / instructions')}</div>` : ''}
+            <div class="sb-el-attr-bar">
+              <span class="sb-el-attr-pill" onclick="SB.openElSettingsModal('${secId}', ${elIdx})"><i class="fa fa-tag"></i> <b>name="${esc(el.name || 'field')}"</b></span>
+              <span class="sb-el-attr-pill" onclick="SB.openElSettingsModal('${secId}', ${elIdx})"><i class="fa fa-keyboard-o"></i> type="${esc(el.inputType || 'text')}"</span>
+              <span class="sb-el-attr-pill" onclick="SB.openElSettingsModal('${secId}', ${elIdx})">${el.required ? '<b style="color:#ef4444">Required *</b>' : 'Optional'}</span>
+              <span class="sb-el-attr-pill" onclick="SB.openElSettingsModal('${secId}', ${elIdx})"><i class="fa fa-arrows-h"></i> ${esc(el.width || '100%')}</span>
+              <button type="button" class="sb-el-attr-edit-action" onclick="SB.openElSettingsModal('${secId}', ${elIdx})"><i class="fa fa-pencil"></i> Edit Attributes</button>
+            </div>
+          </div>`;
+        break;
+
+      case 'textarea':
+        inner = `
+          <div class="sb-el-form-field" style="width:${el.width || '100%'}">
+            <div class="sb-el-form-field-head">
+              <label class="sb-el-form-label">
+                ${elEd('label', el.label || 'Special Instructions / Notes')}
+                ${el.required ? '<span class="sb-req" title="Required field">*</span>' : ''}
+              </label>
+              <button type="button" class="sb-el-cfg-btn" onclick="SB.openElSettingsModal('${secId}', ${elIdx})" title="Configure textarea attributes"><i class="fa fa-sliders"></i> Attributes</button>
+            </div>
+            <textarea class="sb-form-textarea" rows="${el.rows || 4}" placeholder="${esc(el.placeholder || '')}" name="${esc(el.name || 'notes')}" id="${esc(el.id || '')}" ${el.disabled ? 'disabled' : ''} oninput="SB.updateElFieldValue('${secId}', ${elIdx}, this.value)">${esc(el.defaultValue || '')}</textarea>
+            ${el.helpText || el.helpText === '' ? `<div class="sb-form-help">${elEd('helpText', el.helpText || 'Help text / instructions')}</div>` : ''}
+            <div class="sb-el-attr-bar">
+              <span class="sb-el-attr-pill" onclick="SB.openElSettingsModal('${secId}', ${elIdx})"><i class="fa fa-tag"></i> <b>name="${esc(el.name || 'notes')}"</b></span>
+              <span class="sb-el-attr-pill" onclick="SB.openElSettingsModal('${secId}', ${elIdx})"><i class="fa fa-arrows-v"></i> ${el.rows || 4} rows</span>
+              <span class="sb-el-attr-pill" onclick="SB.openElSettingsModal('${secId}', ${elIdx})">${el.required ? '<b style="color:#ef4444">Required *</b>' : 'Optional'}</span>
+              <button type="button" class="sb-el-attr-edit-action" onclick="SB.openElSettingsModal('${secId}', ${elIdx})"><i class="fa fa-pencil"></i> Edit Attributes</button>
+            </div>
+          </div>`;
+        break;
+
+      case 'select':
+        inner = `
+          <div class="sb-el-form-field" style="width:${el.width || '100%'}">
+            <div class="sb-el-form-field-head">
+              <label class="sb-el-form-label">
+                ${elEd('label', el.label || 'Select Dropdown')}
+                ${el.required ? '<span class="sb-req" title="Required field">*</span>' : ''}
+              </label>
+              <button type="button" class="sb-el-cfg-btn" onclick="SB.openElSettingsModal('${secId}', ${elIdx})" title="Configure dropdown attributes &amp; options"><i class="fa fa-sliders"></i> Attributes</button>
+            </div>
+            <select class="sb-form-select" name="${esc(el.name || 'select')}" id="${esc(el.id || '')}" ${el.disabled ? 'disabled' : ''} onchange="SB.updateElFieldValue('${secId}', ${elIdx}, this.value)">
+              ${el.placeholder ? `<option value="" disabled ${!el.defaultValue ? 'selected' : ''}>${esc(el.placeholder)}</option>` : ''}
+              ${(el.options || []).map(function(opt){
+                return `<option value="${esc(opt.value)}" ${opt.value === el.defaultValue ? 'selected' : ''}>${esc(opt.label)}</option>`;
+              }).join('')}
+            </select>
+            ${el.helpText || el.helpText === '' ? `<div class="sb-form-help">${elEd('helpText', el.helpText || 'Help text / instructions')}</div>` : ''}
+            <div class="sb-el-attr-bar">
+              <span class="sb-el-attr-pill" onclick="SB.openElSettingsModal('${secId}', ${elIdx})"><i class="fa fa-tag"></i> <b>name="${esc(el.name || 'select')}"</b></span>
+              <span class="sb-el-attr-pill" onclick="SB.openElSettingsModal('${secId}', ${elIdx})"><i class="fa fa-list"></i> ${(el.options || []).length} options</span>
+              <span class="sb-el-attr-pill" onclick="SB.openElSettingsModal('${secId}', ${elIdx})">${el.required ? '<b style="color:#ef4444">Required *</b>' : 'Optional'}</span>
+              <button type="button" class="sb-el-attr-edit-action" onclick="SB.openElSettingsModal('${secId}', ${elIdx})"><i class="fa fa-pencil"></i> Edit Options</button>
+            </div>
+          </div>`;
+        break;
+
+      case 'checkbox':
+        inner = `
+          <div class="sb-el-form-field" style="width:${el.width || '100%'}">
+            <div class="sb-el-form-field-head">
+              <label class="sb-el-form-label">
+                ${elEd('label', el.label || 'Checkbox Options')}
+                ${el.required ? '<span class="sb-req" title="Required field">*</span>' : ''}
+              </label>
+              <button type="button" class="sb-el-cfg-btn" onclick="SB.openElSettingsModal('${secId}', ${elIdx})" title="Configure checkbox attributes &amp; choices"><i class="fa fa-sliders"></i> Attributes</button>
+            </div>
+            <div class="sb-form-choice-list">
+              ${(el.options || []).map(function(opt, oIdx){
+                return `
+                  <label class="sb-form-choice-item">
+                    <input type="checkbox" ${opt.checked ? 'checked' : ''} onchange="SB.toggleElCheckbox('${secId}', ${elIdx}, ${oIdx})">
+                    <span class="sb-form-choice-label">${elEd(`options[${oIdx}].label`, opt.label)}</span>
+                  </label>
+                `;
+              }).join('')}
+            </div>
+            ${el.helpText || el.helpText === '' ? `<div class="sb-form-help">${elEd('helpText', el.helpText || 'Help text / instructions')}</div>` : ''}
+            <div class="sb-el-attr-bar">
+              <span class="sb-el-attr-pill" onclick="SB.openElSettingsModal('${secId}', ${elIdx})"><i class="fa fa-tag"></i> <b>name="${esc(el.name || 'checkbox')}"</b></span>
+              <span class="sb-el-attr-pill" onclick="SB.openElSettingsModal('${secId}', ${elIdx})"><i class="fa fa-check-square-o"></i> ${(el.options || []).length} choices</span>
+              <span class="sb-el-attr-pill" onclick="SB.openElSettingsModal('${secId}', ${elIdx})">${el.required ? '<b style="color:#ef4444">Required *</b>' : 'Optional'}</span>
+              <button type="button" class="sb-el-attr-edit-action" onclick="SB.openElSettingsModal('${secId}', ${elIdx})"><i class="fa fa-pencil"></i> Edit Choices</button>
+            </div>
+          </div>`;
+        break;
+
+      case 'radio':
+        inner = `
+          <div class="sb-el-form-field" style="width:${el.width || '100%'}">
+            <div class="sb-el-form-field-head">
+              <label class="sb-el-form-label">
+                ${elEd('label', el.label || 'Radio Button Choices')}
+                ${el.required ? '<span class="sb-req" title="Required field">*</span>' : ''}
+              </label>
+              <button type="button" class="sb-el-cfg-btn" onclick="SB.openElSettingsModal('${secId}', ${elIdx})" title="Configure radio attributes &amp; choices"><i class="fa fa-sliders"></i> Attributes</button>
+            </div>
+            <div class="sb-form-choice-list ${el.layout === 'inline' ? 'sb-form-choice-inline' : ''}">
+              ${(el.options || []).map(function(opt, oIdx){
+                return `
+                  <label class="sb-form-choice-item">
+                    <input type="radio" name="radio_${secId}_${elIdx}" value="${esc(opt.value)}" ${opt.value === el.defaultValue ? 'checked' : ''} onchange="SB.setElRadio('${secId}', ${elIdx}, '${esc(opt.value)}')">
+                    <span class="sb-form-choice-label">${elEd(`options[${oIdx}].label`, opt.label)}</span>
+                  </label>
+                `;
+              }).join('')}
+            </div>
+            ${el.helpText || el.helpText === '' ? `<div class="sb-form-help">${elEd('helpText', el.helpText || 'Help text / instructions')}</div>` : ''}
+            <div class="sb-el-attr-bar">
+              <span class="sb-el-attr-pill" onclick="SB.openElSettingsModal('${secId}', ${elIdx})"><i class="fa fa-tag"></i> <b>name="${esc(el.name || 'radio')}"</b></span>
+              <span class="sb-el-attr-pill" onclick="SB.openElSettingsModal('${secId}', ${elIdx})"><i class="fa fa-dot-circle-o"></i> ${(el.options || []).length} choices</span>
+              <span class="sb-el-attr-pill" onclick="SB.openElSettingsModal('${secId}', ${elIdx})"><i class="fa fa-th"></i> ${el.layout === 'inline' ? 'Inline' : 'Stacked'}</span>
+              <span class="sb-el-attr-pill" onclick="SB.openElSettingsModal('${secId}', ${elIdx})">${el.required ? '<b style="color:#ef4444">Required *</b>' : 'Optional'}</span>
+              <button type="button" class="sb-el-attr-edit-action" onclick="SB.openElSettingsModal('${secId}', ${elIdx})"><i class="fa fa-pencil"></i> Edit Choices</button>
+            </div>
+          </div>`;
+        break;
+
       case 'newsletter':
         inner = `
           <div class="sb-el-newsletter">
@@ -4326,6 +5835,38 @@ body.sb-fullscreen-active{overflow:hidden}
           </div>`;
         break;
 
+      case 'image-card': {
+        const align = el.align || 'center';
+        const margin = align === 'center' ? '0 auto' : (align === 'right' ? '0 0 0 auto' : '0 auto 0 0');
+        const shadows = {
+          sm: '0 2px 6px rgba(0,0,0,.08)',
+          md: '0 8px 24px rgba(0,0,0,.14)',
+          lg: '0 20px 40px rgba(0,0,0,.22)',
+          glow: '0 0 25px rgba(59,130,246,.35)'
+        };
+        const shadowStyle = shadows[el.shadow] ? `box-shadow:${shadows[el.shadow]};` : '';
+        inner = `
+          <div class="sb-el-image-card" style="width:${el.width || '100%'};max-width:${el.maxWidth || '100%'};margin:${margin}">
+            <div class="sb-el-img-box" style="background-image:url('${esc(el.url || '')}');height:${el.height || '380px'};aspect-ratio:${el.aspectRatio && el.aspectRatio !== 'auto' ? el.aspectRatio : '16/9'};background-size:${el.fit || 'cover'};border-radius:${el.radius || '16px'};${shadowStyle}"></div>
+            <div class="sb-el-img-caption">${elEd('caption', el.caption || 'Photo caption / credits...')}</div>
+            <div class="sb-el-img-quick-bar">
+              <span style="font-size:11px;font-weight:700;color:#64748b;margin-right:2px"><i class="fa fa-arrows-alt"></i> Size:</span>
+              <button type="button" class="sb-el-img-quick-btn" onclick="SB.quickResizeElImg('${secId}', ${elIdx}, 'width', '50%')">50%</button>
+              <button type="button" class="sb-el-img-quick-btn" onclick="SB.quickResizeElImg('${secId}', ${elIdx}, 'width', '75%')">75%</button>
+              <button type="button" class="sb-el-img-quick-btn" onclick="SB.quickResizeElImg('${secId}', ${elIdx}, 'width', '100%')">100%</button>
+              <span style="width:1px;height:12px;background:#cbd5e1;margin:0 2px"></span>
+              <span style="font-size:11px;font-weight:700;color:#64748b;margin-right:2px">Ratio:</span>
+              <button type="button" class="sb-el-img-quick-btn" onclick="SB.quickResizeElImg('${secId}', ${elIdx}, 'aspectRatio', '16/9')">16:9</button>
+              <button type="button" class="sb-el-img-quick-btn" onclick="SB.quickResizeElImg('${secId}', ${elIdx}, 'aspectRatio', '4/3')">4:3</button>
+              <button type="button" class="sb-el-img-quick-btn" onclick="SB.quickResizeElImg('${secId}', ${elIdx}, 'aspectRatio', '1/1')">1:1</button>
+              <span style="width:1px;height:12px;background:#cbd5e1;margin:0 2px"></span>
+              <button type="button" class="sb-el-img-quick-btn" style="background:#eff6ff;color:#1d4ed8;border-color:#bfdbfe" onclick="SB.openElSettingsModal('${secId}', ${elIdx})"><i class="fa fa-sliders"></i> All Dimensions &amp; Style</button>
+            </div>
+          </div>
+        `;
+        break;
+      }
+
       case 'html':
         inner = `
           <div class="sb-el-custom-html">
@@ -4345,6 +5886,7 @@ body.sb-fullscreen-active{overflow:hidden}
       <div class="sb-el-wrap" id="el_${secId}_${elIdx}" data-sec-id="${secId}" data-el-idx="${elIdx}">
         <div class="sb-el-bar">
           <span class="sb-el-tag" style="display:flex;align-items:center;gap:3px;font-weight:600"><i class="fa fa-cube"></i> ${el.title || el.type}</span>
+          <button type="button" onclick="event.stopPropagation();SB.openElSettingsModal('${secId}', ${elIdx})" title="Configure element attributes"><i class="fa fa-sliders"></i> Attributes</button>
           ${el.type === 'html' ? `<button type="button" onclick="event.stopPropagation();SB.openHtmlSourceModal('${secId}', ${elIdx})" title="Edit HTML Code"><i class="fa fa-code"></i> Edit HTML</button>` : ''}
           <button type="button" onclick="event.stopPropagation();SB.moveElement('${secId}', ${elIdx}, -1)" title="Move element up" ${elIdx === 0 ? 'disabled style="opacity:.3"' : ''}><i class="fa fa-chevron-up"></i></button>
           <button type="button" onclick="event.stopPropagation();SB.moveElement('${secId}', ${elIdx}, 1)" title="Move element down"><i class="fa fa-chevron-down"></i></button>
@@ -4366,7 +5908,36 @@ body.sb-fullscreen-active{overflow:hidden}
     const ph = function(slot, cls) {
       cls = cls || '';
       const imgUrl = (SB.IMG && SB.IMG[slot]) || (SB.DEF && SB.DEF[slot]) || (slot && slot.includes('/') ? slot : '');
-      return `<div class="ph ${cls}" data-img="${slot}" style="background-image:url('${imgUrl}')"></div>`;
+      const s = (SB.state.imgStyles && SB.state.imgStyles[slot]) || {};
+      let inlineStyle = `background-image:url('${imgUrl}');`;
+      if (s.aspectRatio && s.aspectRatio !== 'auto') inlineStyle += `aspect-ratio:${s.aspectRatio} !important;`;
+      if (s.height && s.height !== 'auto') inlineStyle += `height:${s.height} !important;min-height:${s.height} !important;`;
+      if (s.maxHeight) inlineStyle += `max-height:${s.maxHeight} !important;`;
+      if (s.maxWidth) inlineStyle += `max-width:${s.maxWidth} !important;`;
+      if (s.fit) inlineStyle += `background-size:${s.fit} !important;`;
+      if (s.align === 'center') inlineStyle += `margin-left:auto !important;margin-right:auto !important;`;
+      else if (s.align === 'left') inlineStyle += `margin-right:auto !important;margin-left:0 !important;`;
+      else if (s.align === 'right') inlineStyle += `margin-left:auto !important;margin-right:0 !important;`;
+      if (s.radius !== undefined && s.radius !== '') inlineStyle += `border-radius:${s.radius} !important;`;
+      if (s.shadow && s.shadow !== 'none') {
+        const shadows = {
+          sm: '0 2px 6px rgba(0,0,0,.08)',
+          md: '0 8px 24px rgba(0,0,0,.14)',
+          lg: '0 20px 40px rgba(0,0,0,.22)',
+          glow: '0 0 25px rgba(59,130,246,.35)'
+        };
+        if (shadows[s.shadow]) inlineStyle += `box-shadow:${shadows[s.shadow]} !important;`;
+      }
+      return `
+        <div class="sb-ph-wrap">
+          <div class="ph ${cls}" data-img="${slot}" style="${inlineStyle}">
+            <div class="sb-ph-overlay-actions">
+              <button type="button" class="sb-ph-btn sb-ph-size-btn" onclick="event.stopPropagation();SB.openImgSizeModal('${slot}')" title="Modify image size &amp; style"><i class="fa fa-arrows-alt"></i> Size &amp; Style</button>
+              <button type="button" class="sb-ph-btn sb-ph-swap-btn" onclick="event.stopPropagation();SB.pick('${slot}')" title="Replace / swap photo"><i class="fa fa-picture-o"></i> Swap</button>
+            </div>
+          </div>
+        </div>
+      `;
     };
 
     const secHdr = function() {
@@ -4677,9 +6248,11 @@ body.sb-fullscreen-active{overflow:hidden}
 <h4>Images (prebuilt, click to swap)</h4>
 ${SB.SLOTS.map(function(s){
   const k = s[0], l = s[1];
+  const hasCustomSize = SB.state.imgStyles && SB.state.imgStyles[k];
   return `<div class="sb-im">
     <img src="${SB.IMG[k]}" alt="${l}">
-    <span>${l}</span>
+    <span>${l}${hasCustomSize ? ' <small style="color:#2563eb;font-weight:700">(Custom Size)</small>' : ''}</span>
+    <button type="button" class="sb-tool-size-btn" onclick="SB.openImgSizeModal('${k}')" title="Modify image size &amp; dimensions"><i class="fa fa-arrows-alt"></i> Size</button>
     <button type="button" onclick="SB.pick('${k}')">Replace</button>
     ${SB.IMG[k] !== SB.DEF[k] ? `<button type="button" onclick="SB.resetImage('${k}')">Reset</button>` : ''}
   </div>`;
@@ -4758,6 +6331,15 @@ ${SB.SLOTS.map(function(s){
                 targetEl.stats[stIdx][stProp] = el.innerHTML;
               }
             }
+          } else if (elField.startsWith('options[')) {
+            const match = elField.match(/^options\[(\d+)\]\.(.+)$/);
+            if (match) {
+              const oIdx = parseInt(match[1], 10);
+              const oProp = match[2];
+              if (targetEl.options && targetEl.options[oIdx]) {
+                targetEl.options[oIdx][oProp] = el.innerText || el.textContent;
+              }
+            }
           } else {
             targetEl[elField] = el.innerHTML;
           }
@@ -4810,6 +6392,7 @@ ${SB.SLOTS.map(function(s){
         navLogin: SB.state.navLogin || 'Already subscribed? Log in, no password needed',
         sections: SB.state.sections,
         customIMG: customIMG,
+        imgStyles: SB.state.imgStyles || {},
         savedAt: new Date().toISOString()
       };
       localStorage.setItem('hwf_sitebuilder_design', JSON.stringify(data));
@@ -4850,6 +6433,10 @@ ${SB.SLOTS.map(function(s){
           SB.IMG[k] = data.customIMG[k];
         }
       }
+
+      if (data.imgStyles) {
+        SB.state.imgStyles = data.imgStyles;
+      }
       return true;
     } catch(e) {
       console.error('Error loading sitebuilder design from localStorage:', e);
@@ -4876,7 +6463,8 @@ ${SB.SLOTS.map(function(s){
         dev: 'd',
         navBrand: 'Friends of Fairview',
         navLogin: 'Already subscribed? Log in, no password needed',
-        sections: SB.defaultSections()
+        sections: SB.defaultSections(),
+        imgStyles: {}
       };
       SB.SLOTS.forEach(function(s){ SB.DEF[s[0]] = SB.IMG[s[0]] = uri(s[2]); });
       SB.tplCards();
@@ -4898,13 +6486,17 @@ ${SB.SLOTS.map(function(s){
     SB.render();
   };
 
-  // If hash or query indicates any tab, switch to it
+  // If hash or query indicates any tab, switch to it; otherwise fall back to the
+  // last tab the user was on (stored in localStorage, since this page may be
+  // embedded in an iframe whose src is reloaded fresh with no hash of its own).
   var targetTab = '';
   if (location.hash) {
     targetTab = location.hash.replace('#', '');
   } else if (location.search.includes('tab=')) {
     var tm = location.search.match(/tab=([^&]+)/);
     if (tm) targetTab = tm[1];
+  } else {
+    try { targetTab = localStorage.getItem('hwf_active_tab') || ''; } catch(e){}
   }
   if (targetTab === 'homepage') targetTab = 'sitebuilder';
   if (targetTab && ['profile', 'payment', 'web', 'sitebuilder', 'invoice'].includes(targetTab)) {

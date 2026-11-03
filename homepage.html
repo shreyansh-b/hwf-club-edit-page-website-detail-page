@@ -318,6 +318,23 @@
     .sb-el-quote-text { font-family: var(--d); font-size: clamp(20px, 3.2cqw, 28px); font-weight: var(--hw); line-height: 1.35; margin-bottom: 12px; color: var(--ink); }
     .sb-el-quote-author { font-size: 14px; font-weight: 700; color: var(--red); text-transform: var(--ey); letter-spacing: var(--et); }
 
+    /* Modular Form Elements: Input, Textarea, Select, Checkbox, Radio */
+    .sb-el-form-field { max-width: 680px; margin: 0 auto; background: var(--sf, #fff); border: 1px solid var(--ln, #e2e8f0); border-radius: var(--r, 12px); padding: 22px 24px; box-shadow: 0 4px 16px rgba(0,0,0,.02); text-align: left; }
+    .sb-el-form-field-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 8px; }
+    .sb-el-form-label { font-family: var(--d, inherit); font-size: 15px; font-weight: 700; color: var(--ink, #0f172a); display: inline-flex; align-items: center; gap: 4px; }
+    .sb-req { color: #ef4444; font-weight: 800; font-size: 14px; margin-left: 2px; }
+    .sb-form-input, .sb-form-textarea, .sb-form-select { width: 100%; padding: 11px 14px; border: 1.5px solid var(--ln, #cbd5e1); border-radius: var(--br, 8px); font-size: 14px; color: var(--ink, #0f172a); background: #fff; font-family: inherit; outline: none; box-sizing: border-box; transition: border-color .15s, box-shadow .15s; }
+    .sb-form-input:focus, .sb-form-textarea:focus, .sb-form-select:focus { border-color: var(--brand, #2563eb); box-shadow: 0 0 0 3px rgba(37,99,235,.12); }
+    .sb-form-textarea { resize: vertical; min-height: 80px; line-height: 1.5; }
+    .sb-form-select { cursor: pointer; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%2364748b' viewBox='0 0 24 24'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; background-size: 18px; padding-right: 36px; appearance: none; -webkit-appearance: none; }
+    .sb-form-choice-list { display: flex; flex-direction: column; gap: 8px; }
+    .sb-form-choice-list.sb-form-choice-inline { flex-direction: row; flex-wrap: wrap; gap: 12px; }
+    .sb-form-choice-item { display: flex; align-items: center; gap: 10px; padding: 10px 14px; background: #fff; border: 1.5px solid var(--ln, #e2e8f0); border-radius: var(--br, 8px); cursor: pointer; transition: all .15s; user-select: none; }
+    .sb-form-choice-item:hover { border-color: var(--brand, #2563eb); background: #f8fafc; }
+    .sb-form-choice-item input[type="checkbox"], .sb-form-choice-item input[type="radio"] { width: 17px; height: 17px; cursor: pointer; margin: 0; accent-color: var(--brand, #2563eb); }
+    .sb-form-choice-label { font-size: 14px; color: var(--ink, #0f172a); flex: 1; }
+    .sb-form-help { font-size: 12px; color: var(--mt, #64748b); margin-top: 6px; line-height: 1.45; }
+
     /* Custom Section Styling & Embeds */
     .sb-sec-custom-bg .s, .sb-sec-custom-bg .hero, .sb-sec-custom-bg .cta-banner { background: transparent !important; }
     .sb-sec-outer[style*="color:"] .s, .sb-sec-outer[style*="color:"] .hd h2, .sb-sec-outer[style*="color:"] .hero h1, .sb-sec-outer[style*="color:"] p { color: inherit; }
@@ -421,6 +438,9 @@
       pointer-events: none;
     }
     .site-toast.show { opacity: 1; transform: translateY(0); }
+    .sb-el-image-card { width: 100%; margin: 0 auto; padding: 12px 0; }
+    .sb-el-img-box { width: 100%; background-size: cover; background-position: center; transition: all .2s; }
+    .sb-el-img-caption { margin-top: 8px; font-size: 13px; color: var(--mt); text-align: center; line-height: 1.4; }
   </style>
 </head>
 <body>
@@ -521,7 +541,8 @@
       navLogin: 'Already subscribed? Log in',
       sections: null,
       secOrder: ['hero', 'about', 'how', 'plans', 'hol', 'gal', 'don', 'say', 'contact'],
-      IMG: Object.assign({}, DEF_IMG)
+      IMG: Object.assign({}, DEF_IMG),
+      imgStyles: {}
     };
 
     function loadSavedDesign() {
@@ -545,6 +566,9 @@
             siteState.IMG[k] = data.customIMG[k];
           }
         }
+        if (data.imgStyles) {
+          siteState.imgStyles = data.imgStyles;
+        }
         if (data.savedAt) {
           const dt = new Date(data.savedAt);
           const el = document.getElementById('demoSavedTime');
@@ -561,7 +585,27 @@
     const t = (k, fallback) => siteState.T[k] || fallback;
     const ph = (k, cls = "") => {
       const url = (siteState.IMG && siteState.IMG[k]) || (DEF_IMG && DEF_IMG[k]) || (k && k.includes('/') ? k : '');
-      return `<div class="ph ${cls}" style="background-image:url('${url}')"></div>`;
+      const s = (siteState.imgStyles && siteState.imgStyles[k]) || {};
+      let inlineStyle = `background-image:url('${url}');`;
+      if (s.aspectRatio && s.aspectRatio !== 'auto') inlineStyle += `aspect-ratio:${s.aspectRatio} !important;`;
+      if (s.height && s.height !== 'auto') inlineStyle += `height:${s.height} !important;min-height:${s.height} !important;`;
+      if (s.maxHeight) inlineStyle += `max-height:${s.maxHeight} !important;`;
+      if (s.maxWidth) inlineStyle += `max-width:${s.maxWidth} !important;`;
+      if (s.fit) inlineStyle += `background-size:${s.fit} !important;`;
+      if (s.align === 'center') inlineStyle += `margin-left:auto !important;margin-right:auto !important;`;
+      else if (s.align === 'left') inlineStyle += `margin-right:auto !important;margin-left:0 !important;`;
+      else if (s.align === 'right') inlineStyle += `margin-left:auto !important;margin-right:0 !important;`;
+      if (s.radius !== undefined && s.radius !== '') inlineStyle += `border-radius:${s.radius} !important;`;
+      if (s.shadow && s.shadow !== 'none') {
+        const shadows = {
+          sm: '0 2px 6px rgba(0,0,0,.08)',
+          md: '0 8px 24px rgba(0,0,0,.14)',
+          lg: '0 20px 40px rgba(0,0,0,.22)',
+          glow: '0 0 25px rgba(59,130,246,.35)'
+        };
+        if (shadows[s.shadow]) inlineStyle += `box-shadow:${shadows[s.shadow]} !important;`;
+      }
+      return `<div class="ph ${cls}" style="${inlineStyle}"></div>`;
     };
     const hdr = (k, ey, title, desc) => `<div class="hd"><div class="ey">${t(k + "e", ey)}</div><h2>${t(k + "t", title)}</h2>${desc ? `<p>${t(k + "p", desc)}</p>` : ""}</div>`;
 
@@ -569,6 +613,94 @@
       if (!elements || !Array.isArray(elements) || elements.length === 0) return '';
       return `<div class="sb-sec-elements">` + elements.map(function(el) {
         switch(el.type) {
+          case 'input':
+            return `
+              <div class="sb-el-form-field" style="width:${el.width || '100%'}">
+                <div class="sb-el-form-field-head">
+                  <label class="sb-el-form-label" for="${el.id || ''}">
+                    ${el.label || 'Full Name'}
+                    ${el.required ? '<span class="sb-req" title="Required field">*</span>' : ''}
+                  </label>
+                </div>
+                <input type="${el.inputType || 'text'}" class="sb-form-input" placeholder="${el.placeholder || ''}" value="${el.defaultValue || ''}" name="${el.name || 'field'}" id="${el.id || ''}" ${el.required ? 'required' : ''} ${el.disabled ? 'disabled' : ''}>
+                ${el.helpText ? `<div class="sb-form-help">${el.helpText}</div>` : ''}
+              </div>`;
+
+          case 'textarea':
+            return `
+              <div class="sb-el-form-field" style="width:${el.width || '100%'}">
+                <div class="sb-el-form-field-head">
+                  <label class="sb-el-form-label" for="${el.id || ''}">
+                    ${el.label || 'Special Instructions / Notes'}
+                    ${el.required ? '<span class="sb-req" title="Required field">*</span>' : ''}
+                  </label>
+                </div>
+                <textarea class="sb-form-textarea" rows="${el.rows || 4}" placeholder="${el.placeholder || ''}" name="${el.name || 'notes'}" id="${el.id || ''}" ${el.required ? 'required' : ''} ${el.disabled ? 'disabled' : ''}>${el.defaultValue || ''}</textarea>
+                ${el.helpText ? `<div class="sb-form-help">${el.helpText}</div>` : ''}
+              </div>`;
+
+          case 'select':
+            return `
+              <div class="sb-el-form-field" style="width:${el.width || '100%'}">
+                <div class="sb-el-form-field-head">
+                  <label class="sb-el-form-label" for="${el.id || ''}">
+                    ${el.label || 'Select Dropdown'}
+                    ${el.required ? '<span class="sb-req" title="Required field">*</span>' : ''}
+                  </label>
+                </div>
+                <select class="sb-form-select" name="${el.name || 'select'}" id="${el.id || ''}" ${el.required ? 'required' : ''} ${el.disabled ? 'disabled' : ''}>
+                  ${el.placeholder ? `<option value="" disabled ${!el.defaultValue ? 'selected' : ''}>${el.placeholder}</option>` : ''}
+                  ${(el.options || []).map(function(opt){
+                    return `<option value="${opt.value}" ${opt.value === el.defaultValue ? 'selected' : ''}>${opt.label}</option>`;
+                  }).join('')}
+                </select>
+                ${el.helpText ? `<div class="sb-form-help">${el.helpText}</div>` : ''}
+              </div>`;
+
+          case 'checkbox':
+            return `
+              <div class="sb-el-form-field" style="width:${el.width || '100%'}">
+                <div class="sb-el-form-field-head">
+                  <label class="sb-el-form-label">
+                    ${el.label || 'Checkbox Options'}
+                    ${el.required ? '<span class="sb-req" title="Required field">*</span>' : ''}
+                  </label>
+                </div>
+                <div class="sb-form-choice-list">
+                  ${(el.options || []).map(function(opt, oIdx){
+                    return `
+                      <label class="sb-form-choice-item">
+                        <input type="checkbox" name="${el.name || 'checkbox'}[]" value="${opt.value}" ${opt.checked ? 'checked' : ''} ${el.disabled ? 'disabled' : ''}>
+                        <span class="sb-form-choice-label">${opt.label}</span>
+                      </label>
+                    `;
+                  }).join('')}
+                </div>
+                ${el.helpText ? `<div class="sb-form-help">${el.helpText}</div>` : ''}
+              </div>`;
+
+          case 'radio':
+            return `
+              <div class="sb-el-form-field" style="width:${el.width || '100%'}">
+                <div class="sb-el-form-field-head">
+                  <label class="sb-el-form-label">
+                    ${el.label || 'Radio Button Choices'}
+                    ${el.required ? '<span class="sb-req" title="Required field">*</span>' : ''}
+                  </label>
+                </div>
+                <div class="sb-form-choice-list ${el.layout === 'inline' ? 'sb-form-choice-inline' : ''}">
+                  ${(el.options || []).map(function(opt, oIdx){
+                    return `
+                      <label class="sb-form-choice-item">
+                        <input type="radio" name="${el.name || 'radio'}" value="${opt.value}" ${opt.value === el.defaultValue ? 'checked' : ''} ${el.required ? 'required' : ''} ${el.disabled ? 'disabled' : ''}>
+                        <span class="sb-form-choice-label">${opt.label}</span>
+                      </label>
+                    `;
+                  }).join('')}
+                </div>
+                ${el.helpText ? `<div class="sb-form-help">${el.helpText}</div>` : ''}
+              </div>`;
+
           case 'newsletter':
             return `
               <div class="sb-el-newsletter">
@@ -615,6 +747,23 @@
                 <a href="#" class="sb-el-social-link" style="background:#e1306c" title="Instagram" onclick="showToast('Opening Instagram...');return false;"><i class="fa fa-instagram"></i></a>
                 <a href="#" class="sb-el-social-link" style="background:#ff0000" title="YouTube" onclick="showToast('Opening YouTube channel...');return false;"><i class="fa fa-youtube-play"></i></a>
               </div>`;
+
+          case 'image-card': {
+            const align = el.align || 'center';
+            const margin = align === 'center' ? '0 auto' : (align === 'right' ? '0 0 0 auto' : '0 auto 0 0');
+            const shadows = {
+              sm: '0 2px 6px rgba(0,0,0,.08)',
+              md: '0 8px 24px rgba(0,0,0,.14)',
+              lg: '0 20px 40px rgba(0,0,0,.22)',
+              glow: '0 0 25px rgba(59,130,246,.35)'
+            };
+            const shadowStyle = shadows[el.shadow] ? `box-shadow:${shadows[el.shadow]};` : '';
+            return `
+              <div class="sb-el-image-card" style="width:${el.width || '100%'};max-width:${el.maxWidth || '100%'};margin:${margin}">
+                <div class="sb-el-img-box" style="background-image:url('${el.url || ''}');height:${el.height || '380px'};aspect-ratio:${el.aspectRatio && el.aspectRatio !== 'auto' ? el.aspectRatio : '16/9'};background-size:${el.fit || 'cover'};border-radius:${el.radius || '16px'};${shadowStyle}"></div>
+                ${el.caption ? `<div class="sb-el-img-caption">${el.caption}</div>` : ''}
+              </div>`;
+          }
 
           case 'callout':
             return `
