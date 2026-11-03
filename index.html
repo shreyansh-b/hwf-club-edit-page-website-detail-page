@@ -893,15 +893,15 @@ body.sb-fullscreen-active{overflow:hidden}
     </div>
 
     <div class="tabs" role="tablist">
-      <button class="tab" role="tab" aria-selected="true" data-tab="profile" onclick="switchTab('profile')">Profile</button>
+      <button class="tab" role="tab" aria-selected="false" data-tab="profile" onclick="switchTab('profile')">Profile</button>
       <button class="tab" role="tab" aria-selected="false" data-tab="payment" onclick="switchTab('payment')">App Payment</button>
       <button class="tab" role="tab" aria-selected="false" data-tab="web" onclick="switchTab('web')">Webpage Detail</button>
-      <button class="tab" role="tab" aria-selected="false" data-tab="sitebuilder" onclick="switchTab('sitebuilder')">Homepage Design</button>
+      <button class="tab" role="tab" aria-selected="true" data-tab="sitebuilder" onclick="switchTab('sitebuilder')">Homepage Design</button>
       <button class="tab" role="tab" aria-selected="false" data-tab="invoice" onclick="switchTab('invoice')">Invoice History</button>
     </div>
 
 <!-- ================= PROFILE ================= -->
-    <section class="panel sys" data-panel="profile">
+    <section class="panel sys" data-panel="profile" hidden>
       <section class="scard">
         <header><span class="si-t"><i class="fa fa-university" aria-hidden="true"></i></span><h2>Club Details</h2></header>
         <div class="sb"><div class="g4">
@@ -1319,7 +1319,7 @@ body.sb-fullscreen-active{overflow:hidden}
       </div>
     </section>
 
-    <section class="panel" data-panel="sitebuilder" hidden>
+    <section class="panel" data-panel="sitebuilder">
       <section class="scard">
         <header style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px">
           <div style="display:flex;align-items:center;gap:10px">
@@ -1346,9 +1346,6 @@ body.sb-fullscreen-active{overflow:hidden}
             <a href="homepage.html" target="_blank" class="sb-btn-view" title="Open published club website in a new tab">
               <i class="fa fa-external-link" aria-hidden="true"></i> View Live
             </a>
-            <button type="button" class="sb-btn-quick-save" onclick="SB.quickSave()" title="Save changes and publish live">
-              <i class="fa fa-check" aria-hidden="true"></i> Save &amp; Publish
-            </button>
           </div>
         </header>
         <div class="sb">
@@ -1443,7 +1440,6 @@ body.sb-fullscreen-active{overflow:hidden}
     if (location.hash.replace('#', '') !== name) {
       history.replaceState(null, '', '#' + name);
     }
-    try { localStorage.setItem('hwf_active_tab', name); } catch(e){}
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
   window.switchTab = window.gotoTab = switchTab;
@@ -3232,7 +3228,7 @@ body.sb-fullscreen-active{overflow:hidden}
     brand: { modern: '#1f4e79', classic: '#1b2a4e' },
     dev: 'd',
     navBrand: 'Friends of Fairview',
-    navLogin: 'Already subscribed? Log in, no password needed',
+    navLogin: 'Already subscribed? Log in',
     sections: SB.defaultSections(),
     imgStyles: {}
   };
@@ -6259,9 +6255,6 @@ ${SB.SLOTS.map(function(s){
 }).join('')}
 
 <div style="margin-top:16px;border-top:1px solid var(--border);padding-top:12px;text-align:center">
-  <button type="button" class="btn primary" style="width:100%;margin-bottom:8px" onclick="SB.quickSave()">
-    <i class="fa fa-cloud-upload"></i> Save &amp; Publish
-  </button>
   <span class="sb-reset-link" onclick="SB.resetToDefaults()">Reset design to default template</span>
 </div>`;
   };
@@ -6278,7 +6271,7 @@ ${SB.SLOTS.map(function(s){
     $('#sb-site').className = 'sb-site ' + (SB.state.tpl === 'classic' ? 'sb-classic' : '');
     $('#sb-site').style.setProperty('--brand', b);
 
-    let siteHTML = `<div class="nav"><b contenteditable="true" data-nav="brand">${SB.state.navBrand || "Friends of Fairview"}</b><span><span contenteditable="true" data-nav="login">${SB.state.navLogin || "Already subscribed? Log in, no password needed"}</span></span></div>`;
+    let siteHTML = `<div class="nav"><b contenteditable="true" data-nav="brand">${SB.state.navBrand || "Friends of Fairview"}</b><span><span contenteditable="true" data-nav="login">${SB.state.navLogin || "Already subscribed? Log in"}</span></span></div>`;
 
     // Render sections with inter-section add lines
     siteHTML += `<div class="sb-sec-add-line"><button type="button" class="sb-sec-add-btn" onclick="SB.openAddSecModal(0)"><i class="fa fa-plus"></i> Add Section</button></div>`;
@@ -6389,7 +6382,7 @@ ${SB.SLOTS.map(function(s){
         brand: SB.state.brand,
         dev: SB.state.dev,
         navBrand: SB.state.navBrand || 'Friends of Fairview',
-        navLogin: SB.state.navLogin || 'Already subscribed? Log in, no password needed',
+        navLogin: SB.state.navLogin || 'Already subscribed? Log in',
         sections: SB.state.sections,
         customIMG: customIMG,
         imgStyles: SB.state.imgStyles || {},
@@ -6462,7 +6455,7 @@ ${SB.SLOTS.map(function(s){
         brand: { modern: '#1f4e79', classic: '#1b2a4e' },
         dev: 'd',
         navBrand: 'Friends of Fairview',
-        navLogin: 'Already subscribed? Log in, no password needed',
+        navLogin: 'Already subscribed? Log in',
         sections: SB.defaultSections(),
         imgStyles: {}
       };
@@ -6486,23 +6479,19 @@ ${SB.SLOTS.map(function(s){
     SB.render();
   };
 
-  // If hash or query indicates any tab, switch to it; otherwise fall back to the
-  // last tab the user was on (stored in localStorage, since this page may be
-  // embedded in an iframe whose src is reloaded fresh with no hash of its own).
-  var targetTab = '';
+  // Homepage Design is the default landing tab. A hash or ?tab= query can still
+  // deep-link to a different tab (e.g. bookmarking #profile).
+  var targetTab = 'sitebuilder';
   if (location.hash) {
     targetTab = location.hash.replace('#', '');
   } else if (location.search.includes('tab=')) {
     var tm = location.search.match(/tab=([^&]+)/);
     if (tm) targetTab = tm[1];
-  } else {
-    try { targetTab = localStorage.getItem('hwf_active_tab') || ''; } catch(e){}
   }
   if (targetTab === 'homepage') targetTab = 'sitebuilder';
-  if (targetTab && ['profile', 'payment', 'web', 'sitebuilder', 'invoice'].includes(targetTab)) {
-    if (typeof gotoTab === 'function') {
-      gotoTab(targetTab);
-    }
+  if (!['profile', 'payment', 'web', 'sitebuilder', 'invoice'].includes(targetTab)) targetTab = 'sitebuilder';
+  if (typeof gotoTab === 'function') {
+    gotoTab(targetTab);
   }
 
 })();
