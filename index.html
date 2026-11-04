@@ -6388,6 +6388,7 @@ body.sb-fullscreen-active{overflow:hidden}
   }
 
   SB.openBtnModal = function(secId, btnKey) {
+    if (typeof SB.closeAllBtnWraps === 'function') SB.closeAllBtnWraps();
     SB.activeBtnSecId = secId;
     SB.activeBtnKey = btnKey;
     ensureBtnModalDOM();
@@ -6468,6 +6469,7 @@ body.sb-fullscreen-active{overflow:hidden}
   SB.closeBtnModal = function() {
     const m = document.getElementById('sbBtnModalBackdrop');
     if (m) m.style.display = 'none';
+    if (typeof SB.closeAllBtnWraps === 'function') SB.closeAllBtnWraps();
   };
 
   SB.onBtnVariantChange = function() {
@@ -6629,6 +6631,51 @@ body.sb-fullscreen-active{overflow:hidden}
       SB.closeBtnModal();
     }
   };
+
+  /* ---------- Button Click-to-Edit & Popover Management ---------- */
+  SB.closeAllBtnWraps = function() {
+    document.querySelectorAll('.sb-btn-wrap.is-active, .sb-btn-wrap.active').forEach(function(el){
+      el.classList.remove('is-active');
+      el.classList.remove('active');
+    });
+  };
+
+  // Click on button wrapper activates edit options bar (replaces hover behavior)
+  document.addEventListener('click', function(ev) {
+    const btnWrap = ev.target.closest('.sb-btn-wrap');
+    if (btnWrap) {
+      if (ev.target.closest('.sb-btn-actions-bar')) return;
+      const wasActive = btnWrap.classList.contains('is-active') || btnWrap.classList.contains('active');
+      if (!wasActive) {
+        SB.closeAllBtnWraps();
+        btnWrap.classList.add('is-active');
+        btnWrap.classList.add('active');
+      }
+      return;
+    }
+
+    if (!ev.target.closest('.sb-modal') && !ev.target.closest('.sb-backdrop') && !ev.target.closest('.sb-img-modal-backdrop') && !ev.target.closest('.swal2-container')) {
+      SB.closeAllBtnWraps();
+    }
+  });
+
+  // Double-clicking on a button directly opens its style/action modal
+  document.addEventListener('dblclick', function(ev) {
+    const btnWrap = ev.target.closest('.sb-btn-wrap');
+    if (!btnWrap || ev.target.closest('.sb-btn-actions-bar')) return;
+    const secId = btnWrap.dataset.secId;
+    const btnKey = btnWrap.dataset.btnKey;
+    if (secId && btnKey) {
+      SB.openBtnModal(secId, btnKey);
+    }
+  });
+
+  // Pressing Escape closes open button edit options
+  document.addEventListener('keydown', function(ev) {
+    if (ev.key === 'Escape') {
+      SB.closeAllBtnWraps();
+    }
+  });
 
   // Modular In-Section Element Renderer Helper
   function renderElementHTML(secId, el, elIdx, isModern) {
@@ -6855,6 +6902,7 @@ body.sb-fullscreen-active{overflow:hidden}
                 <button type="button" class="sb-btn-tool-btn" onclick="event.stopPropagation();SB.openBtnModal('${secId}','el_${elIdx}')" title="Configure Button Style &amp; Action">
                   <i class="fa fa-sliders"></i> Style &amp; Event
                 </button>
+                <button type="button" class="sb-btn-tool-close" onclick="event.stopPropagation();SB.closeAllBtnWraps()" title="Close options"><i class="fa fa-times"></i></button>
               </div>
             </div>
           </div>`;
@@ -7082,6 +7130,8 @@ body.sb-fullscreen-active{overflow:hidden}
             <button type="button" class="sb-btn-tool-btn" onclick="event.stopPropagation();SB.openBtnModal('${secId}','${btnKey}')" title="Configure Button Style &amp; Action (${actionBadge})">
               <i class="fa fa-sliders"></i> Style &amp; Event
             </button>
+            ${btnKey !== 'btn1' ? `<button type="button" class="sb-btn-tool-del" onclick="event.stopPropagation();SB.removeBtn('${secId}','${btnKey}')" title="Remove Secondary Button"><i class="fa fa-trash-o"></i></button>` : ''}
+            <button type="button" class="sb-btn-tool-close" onclick="event.stopPropagation();SB.closeAllBtnWraps()" title="Close options"><i class="fa fa-times"></i></button>
           </div>
         </div>
       `;
