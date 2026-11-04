@@ -806,14 +806,19 @@ body.sb-fullscreen-active{overflow:hidden}
 .sb-ph-size-btn:hover{background:#1d4ed8;border-color:#60a5fa}
 .sb-ph-btn.sb-ph-del-btn{background:rgba(220,38,38,.9);border-color:rgba(252,165,165,.4)}
 .sb-ph-btn.sb-ph-del-btn:hover{background:#dc2626;border-color:#f87171}
-.sb-ph-dropzone{display:flex;align-items:center;justify-content:center;width:100%;aspect-ratio:5/4;min-height:220px;border:2.5px dashed #94a3b8;border-radius:var(--r, 12px);background:rgba(241,245,249,.85);cursor:pointer;transition:all .2s ease;margin:0;position:relative}
+.sb-ph-dropzone{display:flex;align-items:center;justify-content:center;width:100%;aspect-ratio:5/4;min-height:220px;border:2.5px dashed #94a3b8;border-radius:var(--r, 12px);background:rgba(241,245,249,.85);cursor:pointer;transition:all .2s ease;margin:0;position:relative;overflow:visible !important}
 .sb-ph-dropzone:hover,.sb-ph-dropzone.sb-file-drag-over{border-color:var(--primary,#3f51b5);background:rgba(238,242,255,.95);transform:scale(1.008)}
 .sb-ph-dropzone-inner{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;color:#64748b;text-align:center;padding:24px;pointer-events:none}
 .sb-ph-dropzone:hover .sb-ph-dropzone-inner,.sb-ph-dropzone.sb-file-drag-over .sb-ph-dropzone-inner{color:var(--primary,#3f51b5)}
-.sb-ph-dropzone i{font-size:36px;color:var(--primary,#3f51b5);margin-bottom:2px}
+.sb-ph-dropzone-inner i{font-size:36px;color:var(--primary,#3f51b5);margin-bottom:2px}
 .sb-ph-dropzone-title{font-size:15px;font-weight:700;color:var(--text,#1e293b)}
 .sb-ph-dropzone-sub{font-size:12px;opacity:.85}
 .sb-ph-wrap.sb-file-drag-over .ph{outline:3.5px dashed var(--primary,#3f51b5) !important;outline-offset:-3.5px;filter:brightness(0.9)}
+.sb-dropzone-del{position:absolute;top:-8px;right:-8px;z-index:25;width:22px;height:22px;border-radius:50%;background:#ef4444;color:#fff;border:2px solid #fff;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;box-shadow:0 2px 6px rgba(0,0,0,.25);transition:transform .15s ease,background .15s ease}
+.sb-dropzone-del:hover{transform:scale(1.15);background:#dc2626}
+.sb-dropzone-del i{font-size:11px !important;color:#fff !important;margin:0 !important;padding:0 !important;line-height:1 !important}
+.sb-site .hero.no-img{grid-template-columns:1fr}
+.sb-site .split.no-img{grid-template-columns:1fr}
 .sb-tool-size-btn{display:inline-flex;align-items:center;gap:4px;padding:3px 8px;font-size:11px;font-weight:600;border:1px solid #cbd5e1;background:#f8fafc;border-radius:4px;cursor:pointer;color:#334155;transition:all .15s}
 .sb-tool-size-btn:hover{background:#eff6ff;border-color:#3b82f6;color:#1d4ed8}
 .sb-img-modal-backdrop{position:fixed;inset:0;z-index:10005;background:rgba(15,23,42,.65);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;padding:20px}
@@ -3401,7 +3406,10 @@ body.sb-fullscreen-active{overflow:hidden}
       SB.IMG[sbPk] = r.result;
       if (sbSecPk) {
         const sec = SB.state.sections.find(function(s){ return s.id === sbSecPk; });
-        if (sec) sec.hideImg = false;
+        if (sec) {
+          sec.hideImg = false;
+          sec.hideBox = false;
+        }
       }
       markDirty();
       SB.render();
@@ -3421,7 +3429,10 @@ body.sb-fullscreen-active{overflow:hidden}
       SB.IMG[slot] = r.result;
       if (secId) {
         const sec = SB.state.sections.find(function(s){ return s.id === secId; });
-        if (sec) sec.hideImg = false;
+        if (sec) {
+          sec.hideImg = false;
+          sec.hideBox = false;
+        }
       }
       markDirty();
       SB.render();
@@ -3436,7 +3447,7 @@ body.sb-fullscreen-active{overflow:hidden}
       sec = SB.state.sections.find(function(s){ return s.id === secId; });
     }
     if (!sec) {
-      sec = SB.state.sections.find(function(s){ return (s.img === slot) || (slot === 'hero' && s.type === 'hero') || (slot === 'about' && s.type === 'about') || (slot === 'dinner' && s.type === 'dinner') || (slot === 'map' && s.type === 'contact'); });
+      sec = SB.state.sections.find(function(s){ return (s.img === slot) || (slot === 'hero' && s.type === 'hero') || (slot === 'about' && s.type === 'about') || (slot === 'dinner' && (s.type === 'don' || s.type === 'dinner')) || (slot === 'map' && s.type === 'contact'); });
     }
     if (sec) {
       sec.hideImg = true;
@@ -3452,10 +3463,11 @@ body.sb-fullscreen-active{overflow:hidden}
       sec = SB.state.sections.find(function(s){ return s.id === secId; });
     }
     if (!sec) {
-      sec = SB.state.sections.find(function(s){ return (s.img === slot) || (slot === 'hero' && s.type === 'hero') || (slot === 'about' && s.type === 'about') || (slot === 'dinner' && s.type === 'dinner') || (slot === 'map' && s.type === 'contact'); });
+      sec = SB.state.sections.find(function(s){ return (s.img === slot) || (slot === 'hero' && s.type === 'hero') || (slot === 'about' && s.type === 'about') || (slot === 'dinner' && (s.type === 'don' || s.type === 'dinner')) || (slot === 'map' && s.type === 'contact'); });
     }
     if (sec) {
       sec.hideImg = false;
+      sec.hideBox = false;
     }
     markDirty();
     SB.render();
@@ -3790,6 +3802,26 @@ body.sb-fullscreen-active{overflow:hidden}
       isDanger: true
     }).then(function(confirmed){
       if (confirmed) doDelete();
+    });
+  };
+
+  SB.deleteDropzoneBox = function(slot, secId){
+    const idx = SB.state.sections.findIndex(function(s){ return s.id === secId; });
+    if (idx < 0) return;
+    const sec = SB.state.sections[idx];
+
+    sbConfirm({
+      title: 'Remove Image Box?',
+      text: `Remove the image box from "${sec.title || 'Section'}"? The section layout will adapt to text only.`,
+      confirmButtonText: 'Yes, remove box',
+      isDanger: true
+    }).then(function(confirmed){
+      if (confirmed) {
+        sec.hideBox = true;
+        markDirty();
+        SB.render();
+        toast(`Image box removed from "${sec.title || sec.type}". Layout updated.`);
+      }
     });
   };
 
@@ -6258,6 +6290,7 @@ body.sb-fullscreen-active{overflow:hidden}
       cls = cls || '';
       const s = (SB.state.imgStyles && SB.state.imgStyles[slot]) || {};
       const sec = secId ? SB.state.sections.find(function(item){ return item.id === secId; }) : null;
+      if (sec && sec.hideBox) return '';
       if (sec && sec.hideImg) {
         let dzStyle = '';
         if (s.aspectRatio && s.aspectRatio !== 'auto') dzStyle += `aspect-ratio:${s.aspectRatio} !important;`;
@@ -6266,6 +6299,7 @@ body.sb-fullscreen-active{overflow:hidden}
         if (s.radius !== undefined && s.radius !== '') dzStyle += `border-radius:${s.radius} !important;`;
         return `
           <div class="sb-ph-dropzone ${cls}" data-img-slot="${slot}" data-sec-id="${sec.id}" style="${dzStyle}" onclick="event.stopPropagation();SB.pick('${slot}','${sec.id}')" title="Click to browse or Drag &amp; Drop image here">
+            <button type="button" class="sb-dropzone-del" onclick="event.stopPropagation();SB.deleteDropzoneBox('${slot}','${sec.id}')" title="Remove image box"><i class="fa fa-times"></i></button>
             <div class="sb-ph-dropzone-inner">
               <i class="fa fa-plus-circle"></i>
               <div class="sb-ph-dropzone-title">+ Add Image</div>
@@ -6359,12 +6393,12 @@ body.sb-fullscreen-active{overflow:hidden}
 
       case 'hero':
         inner = isModern
-          ? `<div class="hero"><div><div class="ey">${ed('ey', sec.ey)}</div><h1>${ed('heading', sec.heading)}</h1><p class="l">${ed('desc', sec.desc)}</p><span class="sbtn">${ed('btn1', sec.btn1)}</span><span class="sbtn o">${ed('btn2', sec.btn2)}</span></div>${ph(sec.img || 'hero', '', sec.id)}</div>`
-          : `<div class="hero"><div class="tx"><div class="ey">${ed('ey', sec.ey)}</div><h1>${ed('heading', sec.heading)}</h1><p class="l">${ed('desc', sec.desc)}</p><span class="sbtn">${ed('btn1', sec.btn1)}</span><span class="sbtn o">${ed('btn2', sec.btn2)}</span></div>${ph(sec.img || 'hero', '', sec.id)}</div>`;
+          ? `<div class="hero ${sec.hideBox ? 'no-img' : ''}"><div><div class="ey">${ed('ey', sec.ey)}</div><h1>${ed('heading', sec.heading)}</h1><p class="l">${ed('desc', sec.desc)}</p><span class="sbtn">${ed('btn1', sec.btn1)}</span><span class="sbtn o">${ed('btn2', sec.btn2)}</span></div>${ph(sec.img || 'hero', '', sec.id)}</div>`
+          : `<div class="hero ${sec.hideBox ? 'no-img' : ''}"><div class="tx"><div class="ey">${ed('ey', sec.ey)}</div><h1>${ed('heading', sec.heading)}</h1><p class="l">${ed('desc', sec.desc)}</p><span class="sbtn">${ed('btn1', sec.btn1)}</span><span class="sbtn o">${ed('btn2', sec.btn2)}</span></div>${ph(sec.img || 'hero', '', sec.id)}</div>`;
         break;
 
       case 'about':
-        inner = `<div class="s base"><div class="split rev">${ph(sec.img || 'about', '', sec.id)}<div><div class="ey">${ed('ey', sec.ey)}</div><h2 style="font-size:clamp(26px,4.4cqw,38px)">${ed('heading', sec.heading)}</h2><p>${ed('desc', sec.desc)}</p></div></div></div>`;
+        inner = `<div class="s base"><div class="split rev ${sec.hideBox ? 'no-img' : ''}">${ph(sec.img || 'about', '', sec.id)}<div><div class="ey">${ed('ey', sec.ey)}</div><h2 style="font-size:clamp(26px,4.4cqw,38px)">${ed('heading', sec.heading)}</h2><p>${ed('desc', sec.desc)}</p></div></div></div>`;
         break;
 
       case 'how':
@@ -6469,11 +6503,11 @@ body.sb-fullscreen-active{overflow:hidden}
         break;
 
       case 'contact':
-        inner = `<div class="s tn"><div class="split"><div><div class="ey">${ed('ey', sec.ey)}</div><h2 style="font-size:clamp(26px,4.4cqw,38px)">${ed('heading', sec.heading)}</h2><p style="margin-bottom:14px">${ed('desc', sec.desc)}</p><div style="color:var(--ink);line-height:1.8">${ed('details', sec.details || '<b>Friends of Fairview</b><br>(469) 331-2520<br>info@friendsoffairview.org', 'div')}</div></div>${ph(sec.img || 'map', 'map', sec.id)}</div><p class="who" style="margin-top:12px;text-align:center">${ed('footerNote', sec.footerNote || 'Friends of Fairview’s service area is highlighted in red.')}</p></div>`;
+        inner = `<div class="s tn"><div class="split ${sec.hideBox ? 'no-img' : ''}"><div><div class="ey">${ed('ey', sec.ey)}</div><h2 style="font-size:clamp(26px,4.4cqw,38px)">${ed('heading', sec.heading)}</h2><p style="margin-bottom:14px">${ed('desc', sec.desc)}</p><div style="color:var(--ink);line-height:1.8">${ed('details', sec.details || '<b>Friends of Fairview</b><br>(469) 331-2520<br>info@friendsoffairview.org', 'div')}</div></div>${ph(sec.img || 'map', 'map', sec.id)}</div><p class="who" style="margin-top:12px;text-align:center">${ed('footerNote', sec.footerNote || 'Friends of Fairview’s service area is highlighted in red.')}</p></div>`;
         break;
 
       case 'don':
-        inner = `<div class="s br"><div class="split">${ph(sec.img || 'dinner', '', sec.id)}<div><div class="ey">${ed('ey', sec.ey)}</div><h2 style="font-size:clamp(26px,4.4cqw,38px)">${ed('heading', sec.heading)}</h2><p>${ed('desc', sec.desc)}</p><span class="sbtn">${ed('btn1', sec.btn1 || 'Donate')}</span><span class="sbtn o">${ed('btn2', sec.btn2 || 'Read more (PDF)')}</span></div></div></div>`;
+        inner = `<div class="s br"><div class="split ${sec.hideBox ? 'no-img' : ''}">${ph(sec.img || 'dinner', '', sec.id)}<div><div class="ey">${ed('ey', sec.ey)}</div><h2 style="font-size:clamp(26px,4.4cqw,38px)">${ed('heading', sec.heading)}</h2><p>${ed('desc', sec.desc)}</p><span class="sbtn">${ed('btn1', sec.btn1 || 'Donate')}</span><span class="sbtn o">${ed('btn2', sec.btn2 || 'Read more (PDF)')}</span></div></div></div>`;
         break;
 
       case 'text':
@@ -6529,6 +6563,7 @@ body.sb-fullscreen-active{overflow:hidden}
         <div class="sb-sec-bar">
           <span class="sb-sec-tag">${sec.title || sec.type}</span>
           <button type="button" onclick="SB.openAddDrawer('elements', null, '${sec.id}')" title="Add element to section" style="background:#4f46e5;color:#fff;border-radius:3px"><i class="fa fa-cube"></i> + Element</button>
+          ${((sec.type === 'hero' || sec.type === 'about' || sec.type === 'contact' || sec.type === 'don') && (sec.hideImg || sec.hideBox)) ? `<button type="button" onclick="SB.restorePhoto('${sec.img || (sec.type === 'contact' ? 'map' : sec.type === 'don' ? 'dinner' : sec.type)}', '${sec.id}')" title="Restore photo to this section" style="background:#10b981;color:#fff;border-radius:3px"><i class="fa fa-picture-o"></i> + Photo</button>` : ''}
           <button type="button" onclick="SB.openSecSettingsModal('${sec.id}')" title="Section styles &amp; layout"><i class="fa fa-sliders"></i> Style</button>
           <button type="button" onclick="SB.openHtmlSourceModal('${sec.id}')" title="Edit section HTML"><i class="fa fa-code"></i> HTML</button>
           <button type="button" onclick="SB.moveSection('${sec.id}', -1)" title="Move up"><i class="fa fa-chevron-up"></i></button>
@@ -6615,8 +6650,8 @@ body.sb-fullscreen-active{overflow:hidden}
 ${SB.SLOTS.map(function(s){
   const k = s[0], l = s[1];
   const hasCustomSize = SB.state.imgStyles && SB.state.imgStyles[k];
-  const associatedSec = SB.state.sections.find(function(sec){ return (sec.img === k) || (k === 'hero' && sec.type === 'hero') || (k === 'about' && sec.type === 'about') || (k === 'dinner' && sec.type === 'dinner') || (k === 'map' && sec.type === 'contact'); });
-  const isHiddenInSec = associatedSec && associatedSec.hideImg;
+  const associatedSec = SB.state.sections.find(function(sec){ return (sec.img === k) || (k === 'hero' && sec.type === 'hero') || (k === 'about' && sec.type === 'about') || (k === 'dinner' && (sec.type === 'don' || sec.type === 'dinner')) || (k === 'map' && sec.type === 'contact'); });
+  const isHiddenInSec = associatedSec && (associatedSec.hideImg || associatedSec.hideBox);
   return `<div class="sb-im" style="${isHiddenInSec ? 'opacity:.65' : ''}">
     <img src="${SB.IMG[k]}" alt="${l}" style="${isHiddenInSec ? 'filter:grayscale(1)' : ''}">
     <span>
@@ -6625,7 +6660,7 @@ ${SB.SLOTS.map(function(s){
       ${isHiddenInSec ? ' <small style="color:#ef4444;font-weight:700">(Removed)</small>' : ''}
     </span>
     ${isHiddenInSec
-      ? `<button type="button" onclick="SB.restorePhoto('${k}', '${associatedSec.id}')" title="Restore photo to section" style="background:#10b981;color:#fff;border-color:#10b981"><i class="fa fa-plus"></i> Add</button>`
+      ? `<button type="button" onclick="SB.restorePhoto('${k}', '${associatedSec ? associatedSec.id : ''}')" title="Restore photo to section" style="background:#10b981;color:#fff;border-color:#10b981"><i class="fa fa-plus"></i> Add</button>`
       : `<button type="button" class="sb-tool-size-btn" onclick="SB.openImgSizeModal('${k}')" title="Modify image size &amp; dimensions"><i class="fa fa-arrows-alt"></i> Size</button>
          <button type="button" onclick="SB.pick('${k}', '${associatedSec ? associatedSec.id : ''}')">Replace</button>
          <button type="button" onclick="SB.removePhoto('${k}', '${associatedSec ? associatedSec.id : ''}')" title="Remove photo from section" style="color:#ef4444;padding:3px 6px"><i class="fa fa-trash-o"></i></button>`
