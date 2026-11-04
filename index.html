@@ -3830,8 +3830,25 @@ body.sb-fullscreen-active{overflow:hidden}
     if (idx < 0) return;
     const orig = SB.state.sections[idx];
     const clone = JSON.parse(JSON.stringify(orig));
-    clone.id = 'sec_' + orig.type + '_' + Date.now();
+    const uid = Date.now() + '_' + Math.random().toString(36).substr(2, 4);
+    clone.id = 'sec_' + orig.type + '_' + uid;
     clone.title = (orig.title || orig.type) + ' (Copy)';
+
+    // Ensure cloned section has independent image slots so editing one does not affect the other
+    if (clone.img) {
+      const origSlot = clone.img;
+      const newSlot = clone.type + '_' + uid;
+      SB.IMG[newSlot] = SB.IMG[origSlot] || (SB.DEF && SB.DEF[origSlot]) || '';
+      clone.img = newSlot;
+    }
+    if (clone.items && Array.isArray(clone.items) && clone.type === 'gal') {
+      clone.items = clone.items.map(function(oldSlot, i){
+        const newSlot = 'gal_' + uid + '_' + i;
+        SB.IMG[newSlot] = SB.IMG[oldSlot] || (SB.DEF && SB.DEF[oldSlot]) || '';
+        return newSlot;
+      });
+    }
+
     SB.state.sections.splice(idx + 1, 0, clone);
     markDirty();
     SB.render();
@@ -4029,8 +4046,15 @@ body.sb-fullscreen-active{overflow:hidden}
     } else if (sec.type === 'stats') {
       sec.items.push({ num: '100+', label: 'New Metric', desc: 'Brief description of what this number represents.' });
     } else if (sec.type === 'gal') {
-      const slots = ['g1', 'g2', 'g3', 'g4'];
-      sec.items.push(slots[sec.items.length % slots.length]);
+      const uid = 'gal_' + Date.now() + '_' + Math.random().toString(36).substr(2, 4);
+      const fallbackDefs = [SB.DEF.g1, SB.DEF.g2, SB.DEF.g3, SB.DEF.g4];
+      SB.IMG[uid] = fallbackDefs[sec.items.length % fallbackDefs.length] || SB.DEF.g1;
+      sec.items.push(uid);
+      markDirty();
+      SB.render();
+      SB.pick(uid, sec.id);
+      toast('Photo slot added. Select an image from your computer to customize it.');
+      return;
     }
     markDirty();
     SB.render();
@@ -6309,6 +6333,23 @@ body.sb-fullscreen-active{overflow:hidden}
         `;
       }
       const imgUrl = (SB.IMG && SB.IMG[slot]) || (SB.DEF && SB.DEF[slot]) || (slot && slot.includes('/') ? slot : '');
+      const isGal = (cls && cls.includes('sb-gal-ph')) || (sec && sec.type === 'gal');
+      if (!imgUrl) {
+        let dzStyle = '';
+        if (s.aspectRatio && s.aspectRatio !== 'auto') dzStyle += `aspect-ratio:${s.aspectRatio} !important;`;
+        if (s.height && s.height !== 'auto') dzStyle += `height:${s.height} !important;min-height:${s.height} !important;`;
+        if (s.maxWidth) dzStyle += `max-width:${s.maxWidth} !important;`;
+        if (s.radius !== undefined && s.radius !== '') dzStyle += `border-radius:${s.radius} !important;`;
+        return `
+          <div class="sb-ph-dropzone ${cls}" data-img-slot="${slot}" data-sec-id="${sec ? sec.id : ''}" style="${dzStyle}" onclick="event.stopPropagation();SB.pick('${slot}','${sec ? sec.id : ''}')" title="Click to browse or Drag &amp; Drop image here">
+            <div class="sb-ph-dropzone-inner">
+              <i class="fa fa-picture-o"></i>
+              <div class="sb-ph-dropzone-title">+ Add Photo</div>
+              <div class="sb-ph-dropzone-sub">Click to browse or Drag &amp; Drop image file here</div>
+            </div>
+          </div>
+        `;
+      }
       let inlineStyle = `background-image:url('${imgUrl}');`;
       if (s.aspectRatio && s.aspectRatio !== 'auto') inlineStyle += `aspect-ratio:${s.aspectRatio} !important;`;
       if (s.height && s.height !== 'auto') inlineStyle += `height:${s.height} !important;min-height:${s.height} !important;`;
@@ -6334,7 +6375,7 @@ body.sb-fullscreen-active{overflow:hidden}
             <div class="sb-ph-overlay-actions">
               <button type="button" class="sb-ph-btn sb-ph-size-btn" onclick="event.stopPropagation();SB.openImgSizeModal('${slot}')" title="Modify image size &amp; style"><i class="fa fa-arrows-alt"></i> Size &amp; Style</button>
               <button type="button" class="sb-ph-btn sb-ph-swap-btn" onclick="event.stopPropagation();SB.pick('${slot}','${secId || ''}')" title="Replace / swap photo"><i class="fa fa-picture-o"></i> Swap</button>
-              <button type="button" class="sb-ph-btn sb-ph-del-btn" onclick="event.stopPropagation();SB.removePhoto('${slot}','${secId || ''}')" title="Remove photo from section"><i class="fa fa-trash-o"></i> Remove</button>
+              ${isGal ? '' : `<button type="button" class="sb-ph-btn sb-ph-del-btn" onclick="event.stopPropagation();SB.removePhoto('${slot}','${secId || ''}')" title="Remove photo from section"><i class="fa fa-trash-o"></i> Remove</button>`}
             </div>
           </div>
         </div>
@@ -6491,8 +6532,8 @@ body.sb-fullscreen-active{overflow:hidden}
         inner = `<div class="s sf">${secHdr()}<div class="gal">` +
           (sec.items || []).map(function(slot, i){
             return `<div class="sb-item-wrap" style="position:relative">
-              <button type="button" class="sb-item-del" onclick="event.stopPropagation();SB.deleteItem('${sec.id}', ${i})" title="Delete photo" style="top:6px;right:6px"><i class="fa fa-times"></i></button>
-              ${ph(slot)}
+              <button type="button" class="sb-item-del" onclick="event.stopPropagation();SB.deleteItem('${sec.id}', ${i})" title="Delete photo slot"><i class="fa fa-times"></i></button>
+              ${ph(slot, 'sb-gal-ph', sec.id)}
             </div>`;
           }).join('') +
           `<div class="sb-item-add-card" style="min-height:160px" onclick="SB.addItem('${sec.id}')">
@@ -6683,7 +6724,30 @@ ${SB.SLOTS.map(function(s){
     setTimeout(function(){ if(typeof SB.initDragDrop === 'function') SB.initDragDrop(); }, 50);
   };
 
+  function ensureUniqueGallerySlots(){
+    const seen = new Set();
+    const fallbackDefs = [SB.DEF.g1, SB.DEF.g2, SB.DEF.g3, SB.DEF.g4];
+    (SB.state.sections || []).forEach(function(sec){
+      if (sec.type === 'gal' && Array.isArray(sec.items)) {
+        sec.items = sec.items.map(function(slot, idx){
+          if (!slot || seen.has(slot)) {
+            const uid = 'gal_' + Date.now() + '_' + idx + '_' + Math.random().toString(36).substr(2, 4);
+            SB.IMG[uid] = (slot && SB.IMG[slot]) || fallbackDefs[idx % fallbackDefs.length] || SB.DEF.g1;
+            seen.add(uid);
+            return uid;
+          }
+          if (!SB.IMG[slot] && !SB.DEF[slot]) {
+            SB.IMG[slot] = fallbackDefs[idx % fallbackDefs.length] || SB.DEF.g1;
+          }
+          seen.add(slot);
+          return slot;
+        });
+      }
+    });
+  }
+
   SB.render = function(){
+    ensureUniqueGallerySlots();
     const m = SB.state.tpl === 'modern', b = SB.state.brand[SB.state.tpl];
     $('#sb-site').className = 'sb-site ' + (SB.state.tpl === 'classic' ? 'sb-classic' : '');
     $('#sb-site').style.setProperty('--brand', b);
@@ -6849,6 +6913,7 @@ ${SB.SLOTS.map(function(s){
       if (data.imgStyles) {
         SB.state.imgStyles = data.imgStyles;
       }
+      ensureUniqueGallerySlots();
       return true;
     } catch(e) {
       console.error('Error loading sitebuilder design from localStorage:', e);
