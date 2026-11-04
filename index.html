@@ -808,14 +808,25 @@ body.sb-fullscreen-active{overflow:hidden}
 .sb-site .s:not(.br):not(.hero):not(.sb-sec-custom-bg) .sbtn.o:hover{background:var(--brand);color:#ffffff !important}
 
 /* Button wrapper and hover actions */
+/* Button wrapper and click-activated edit options (No outer borders) */
 .sb-btn-group{display:inline-flex;align-items:center;flex-wrap:wrap;gap:10px;margin-top:8px}
-.sb-btn-wrap{position:relative;display:inline-flex;align-items:center}
-.sb-btn-actions-bar{position:absolute;bottom:calc(100% + 5px);left:50%;transform:translateX(-50%) translateY(4px);display:inline-flex;align-items:center;gap:3px;background:rgba(15,23,42,.92);backdrop-filter:blur(6px);padding:3px 6px;border-radius:6px;border:1px solid rgba(255,255,255,.2);box-shadow:0 6px 16px rgba(0,0,0,.25);opacity:0;pointer-events:none;transition:all .15s ease;z-index:50;white-space:nowrap}
-.sb-btn-wrap:hover .sb-btn-actions-bar{opacity:1;pointer-events:auto;transform:translateX(-50%) translateY(0)}
-.sb-btn-tool-btn{background:transparent;border:0;color:#fff;font:600 11px system-ui,-apple-system,sans-serif;padding:3px 8px;border-radius:4px;cursor:pointer;display:inline-flex;align-items:center;gap:5px;transition:background .15s}
-.sb-btn-tool-btn:hover{background:var(--primary,#2563eb)}
-.sb-btn-tool-del{background:transparent;border:0;color:#fca5a5;padding:3px 6px;border-radius:4px;cursor:pointer;font-size:11px}
+.sb-btn-wrap{position:relative;display:inline-flex;align-items:center;cursor:pointer}
+.sb-btn-actions-bar{position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%) translateY(4px);display:inline-flex;align-items:center;gap:4px;background:#0f172a;backdrop-filter:blur(8px);padding:4px 8px;border-radius:7px;border:1px solid rgba(255,255,255,.22);box-shadow:0 8px 24px rgba(0,0,0,.32);opacity:0;pointer-events:none;transition:opacity .15s ease,transform .15s ease;z-index:60;white-space:nowrap}
+.sb-btn-actions-bar::after{content:'';position:absolute;top:100%;left:50%;transform:translateX(-50%);border:5px solid transparent;border-top-color:#0f172a}
+.sb-btn-actions-bar::before{content:'';position:absolute;top:100%;left:0;right:0;height:12px}
+.sb-btn-wrap.is-active .sb-btn-actions-bar,.sb-btn-wrap.active .sb-btn-actions-bar{opacity:1;pointer-events:auto;transform:translateX(-50%) translateY(0)}
+.sb-btn-tool-btn{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);color:#fff;font:600 11px system-ui,-apple-system,sans-serif;padding:4px 10px;border-radius:5px;cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:all .15s}
+.sb-btn-tool-btn:hover{background:var(--primary,#2563eb);border-color:var(--primary,#2563eb);transform:translateY(-1px)}
+.sb-btn-tool-del{background:transparent;border:0;color:#fca5a5;padding:4px 7px;border-radius:4px;cursor:pointer;font-size:12px;transition:all .15s}
 .sb-btn-tool-del:hover{background:#ef4444;color:#fff}
+.sb-btn-tool-close{background:transparent;border:0;color:#94a3b8;padding:4px 6px;border-radius:4px;cursor:pointer;font-size:11px;transition:all .15s;margin-left:2px}
+.sb-btn-tool-close:hover{background:rgba(255,255,255,.15);color:#fff}
+
+/* Navbar CTA dropdown position */
+.sb-site .nav .sb-btn-actions-bar{top:calc(100% + 8px);bottom:auto;transform:translateX(-50%) translateY(-4px)}
+.sb-site .nav .sb-btn-actions-bar::after{top:auto;bottom:100%;border-top-color:transparent;border-bottom-color:#0f172a}
+.sb-site .nav .sb-btn-actions-bar::before{top:auto;bottom:100%;height:12px}
+.sb-site .nav .sb-btn-wrap.is-active .sb-btn-actions-bar,.sb-site .nav .sb-btn-wrap.active .sb-btn-actions-bar{transform:translateX(-50%) translateY(0)}
 .sb-btn-add-tool{display:inline-flex;align-items:center;gap:4px;padding:6px 12px;font-size:12px;font-weight:600;border:1.5px dashed var(--bdr,#cbd5e1);border-radius:var(--br,99px);background:rgba(241,245,249,.6);color:var(--mt);cursor:pointer;transition:all .15s;margin-top:6px}
 .sb-btn-add-tool:hover{border-color:var(--primary);color:var(--primary);background:rgba(59,130,246,.08)}
 .sbtn-sm{padding:8px 16px !important;font-size:12px !important}
