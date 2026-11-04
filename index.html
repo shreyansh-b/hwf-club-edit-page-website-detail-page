@@ -695,8 +695,9 @@ main{min-width:0;padding:6px 12px 24px}
 .sb-top-tool-btn.active{background:#e0e7ff;color:#4338ca;border-color:#a5b4fc}
 
 /* Floating Rich Text WYSIWYG Formatting Toolbar */
-.sb-rte-toolbar{position:absolute;z-index:9999;display:none;align-items:center;gap:3px;background:#0f172a;color:#fff;border-radius:8px;padding:5px 8px;box-shadow:0 12px 32px rgba(0,0,0,.4);border:1px solid #334155;user-select:none;transform:translate(-50%, -100%);margin-top:-10px;pointer-events:auto}
-.sb-rte-toolbar:after{content:"";position:absolute;bottom:-6px;left:50%;transform:translateX(-50%);border-width:6px 6px 0 6px;border-style:solid;border-color:#0f172a transparent transparent transparent}
+.sb-rte-toolbar{position:fixed;z-index:99999;display:none;align-items:center;flex-wrap:wrap;gap:3px;background:#0f172a;color:#fff;border-radius:8px;padding:5px 8px;box-shadow:0 12px 32px rgba(0,0,0,.45);border:1px solid #334155;user-select:none;pointer-events:auto;max-width:calc(100vw - 20px);box-sizing:border-box}
+.sb-rte-toolbar:after{content:"";position:absolute;bottom:-6px;left:var(--arrow-left, 50%);transform:translateX(-50%);border-width:6px 6px 0 6px;border-style:solid;border-color:#0f172a transparent transparent transparent}
+.sb-rte-toolbar.is-below:after{bottom:auto;top:-6px;border-width:0 6px 6px 6px;border-color:transparent transparent #0f172a transparent}
 .sb-rte-toolbar select{background:#1e293b;color:#fff;border:1px solid #475569;border-radius:4px;padding:3px 6px;font-size:11px;outline:none;cursor:pointer}
 .sb-rte-toolbar button{background:transparent;border:0;color:#cbd5e1;width:26px;height:26px;border-radius:4px;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;font-size:12px;transition:all .15s}
 .sb-rte-toolbar button:hover{background:#334155;color:#fff}
@@ -705,6 +706,13 @@ main{min-width:0;padding:6px 12px 24px}
 .sb-rte-color-picker{position:relative;display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:4px;cursor:pointer;color:#cbd5e1;transition:background .15s}
 .sb-rte-color-picker:hover{background:#334155;color:#fff}
 .sb-rte-color-picker input[type="color"]{position:absolute;opacity:0;inset:0;width:100%;height:100%;cursor:pointer}
+@media (max-width: 640px) {
+  .sb-rte-toolbar{padding:4px 6px;gap:2px;max-width:calc(100vw - 16px)}
+  .sb-rte-toolbar select{padding:2px 4px;font-size:10.5px;max-width:85px}
+  .sb-rte-toolbar button{width:24px;height:24px;font-size:11px}
+  .sb-rte-color-picker{width:24px;height:24px}
+  .sb-rte-divider{height:14px;margin:0 1px}
+}
 
 /* HTML Source Code Modal */
 .sb-html-modal-backdrop{position:fixed;inset:0;background:rgba(15,23,42,.75);z-index:10000;display:none;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(3px)}
@@ -4379,7 +4387,7 @@ body.sb-fullscreen-active{overflow:hidden}
     }
   };
 
-  document.addEventListener('selectionchange', function() {
+  function positionRteToolbar() {
     const tb = ensureRteToolbarDOM();
     const sel = window.getSelection();
     if (!sel || sel.isCollapsed || !sel.rangeCount) {
@@ -4394,14 +4402,69 @@ body.sb-fullscreen-active{overflow:hidden}
       return;
     }
     const rect = range.getBoundingClientRect();
-    if (!rect || rect.width === 0) {
+    if (!rect || (rect.width === 0 && rect.height === 0)) {
       tb.style.display = 'none';
       return;
     }
+
+    const vpWidth = window.innerWidth || document.documentElement.clientWidth;
+    const vpHeight = window.innerHeight || document.documentElement.clientHeight;
+
+    // If selection is completely scrolled out of the viewport, hide the toolbar
+    if (rect.bottom < 0 || rect.top > vpHeight || rect.right < 0 || rect.left > vpWidth) {
+      tb.style.display = 'none';
+      return;
+    }
+
     tb.style.display = 'flex';
-    tb.style.left = (rect.left + rect.width / 2) + 'px';
-    tb.style.top = (rect.top + window.scrollY - 10) + 'px';
-  });
+
+    const tbWidth = tb.offsetWidth || 500;
+    const tbHeight = tb.offsetHeight || 38;
+    const pad = 10;
+
+    const targetCenterX = rect.left + (rect.width / 2);
+
+    // Clamp horizontally within viewport
+    let targetLeft = targetCenterX - (tbWidth / 2);
+    if (targetLeft < pad) {
+      targetLeft = pad;
+    } else if (targetLeft + tbWidth > vpWidth - pad) {
+      targetLeft = Math.max(pad, vpWidth - tbWidth - pad);
+    }
+
+    // Vertical positioning: prefer above selection, flip below if not enough headroom
+    let targetTop = 0;
+    let isBelow = false;
+    const spaceAbove = rect.top;
+
+    if (spaceAbove >= tbHeight + 14) {
+      targetTop = rect.top - tbHeight - 8;
+      isBelow = false;
+    } else {
+      targetTop = rect.bottom + 8;
+      isBelow = true;
+    }
+
+    // Clamp vertically within viewport
+    if (targetTop < pad) {
+      targetTop = pad;
+    } else if (targetTop + tbHeight > vpHeight - pad) {
+      targetTop = Math.max(pad, vpHeight - tbHeight - pad);
+    }
+
+    // Pointer arrow position relative to toolbar
+    const arrowOffset = targetCenterX - targetLeft;
+    const clampedArrow = Math.max(16, Math.min(arrowOffset, tbWidth - 16));
+
+    tb.style.left = Math.round(targetLeft) + 'px';
+    tb.style.top = Math.round(targetTop) + 'px';
+    tb.style.setProperty('--arrow-left', Math.round(clampedArrow) + 'px');
+    tb.classList.toggle('is-below', isBelow);
+  }
+
+  document.addEventListener('selectionchange', positionRteToolbar);
+  window.addEventListener('scroll', positionRteToolbar, true);
+  window.addEventListener('resize', positionRteToolbar, true);
 
   /* ============================================================
      3. HTML Source Code Modal & Editor
