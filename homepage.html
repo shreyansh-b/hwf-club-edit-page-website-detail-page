@@ -563,7 +563,9 @@
         if (data.hid) siteState.hid = Object.assign({}, data.hid);
         if (data.T) siteState.T = Object.assign({}, data.T);
         if (data.navBrand) siteState.navBrand = data.navBrand;
-        if (data.navLogin) siteState.navLogin = data.navLogin;
+        if (data.navLogin) {
+          siteState.navLogin = data.navLogin.replace(/,\s*no password needed/gi, '').replace(/\s*no password needed/gi, '').trim();
+        }
         if (data.sections && Array.isArray(data.sections) && data.sections.length > 0) {
           siteState.sections = data.sections;
         } else if (data.secOrder && Array.isArray(data.secOrder)) {

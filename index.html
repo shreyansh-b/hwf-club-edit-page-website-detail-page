@@ -7444,7 +7444,9 @@ ${SB.SLOTS.map(function(s){
     $('#sb-site').className = 'sb-site ' + (SB.state.tpl === 'classic' ? 'sb-classic' : '');
     $('#sb-site').style.setProperty('--brand', b);
 
-    let siteHTML = `<div class="nav"><b contenteditable="true" data-nav="brand">${SB.state.navBrand || "Friends of Fairview"}</b><span><span contenteditable="true" data-nav="login">${SB.state.navLogin || "Already subscribed? Log in"}</span></span></div>`;
+    let navLoginText = (SB.state.navLogin || 'Already subscribed? Log in').replace(/,\s*no password needed/gi, '').replace(/\s*no password needed/gi, '').trim();
+    SB.state.navLogin = navLoginText;
+    let siteHTML = `<div class="nav"><b contenteditable="true" data-nav="brand">${SB.state.navBrand || "Friends of Fairview"}</b><span><span contenteditable="true" data-nav="login">${navLoginText}</span></span></div>`;
 
     // Render sections with inter-section add lines
     siteHTML += `<div class="sb-sec-add-line"><button type="button" class="sb-sec-add-btn" onclick="SB.openAddSecModal(0)"><i class="fa fa-plus"></i> Add Section</button></div>`;
@@ -7581,7 +7583,9 @@ ${SB.SLOTS.map(function(s){
       if (data.brand) SB.state.brand = Object.assign(SB.state.brand, data.brand);
       if (data.dev) SB.state.dev = data.dev;
       if (data.navBrand) SB.state.navBrand = data.navBrand;
-      if (data.navLogin) SB.state.navLogin = data.navLogin;
+      if (data.navLogin) {
+        SB.state.navLogin = data.navLogin.replace(/,\s*no password needed/gi, '').replace(/\s*no password needed/gi, '').trim();
+      }
 
       if (data.sections && Array.isArray(data.sections) && data.sections.length > 0) {
         SB.state.sections = data.sections;
