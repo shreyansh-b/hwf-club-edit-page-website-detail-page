@@ -169,10 +169,15 @@
     .sb-site:not(.sb-classic) .sbtn { background: var(--brand); }
     .sb-site .br .sbtn { background: #fff; color: var(--brand); }
     .sb-site .br .sbtn.o { background: transparent; color: #ffffff !important; border-color: #ffffff; }
-    .sb-site .hero .sbtn.o, .sb-site.sb-classic .hero .sbtn.o { background: transparent; border: 1.5px solid #ffffff; color: #ffffff !important; }
-    .sb-site .hero .sbtn.o:hover, .sb-site.sb-classic .hero .sbtn.o:hover, .sb-site .br .sbtn.o:hover, .sb-site .sbtn.o:hover { background: rgba(255,255,255,.18); color: #ffffff !important; }
+    .sb-site:not(.sb-classic) .hero .sbtn.o { background: transparent; border: 1.5px solid var(--brand); color: var(--brand) !important; }
+    .sb-site:not(.sb-classic) .hero .sbtn.o:hover { background: var(--brand); color: #ffffff !important; }
+    .sb-site.sb-classic .hero .sbtn.o { background: transparent; border: 1.5px solid #ffffff; color: #ffffff !important; }
+    .sb-site.sb-classic .hero .sbtn.o:hover { background: rgba(255,255,255,.18); color: #ffffff !important; }
     .sb-site .s:not(.br):not(.hero):not(.sb-sec-custom-bg) .sbtn.o { border: 1.5px solid var(--brand); color: var(--brand) !important; }
     .sb-site .s:not(.br):not(.hero):not(.sb-sec-custom-bg) .sbtn.o:hover { background: var(--brand); color: #ffffff !important; }
+    .sbtn-sm { padding: 8px 16px !important; font-size: 12px !important; }
+    .sbtn-md { padding: 12px 22px !important; font-size: 14px !important; }
+    .sbtn-lg { padding: 16px 30px !important; font-size: 16px !important; }
     
     /* Navigation Bar */
     .sb-site .nav {
@@ -544,7 +549,8 @@
       sections: null,
       secOrder: ['hero', 'about', 'how', 'plans', 'hol', 'gal', 'don', 'say', 'contact'],
       IMG: Object.assign({}, DEF_IMG),
-      imgStyles: {}
+      imgStyles: {},
+      btnStyles: {}
     };
 
     function loadSavedDesign() {
@@ -570,6 +576,9 @@
         }
         if (data.imgStyles) {
           siteState.imgStyles = data.imgStyles;
+        }
+        if (data.btnStyles) {
+          siteState.btnStyles = data.btnStyles;
         }
         if (data.savedAt) {
           const dt = new Date(data.savedAt);
@@ -611,9 +620,53 @@
     };
     const hdr = (k, ey, title, desc) => `<div class="hd"><div class="ey">${t(k + "e", ey)}</div><h2>${t(k + "t", title)}</h2>${desc ? `<p>${t(k + "p", desc)}</p>` : ""}</div>`;
 
-    function renderElementsHTML(elements, isModern) {
+    const renderBtn = function(sec, btnKey, defaultText, defaultVariant, defaultAction) {
+      let text = defaultText;
+      if (sec && sec[btnKey] !== undefined && sec[btnKey] !== null) {
+        text = sec[btnKey];
+      }
+      if (!text) return '';
+
+      const btnId = (sec ? sec.id : '') + '_' + btnKey;
+      const cfg = (siteState.btnStyles && siteState.btnStyles[btnId]) || {};
+      const variant = cfg.variant || defaultVariant || 'solid';
+      const radius = cfg.radius !== undefined && cfg.radius !== '' ? cfg.radius : '';
+      const size = cfg.size || 'md';
+      const icon = cfg.icon || '';
+      const action = cfg.action || defaultAction || 'subscribe';
+
+      let customStyle = '';
+      if (cfg.bg) customStyle += `background:${cfg.bg} !important;`;
+      if (cfg.color) customStyle += `color:${cfg.color} !important;`;
+      if (cfg.borderColor) customStyle += `border-color:${cfg.borderColor} !important;`;
+      if (radius !== '') customStyle += `border-radius:${radius} !important;`;
+
+      let clickHandler = '';
+      let href = 'javascript:void(0)';
+      let target = '';
+
+      if (action === 'subscribe') {
+        clickHandler = `onclick="openSubscribeModal();return false;"`;
+      } else if (action === 'manage') {
+        clickHandler = `onclick="openManageModal();return false;"`;
+      } else if (action === 'donate') {
+        clickHandler = `onclick="openDonateModal();return false;"`;
+      } else if (action === 'scroll') {
+        const sel = cfg.scrollTarget || '#pricing';
+        clickHandler = `onclick="var el=document.querySelector('${sel}');if(el)el.scrollIntoView({behavior:'smooth'});return false;"`;
+      } else if (action === 'pdf') {
+        clickHandler = `onclick="showToast('Annual Appreciation Dinner PDF flyer will download');return false;"`;
+      } else if (action === 'url' && cfg.url) {
+        href = cfg.url;
+        if (cfg.newTab !== false) target = `target="_blank" rel="noopener noreferrer"`;
+      }
+
+      return `<a href="${href}" ${target} class="sbtn ${variant === 'outline' ? 'o' : ''} ${size !== 'md' ? 'sbtn-' + size : ''}" style="${customStyle}" ${clickHandler}>${icon ? `<i class="fa ${icon}" style="margin-right:6px"></i>` : ''}${text}</a>`;
+    };
+
+    function renderElementsHTML(elements, isModern, sec) {
       if (!elements || !Array.isArray(elements) || elements.length === 0) return '';
-      return `<div class="sb-sec-elements">` + elements.map(function(el) {
+      return `<div class="sb-sec-elements">` + elements.map(function(el, idx) {
         switch(el.type) {
           case 'input':
             return `
@@ -780,7 +833,7 @@
           case 'cta-btn':
             return `
               <div class="sb-el-cta-btn">
-                <button class="sbtn" onclick="openSubscribeModal()">${el.text || 'Subscribe to Holiday Flag Program'}</button>
+                ${renderBtn(sec, 'el_' + idx, el.text || 'Subscribe to Holiday Flag Program', 'solid', 'subscribe')}
               </div>`;
 
           case 'form':
@@ -899,8 +952,8 @@
         case 'hero':
           const hasHeroImg = !sec.hideImg && !sec.hideBox;
           inner = (isModern
-            ? `<div class="hero ${!hasHeroImg ? 'no-img' : ''}"><div><div class="ey">${sec.ey || "Friends of Fairview · Fairview, TX"}</div><h1>${sec.heading || "Flags on every holiday, placed by your neighbors."}</h1><p class="l">${sec.desc || "Volunteers place a full-size American flag at your home or business before each national holiday and collect it afterward. Every subscription supports Fairview’s first responders."}</p><button class="sbtn" onclick="openSubscribeModal()">${sec.btn1 || "Subscribe now"}</button><button class="sbtn o" onclick="openManageModal()">${sec.btn2 || "Manage my subscription"}</button></div>${hasHeroImg ? ph(sec.img || 'hero') : ''}</div>`
-            : `<div class="hero ${!hasHeroImg ? 'no-img' : ''}"><div class="tx"><div class="ey">${sec.ey || "Friends of Fairview · Stars & Stripes Flag Program"}</div><h1>${sec.heading || "Fly the flag on every holiday that matters."}</h1><p class="l">${sec.desc || "Volunteers place a full-size American flag at your home or business before each national holiday and collect it afterward. Every subscription supports Fairview’s first responders."}</p><button class="sbtn" onclick="openSubscribeModal()">${sec.btn1 || "Subscribe now"}</button><button class="sbtn o" onclick="openManageModal()">${sec.btn2 || "Manage my subscription"}</button></div>${hasHeroImg ? ph(sec.img || 'hero') : ''}</div>`) + elementsHTML;
+            ? `<div class="hero ${!hasHeroImg ? 'no-img' : ''}"><div><div class="ey">${sec.ey || "Friends of Fairview · Fairview, TX"}</div><h1>${sec.heading || "Flags on every holiday, placed by your neighbors."}</h1><p class="l">${sec.desc || "Volunteers place a full-size American flag at your home or business before each national holiday and collect it afterward. Every subscription supports Fairview’s first responders."}</p><div>${renderBtn(sec, 'btn1', 'Subscribe now', 'solid', 'subscribe')} ${renderBtn(sec, 'btn2', 'Manage my subscription', 'outline', 'manage')}</div></div>${hasHeroImg ? ph(sec.img || 'hero') : ''}</div>`
+            : `<div class="hero ${!hasHeroImg ? 'no-img' : ''}"><div class="tx"><div class="ey">${sec.ey || "Friends of Fairview · Stars & Stripes Flag Program"}</div><h1>${sec.heading || "Fly the flag on every holiday that matters."}</h1><p class="l">${sec.desc || "Volunteers place a full-size American flag at your home or business before each national holiday and collect it afterward. Every subscription supports Fairview’s first responders."}</p><div>${renderBtn(sec, 'btn1', 'Subscribe now', 'solid', 'subscribe')} ${renderBtn(sec, 'btn2', 'Manage my subscription', 'outline', 'manage')}</div></div>${hasHeroImg ? ph(sec.img || 'hero') : ''}</div>`) + elementsHTML;
           break;
 
         case 'about':
@@ -951,7 +1004,7 @@
           break;
 
         case 'cta':
-          inner = `<div class="s br" id="cta"><div class="cta-banner"><div class="ey">${sec.ey || "Get Started Today"}</div><h2>${sec.heading || "Ready to join our community flag program?"}</h2><p>${sec.desc || "Sign up in two minutes. Support Fairview first responders and show pride on every major holiday."}</p><div><button class="sbtn" onclick="openSubscribeModal()">${sec.btn1 || "Subscribe now"}</button>${sec.btn2 ? `<button class="sbtn o" onclick="openManageModal()">${sec.btn2}</button>` : ''}</div></div>${elementsHTML}</div>`;
+          inner = `<div class="s br" id="cta"><div class="cta-banner"><div class="ey">${sec.ey || "Get Started Today"}</div><h2>${sec.heading || "Ready to join our community flag program?"}</h2><p>${sec.desc || "Sign up in two minutes. Support Fairview first responders and show pride on every major holiday."}</p><div>${renderBtn(sec, 'btn1', 'Subscribe now', 'solid', 'subscribe')} ${renderBtn(sec, 'btn2', '', 'outline', 'manage')}</div></div>${elementsHTML}</div>`;
           break;
 
         case 'hol':
@@ -962,7 +1015,7 @@
 
         case 'gal':
           inner = `<div class="s sf" id="gallery">${secHdr("Flag days", "Around Fairview", "")}<div class="gal">${
-            (sec.items || []).map(k => ph(k)).join('')
+            (sec.items || []).filter(k => (siteState.IMG && siteState.IMG[k]) || (DEF_IMG && DEF_IMG[k]) || (k && k.includes('/'))).map(k => ph(k)).join('')
           }</div>${elementsHTML}</div>`;
           break;
 
@@ -973,7 +1026,7 @@
 
         case 'don':
           const hasDonImg = !sec.hideImg && !sec.hideBox;
-          inner = `<div class="s br" id="dinner"><div class="split ${!hasDonImg ? 'no-img' : ''}">${hasDonImg ? ph(sec.img || 'dinner') : ''}<div><div class="ey">${sec.ey || "Additional donation"}</div><h2 style="font-size:clamp(26px,4.4cqw,38px)">${sec.heading || "First Responders Appreciation Dinner"}</h2><p>${sec.desc || "Each year, we host an Appreciation Dinner to honor all of Fairview’s first responders (Police, Fire and EMS), and we’d be grateful for your support."}</p><button class="sbtn" onclick="openDonateModal()">${sec.btn1 || "Donate"}</button><a href="#" class="sbtn o" onclick="showToast('Annual Appreciation Dinner PDF flyer will download');return false;">${sec.btn2 || "Read more (PDF)"}</a></div></div>${elementsHTML}</div>`;
+          inner = `<div class="s br" id="dinner"><div class="split ${!hasDonImg ? 'no-img' : ''}">${hasDonImg ? ph(sec.img || 'dinner') : ''}<div><div class="ey">${sec.ey || "Additional donation"}</div><h2 style="font-size:clamp(26px,4.4cqw,38px)">${sec.heading || "First Responders Appreciation Dinner"}</h2><p>${sec.desc || "Each year, we host an Appreciation Dinner to honor all of Fairview’s first responders (Police, Fire and EMS), and we’d be grateful for your support."}</p><div>${renderBtn(sec, 'btn1', 'Donate', 'solid', 'donate')} ${renderBtn(sec, 'btn2', 'Read more (PDF)', 'outline', 'pdf')}</div></div></div>${elementsHTML}</div>`;
           break;
 
         case 'text':

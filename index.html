@@ -785,10 +785,27 @@ body.sb-fullscreen-active{overflow:hidden}
 .sb-site .hero h1{font-size:clamp(32px,6.4cqw,60px)}
 .sb-site .hero p.l{margin:16px 0 20px;color:var(--mt);max-width:48ch}
 .sb-site .hero .ph{aspect-ratio:5/4;border-radius:var(--r)}
-.sb-site .hero .sbtn.o, .sb-site.sb-classic .hero .sbtn.o{background:transparent;border:1.5px solid #ffffff;color:#ffffff !important}
-.sb-site .hero .sbtn.o:hover, .sb-site.sb-classic .hero .sbtn.o:hover, .sb-site .br .sbtn.o:hover, .sb-site .sbtn.o:hover{background:rgba(255,255,255,.18);color:#ffffff !important}
+.sb-site:not(.sb-classic) .hero .sbtn.o{background:transparent;border:1.5px solid var(--brand);color:var(--brand) !important}
+.sb-site:not(.sb-classic) .hero .sbtn.o:hover{background:var(--brand);color:#ffffff !important}
+.sb-site.sb-classic .hero .sbtn.o{background:transparent;border:1.5px solid #ffffff;color:#ffffff !important}
+.sb-site.sb-classic .hero .sbtn.o:hover{background:rgba(255,255,255,.18);color:#ffffff !important}
 .sb-site .s:not(.br):not(.hero):not(.sb-sec-custom-bg) .sbtn.o{border:1.5px solid var(--brand);color:var(--brand) !important}
 .sb-site .s:not(.br):not(.hero):not(.sb-sec-custom-bg) .sbtn.o:hover{background:var(--brand);color:#ffffff !important}
+
+/* Button wrapper and hover actions */
+.sb-btn-group{display:inline-flex;align-items:center;flex-wrap:wrap;gap:10px;margin-top:8px}
+.sb-btn-wrap{position:relative;display:inline-flex;align-items:center}
+.sb-btn-actions-bar{position:absolute;bottom:calc(100% + 5px);left:50%;transform:translateX(-50%) translateY(4px);display:inline-flex;align-items:center;gap:3px;background:rgba(15,23,42,.92);backdrop-filter:blur(6px);padding:3px 6px;border-radius:6px;border:1px solid rgba(255,255,255,.2);box-shadow:0 6px 16px rgba(0,0,0,.25);opacity:0;pointer-events:none;transition:all .15s ease;z-index:50;white-space:nowrap}
+.sb-btn-wrap:hover .sb-btn-actions-bar{opacity:1;pointer-events:auto;transform:translateX(-50%) translateY(0)}
+.sb-btn-tool-btn{background:transparent;border:0;color:#fff;font:600 11px system-ui,-apple-system,sans-serif;padding:3px 8px;border-radius:4px;cursor:pointer;display:inline-flex;align-items:center;gap:5px;transition:background .15s}
+.sb-btn-tool-btn:hover{background:var(--primary,#2563eb)}
+.sb-btn-tool-del{background:transparent;border:0;color:#fca5a5;padding:3px 6px;border-radius:4px;cursor:pointer;font-size:11px}
+.sb-btn-tool-del:hover{background:#ef4444;color:#fff}
+.sb-btn-add-tool{display:inline-flex;align-items:center;gap:4px;padding:6px 12px;font-size:12px;font-weight:600;border:1.5px dashed var(--bdr,#cbd5e1);border-radius:var(--br,99px);background:rgba(241,245,249,.6);color:var(--mt);cursor:pointer;transition:all .15s;margin-top:6px}
+.sb-btn-add-tool:hover{border-color:var(--primary);color:var(--primary);background:rgba(59,130,246,.08)}
+.sbtn-sm{padding:8px 16px !important;font-size:12px !important}
+.sbtn-md{padding:12px 22px !important;font-size:14px !important}
+.sbtn-lg{padding:16px 30px !important;font-size:16px !important}
 .sb-site.sb-classic .hero{background:var(--brand);color:#fff;text-align:center;grid-template-columns:1fr;padding:0}
 .sb-site.sb-classic .hero .tx{padding:56px 6cqw 36px}
 .sb-site.sb-classic .hero p.l{color:#ffffffcc;margin:16px auto 20px}
@@ -817,6 +834,13 @@ body.sb-fullscreen-active{overflow:hidden}
 .sb-dropzone-del{position:absolute;top:-8px;right:-8px;z-index:25;width:22px;height:22px;border-radius:50%;background:#ef4444;color:#fff;border:2px solid #fff;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;box-shadow:0 2px 6px rgba(0,0,0,.25);transition:transform .15s ease,background .15s ease}
 .sb-dropzone-del:hover{transform:scale(1.15);background:#dc2626}
 .sb-dropzone-del i{font-size:11px !important;color:#fff !important;margin:0 !important;padding:0 !important;line-height:1 !important}
+.sb-site .gal .sb-ph-dropzone{aspect-ratio:1 !important;min-height:0 !important}
+.sb-site .gal .sb-ph-dropzone .sb-ph-dropzone-inner{padding:12px 6px;gap:5px}
+.sb-site .gal .sb-ph-dropzone .sb-ph-dropzone-inner i{font-size:24px;margin-bottom:0}
+.sb-site .gal .sb-ph-dropzone .sb-ph-dropzone-title{font-size:12.5px;font-weight:700}
+.sb-site .gal .sb-ph-dropzone .sb-ph-dropzone-sub{font-size:10px;opacity:.8;line-height:1.25}
+.sb-site .gal .ph .sb-ph-overlay-actions{top:8px;right:8px;gap:4px;flex-wrap:wrap;justify-content:flex-end;max-width:calc(100% - 16px)}
+.sb-site .gal .ph .sb-ph-btn{padding:4px 8px;font-size:10.5px}
 .sb-site .hero.no-img{grid-template-columns:1fr}
 .sb-site .split.no-img{grid-template-columns:1fr}
 .sb-tool-size-btn{display:inline-flex;align-items:center;gap:4px;padding:3px 8px;font-size:11px;font-weight:600;border:1px solid #cbd5e1;background:#f8fafc;border-radius:4px;cursor:pointer;color:#334155;transition:all .15s}
@@ -3447,7 +3471,14 @@ body.sb-fullscreen-active{overflow:hidden}
       sec = SB.state.sections.find(function(s){ return s.id === secId; });
     }
     if (!sec) {
-      sec = SB.state.sections.find(function(s){ return (s.img === slot) || (slot === 'hero' && s.type === 'hero') || (slot === 'about' && s.type === 'about') || (slot === 'dinner' && (s.type === 'don' || s.type === 'dinner')) || (slot === 'map' && s.type === 'contact'); });
+      sec = SB.state.sections.find(function(s){ return (s.img === slot) || (slot === 'hero' && s.type === 'hero') || (slot === 'about' && s.type === 'about') || (slot === 'dinner' && (s.type === 'don' || s.type === 'dinner')) || (slot === 'map' && s.type === 'contact') || (s.type === 'gal' && s.items && s.items.includes(slot)); });
+    }
+    if (sec && sec.type === 'gal') {
+      SB.IMG[slot] = '';
+      markDirty();
+      SB.render();
+      toast('Photo removed. Click "+ Add Photo" to choose another image, or delete the slot.');
+      return;
     }
     if (sec) {
       sec.hideImg = true;
@@ -3463,7 +3494,16 @@ body.sb-fullscreen-active{overflow:hidden}
       sec = SB.state.sections.find(function(s){ return s.id === secId; });
     }
     if (!sec) {
-      sec = SB.state.sections.find(function(s){ return (s.img === slot) || (slot === 'hero' && s.type === 'hero') || (slot === 'about' && s.type === 'about') || (slot === 'dinner' && (s.type === 'don' || s.type === 'dinner')) || (slot === 'map' && s.type === 'contact'); });
+      sec = SB.state.sections.find(function(s){ return (s.img === slot) || (slot === 'hero' && s.type === 'hero') || (slot === 'about' && s.type === 'about') || (slot === 'dinner' && (s.type === 'don' || s.type === 'dinner')) || (slot === 'map' && s.type === 'contact') || (s.type === 'gal' && s.items && s.items.includes(slot)); });
+    }
+    if (sec && sec.type === 'gal') {
+      if (!SB.IMG[slot] && SB.DEF[slot]) {
+        SB.IMG[slot] = SB.DEF[slot];
+      }
+      markDirty();
+      SB.render();
+      toast('Photo restored');
+      return;
     }
     if (sec) {
       sec.hideImg = false;
@@ -3471,7 +3511,7 @@ body.sb-fullscreen-active{overflow:hidden}
     }
     markDirty();
     SB.render();
-    toast('Photo restored');
+    toast('Photo restored to section');
   };
 
   /* ============================================================
@@ -3810,6 +3850,26 @@ body.sb-fullscreen-active{overflow:hidden}
     if (idx < 0) return;
     const sec = SB.state.sections[idx];
 
+    if (sec.type === 'gal' && Array.isArray(sec.items)) {
+      sbConfirm({
+        title: 'Delete Photo Slot?',
+        text: 'Are you sure you want to remove this photo slot from the gallery?',
+        confirmButtonText: 'Yes, delete slot',
+        isDanger: true
+      }).then(function(confirmed){
+        if (confirmed) {
+          const itemIdx = sec.items.indexOf(slot);
+          if (itemIdx >= 0) {
+            sec.items.splice(itemIdx, 1);
+          }
+          markDirty();
+          SB.render();
+          toast('Photo slot removed from gallery.');
+        }
+      });
+      return;
+    }
+
     sbConfirm({
       title: 'Remove Image Box?',
       text: `Remove the image box from "${sec.title || 'Section'}"? The section layout will adapt to text only.`,
@@ -4047,13 +4107,11 @@ body.sb-fullscreen-active{overflow:hidden}
       sec.items.push({ num: '100+', label: 'New Metric', desc: 'Brief description of what this number represents.' });
     } else if (sec.type === 'gal') {
       const uid = 'gal_' + Date.now() + '_' + Math.random().toString(36).substr(2, 4);
-      const fallbackDefs = [SB.DEF.g1, SB.DEF.g2, SB.DEF.g3, SB.DEF.g4];
-      SB.IMG[uid] = fallbackDefs[sec.items.length % fallbackDefs.length] || SB.DEF.g1;
+      SB.IMG[uid] = '';
       sec.items.push(uid);
       markDirty();
       SB.render();
-      SB.pick(uid, sec.id);
-      toast('Photo slot added. Select an image from your computer to customize it.');
+      toast('Photo slot added. Click "+ Add Photo" or drag an image file onto it.');
       return;
     }
     markDirty();
@@ -4070,6 +4128,17 @@ body.sb-fullscreen-active{overflow:hidden}
       SB.render();
       toast('Item deleted');
     };
+    if (sec.type === 'gal') {
+      sbConfirm({
+        title: 'Delete Photo Slot?',
+        text: 'Are you sure you want to remove this photo slot from the gallery?',
+        confirmButtonText: 'Yes, delete slot',
+        isDanger: true
+      }).then(function(confirmed){
+        if (confirmed) doDelete();
+      });
+      return;
+    }
     if (sec.items.length <= 1) {
       sbConfirm({
         title: 'Delete Last Item?',
@@ -5861,7 +5930,11 @@ body.sb-fullscreen-active{overflow:hidden}
 
     const slotLabelMap = {};
     SB.SLOTS.forEach(function(s){ slotLabelMap[s[0]] = s[1]; });
-    const slotLabel = slotLabelMap[slot] || slot;
+    let slotLabel = slotLabelMap[slot];
+    if (!slotLabel) {
+      if (slot && slot.startsWith('gal_')) slotLabel = 'Gallery Photo';
+      else slotLabel = slot || 'Image';
+    }
 
     const titleEl = document.getElementById('sbImgModalTitle');
     if (titleEl) titleEl.innerHTML = `<i class="fa fa-arrows-alt"></i> Modify Image Size: ${esc(slotLabel)}`;
@@ -5990,6 +6063,455 @@ body.sb-fullscreen-active{overflow:hidden}
       try { markDirty(); } catch(e){ console.warn(e); }
       SB.render();
       toast(`Set image ${prop} to ${val}!`);
+    }
+  };
+
+  /* ============================================================
+     Button Style & Click Action / Event Manager
+     ============================================================ */
+  SB.activeBtnSecId = null;
+  SB.activeBtnKey = null;
+
+  SB.addBtn = function(secId, btnKey){
+    const sec = SB.state.sections.find(function(s){ return s.id === secId; });
+    if (!sec) return;
+    sec[btnKey] = btnKey === 'btn2' ? 'Learn More' : 'Click Here';
+    if (!SB.state.btnStyles) SB.state.btnStyles = {};
+    SB.state.btnStyles[secId + '_' + btnKey] = {
+      variant: 'outline',
+      action: 'manage'
+    };
+    SB.pushHistory('Add Button');
+    markDirty();
+    SB.render();
+    toast('Button added to section');
+  };
+
+  SB.removeBtn = function(secId, btnKey){
+    const sec = SB.state.sections.find(function(s){ return s.id === secId; });
+    if (!sec) return;
+    sbConfirm({
+      title: 'Remove Button?',
+      text: 'Are you sure you want to remove this button?',
+      confirmButtonText: 'Yes, remove',
+      isDanger: true
+    }).then(function(confirmed){
+      if (confirmed) {
+        sec[btnKey] = '';
+        SB.pushHistory('Remove Button');
+        markDirty();
+        SB.render();
+        toast('Button removed');
+      }
+    });
+  };
+
+  function ensureBtnModalDOM() {
+    let m = document.getElementById('sbBtnModalBackdrop');
+    if (!m) {
+      m = document.createElement('div');
+      m.id = 'sbBtnModalBackdrop';
+      m.className = 'sb-img-modal-backdrop';
+      m.innerHTML = `
+        <div class="sb-img-modal" style="max-width:680px">
+          <div class="sb-img-modal-head">
+            <h3 id="sbBtnModalTitle"><i class="fa fa-sliders"></i> Configure Button Style &amp; Action</h3>
+            <button type="button" class="sb-drawer-close-btn" onclick="SB.closeBtnModal()" style="font-size:18px;border:0;background:none;color:#64748b;cursor:pointer"><i class="fa fa-times"></i></button>
+          </div>
+          <div class="sb-img-modal-body">
+            <!-- Live Preview Box -->
+            <div style="display:flex;flex-direction:column;gap:6px">
+              <span style="font-size:11px;font-weight:700;text-transform:uppercase;color:#475569;letter-spacing:.04em"><i class="fa fa-eye"></i> Live Button Preview</span>
+              <div class="sb-img-preview-box" style="min-height:110px;padding:24px;background:#f8fafc;display:flex;align-items:center;justify-content:center">
+                <a href="javascript:void(0)" id="sbBtnPreview" class="sbtn" style="text-decoration:none;margin:0">
+                  <i id="sbBtnPreviewIcon" class="fa" style="display:none;margin-right:6px"></i>
+                  <span id="sbBtnPreviewText">Subscribe now</span>
+                </a>
+              </div>
+            </div>
+
+            <!-- Button Text -->
+            <div style="background:#f8fafc;padding:14px;border-radius:8px;border:1px solid #e2e8f0;display:flex;flex-direction:column;gap:8px">
+              <label style="font-size:12px;font-weight:700;color:#1e293b">Button Text / Label</label>
+              <input type="text" id="sbBtnText" placeholder="e.g. Subscribe now" style="width:100%;padding:8px 12px;border:1px solid #cbd5e1;border-radius:6px;font-size:14px" oninput="SB.updateBtnModalPreview()">
+            </div>
+
+            <!-- Button Style & Appearance -->
+            <div style="background:#f8fafc;padding:14px;border-radius:8px;border:1px solid #e2e8f0;display:flex;flex-direction:column;gap:12px">
+              <div style="font-size:11px;font-weight:700;text-transform:uppercase;color:#475569;letter-spacing:.04em"><i class="fa fa-paint-brush"></i> Style &amp; Appearance</div>
+
+              <!-- Style Preset / Variant -->
+              <div class="sb-el-attr-grid">
+                <div class="sb-el-attr-group">
+                  <label>Preset Style Variant</label>
+                  <select id="sbBtnVariant" onchange="SB.onBtnVariantChange()">
+                    <option value="solid">Primary Brand Filled</option>
+                    <option value="outline">Secondary Outline</option>
+                    <option value="dark">Dark Slate</option>
+                    <option value="red">Accent Red</option>
+                    <option value="white">White Card</option>
+                    <option value="custom">Custom Color Palette</option>
+                  </select>
+                </div>
+                <div class="sb-el-attr-group">
+                  <label>Button Shape (Corner Radius)</label>
+                  <select id="sbBtnRadius" onchange="SB.updateBtnModalPreview()">
+                    <option value="999px">Pill (Fully Rounded)</option>
+                    <option value="8px">Rounded (8px)</option>
+                    <option value="16px">Soft Pillows (16px)</option>
+                    <option value="0px">Sharp (0px Square)</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Size & Icon -->
+              <div class="sb-el-attr-grid">
+                <div class="sb-el-attr-group">
+                  <label>Button Size</label>
+                  <select id="sbBtnSize" onchange="SB.updateBtnModalPreview()">
+                    <option value="sm">Small (Compact)</option>
+                    <option value="md" selected>Medium (Standard)</option>
+                    <option value="lg">Large (Prominent)</option>
+                  </select>
+                </div>
+                <div class="sb-el-attr-group">
+                  <label>Optional Icon</label>
+                  <select id="sbBtnIcon" onchange="SB.updateBtnModalPreview()">
+                    <option value="">None (Text only)</option>
+                    <option value="fa-arrow-right">Arrow Right (&rarr;)</option>
+                    <option value="fa-check">Checkmark (&check;)</option>
+                    <option value="fa-star">Star (&starf;)</option>
+                    <option value="fa-heart">Heart (&hearts;)</option>
+                    <option value="fa-external-link">External Link (&nearr;)</option>
+                    <option value="fa-phone">Phone Call</option>
+                    <option value="fa-envelope">Email Envelope</option>
+                    <option value="fa-file-pdf-o">PDF Document</option>
+                    <option value="fa-download">Download</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Custom Colors -->
+              <div id="sbBtnCustomColorsWrap" style="display:none;background:#ffffff;padding:12px;border-radius:6px;border:1px solid #e2e8f0;margin-top:4px">
+                <div class="sb-el-attr-grid">
+                  <div class="sb-el-attr-group">
+                    <label>Background Color</label>
+                    <div style="display:flex;gap:6px;align-items:center">
+                      <input type="color" id="sbBtnBgPicker" style="width:36px;height:32px;padding:0;border:1px solid #cbd5e1;border-radius:4px;cursor:pointer" onchange="$('#sbBtnBgInput').value=this.value;SB.updateBtnModalPreview()">
+                      <input type="text" id="sbBtnBgInput" placeholder="#3f51b5" style="flex:1;padding:6px 10px;font-size:12px;border:1px solid #cbd5e1;border-radius:4px" oninput="$('#sbBtnBgPicker').value=this.value;SB.updateBtnModalPreview()">
+                    </div>
+                  </div>
+                  <div class="sb-el-attr-group">
+                    <label>Text Color</label>
+                    <div style="display:flex;gap:6px;align-items:center">
+                      <input type="color" id="sbBtnColorPicker" style="width:36px;height:32px;padding:0;border:1px solid #cbd5e1;border-radius:4px;cursor:pointer" onchange="$('#sbBtnColorInput').value=this.value;SB.updateBtnModalPreview()">
+                      <input type="text" id="sbBtnColorInput" placeholder="#ffffff" style="flex:1;padding:6px 10px;font-size:12px;border:1px solid #cbd5e1;border-radius:4px" oninput="$('#sbBtnColorPicker').value=this.value;SB.updateBtnModalPreview()">
+                    </div>
+                  </div>
+                  <div class="sb-el-attr-group">
+                    <label>Border Color</label>
+                    <div style="display:flex;gap:6px;align-items:center">
+                      <input type="color" id="sbBtnBorderPicker" style="width:36px;height:32px;padding:0;border:1px solid #cbd5e1;border-radius:4px;cursor:pointer" onchange="$('#sbBtnBorderInput').value=this.value;SB.updateBtnModalPreview()">
+                      <input type="text" id="sbBtnBorderInput" placeholder="#3f51b5" style="flex:1;padding:6px 10px;font-size:12px;border:1px solid #cbd5e1;border-radius:4px" oninput="$('#sbBtnBorderPicker').value=this.value;SB.updateBtnModalPreview()">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Button Event & Click Action -->
+            <div style="background:#f8fafc;padding:14px;border-radius:8px;border:1px solid #e2e8f0;display:flex;flex-direction:column;gap:12px">
+              <div style="font-size:11px;font-weight:700;text-transform:uppercase;color:#475569;letter-spacing:.04em"><i class="fa fa-bolt"></i> Button Event / Click Action</div>
+              <div class="sb-el-attr-group">
+                <label>What happens when the visitor clicks this button?</label>
+                <select id="sbBtnAction" onchange="SB.onBtnActionChange()">
+                  <option value="subscribe">Open Subscribe / Sign-Up Modal</option>
+                  <option value="manage">Open Manage Subscription Modal</option>
+                  <option value="donate">Open Appreciation Dinner Donation Modal</option>
+                  <option value="scroll">Smooth Scroll to Page Section</option>
+                  <option value="url">Open External Website Link / URL</option>
+                  <option value="pdf">Download PDF Flyer / Document</option>
+                </select>
+              </div>
+
+              <!-- Scroll to section target -->
+              <div id="sbBtnScrollWrap" style="display:none" class="sb-el-attr-group">
+                <label>Target Section to Scroll to</label>
+                <select id="sbBtnScrollTarget">
+                  <option value="#pricing">Pricing Plans (#pricing)</option>
+                  <option value="#contact">Contact &amp; Service Map (#contact)</option>
+                  <option value="#holidays">Holiday Schedule (#holidays)</option>
+                  <option value="#gallery">Photo Gallery (#gallery)</option>
+                  <option value="#dinner">Donation Dinner (#dinner)</option>
+                  <option value="#reviews">Testimonials (#reviews)</option>
+                </select>
+              </div>
+
+              <!-- Custom URL target -->
+              <div id="sbBtnUrlWrap" style="display:none" class="sb-el-attr-group">
+                <label>Target Web Address / URL</label>
+                <input type="text" id="sbBtnUrl" placeholder="https://example.com or mailto:info@example.com" style="width:100%;padding:8px 12px;border:1px solid #cbd5e1;border-radius:6px;font-size:13px">
+                <label style="display:flex;align-items:center;gap:6px;font-size:12px;margin-top:6px;cursor:pointer">
+                  <input type="checkbox" id="sbBtnNewTab" checked> Open link in a new browser tab
+                </label>
+              </div>
+            </div>
+          </div>
+          <div class="sb-el-modal-foot" style="display:flex;align-items:center;justify-content:space-between">
+            <button type="button" class="btn" style="background:#fee2e2;color:#991b1b;border:1px solid #fca5a5" onclick="SB.resetBtnSettings()"><i class="fa fa-undo"></i> Reset Style</button>
+            <div style="display:flex;align-items:center;gap:8px">
+              <button type="button" class="btn ghost" onclick="SB.closeBtnModal()">Cancel</button>
+              <button type="button" class="btn primary" onclick="SB.saveBtnSettings()"><i class="fa fa-check"></i> Apply Button Style &amp; Action</button>
+            </div>
+          </div>
+        </div>
+      `;
+      document.body.appendChild(m);
+      m.onclick = function(e){ if (e.target === m) SB.closeBtnModal(); };
+    }
+    return m;
+  }
+
+  SB.openBtnModal = function(secId, btnKey) {
+    SB.activeBtnSecId = secId;
+    SB.activeBtnKey = btnKey;
+    ensureBtnModalDOM();
+
+    const sec = SB.state.sections.find(function(s){ return s.id === secId; });
+    const btnId = secId + '_' + btnKey;
+    const cfg = (SB.state.btnStyles && SB.state.btnStyles[btnId]) || {};
+
+    let currentText = '';
+    if (btnKey.startsWith('el_')) {
+      const elIdx = parseInt(btnKey.replace('el_', ''), 10);
+      if (sec && sec.elements && sec.elements[elIdx]) {
+        currentText = sec.elements[elIdx].text || '';
+      }
+    } else if (sec) {
+      currentText = sec[btnKey] || '';
+    }
+    if (!currentText && btnKey === 'btn1') currentText = 'Subscribe now';
+    if (!currentText && btnKey === 'btn2') currentText = 'Manage my subscription';
+
+    const titleEl = document.getElementById('sbBtnModalTitle');
+    if (titleEl) {
+      const btnName = btnKey === 'btn1' ? 'Primary Button' : (btnKey === 'btn2' ? 'Secondary Button' : 'Action Button');
+      titleEl.innerHTML = `<i class="fa fa-sliders"></i> Configure ${btnName} (${sec ? esc(sec.title || sec.type) : 'Button'})`;
+    }
+
+    const textIn = document.getElementById('sbBtnText');
+    if (textIn) textIn.value = currentText;
+
+    const variantSel = document.getElementById('sbBtnVariant');
+    if (variantSel) variantSel.value = cfg.variant || (btnKey === 'btn2' ? 'outline' : 'solid');
+
+    const radSel = document.getElementById('sbBtnRadius');
+    if (radSel) radSel.value = cfg.radius !== undefined && cfg.radius !== '' ? cfg.radius : '999px';
+
+    const sizeSel = document.getElementById('sbBtnSize');
+    if (sizeSel) sizeSel.value = cfg.size || 'md';
+
+    const iconSel = document.getElementById('sbBtnIcon');
+    if (iconSel) iconSel.value = cfg.icon || '';
+
+    const bgIn = document.getElementById('sbBtnBgInput');
+    const bgPk = document.getElementById('sbBtnBgPicker');
+    if (bgIn) bgIn.value = cfg.bg || '';
+    if (bgPk) bgPk.value = (cfg.bg && cfg.bg.startsWith('#')) ? cfg.bg : '#3f51b5';
+
+    const colIn = document.getElementById('sbBtnColorInput');
+    const colPk = document.getElementById('sbBtnColorPicker');
+    if (colIn) colIn.value = cfg.color || '';
+    if (colPk) colPk.value = (cfg.color && cfg.color.startsWith('#')) ? cfg.color : '#ffffff';
+
+    const bdrIn = document.getElementById('sbBtnBorderInput');
+    const bdrPk = document.getElementById('sbBtnBorderPicker');
+    if (bdrIn) bdrIn.value = cfg.borderColor || '';
+    if (bdrPk) bdrPk.value = (cfg.borderColor && cfg.borderColor.startsWith('#')) ? cfg.borderColor : '#3f51b5';
+
+    const actionSel = document.getElementById('sbBtnAction');
+    const defaultAction = btnKey === 'btn2' ? (sec && (sec.type === 'don' || sec.id.includes('don')) ? 'pdf' : 'manage') : (sec && (sec.type === 'don' || sec.id.includes('don')) ? 'donate' : 'subscribe');
+    if (actionSel) actionSel.value = cfg.action || defaultAction;
+
+    const scrollTarget = document.getElementById('sbBtnScrollTarget');
+    if (scrollTarget) scrollTarget.value = cfg.scrollTarget || '#pricing';
+
+    const urlIn = document.getElementById('sbBtnUrl');
+    if (urlIn) urlIn.value = cfg.url || '';
+
+    const newTabChk = document.getElementById('sbBtnNewTab');
+    if (newTabChk) newTabChk.checked = cfg.newTab !== false;
+
+    SB.onBtnVariantChange();
+    SB.onBtnActionChange();
+    SB.updateBtnModalPreview();
+
+    const m = document.getElementById('sbBtnModalBackdrop');
+    if (m) m.style.display = 'flex';
+  };
+
+  SB.closeBtnModal = function() {
+    const m = document.getElementById('sbBtnModalBackdrop');
+    if (m) m.style.display = 'none';
+  };
+
+  SB.onBtnVariantChange = function() {
+    const variantSel = document.getElementById('sbBtnVariant');
+    const customWrap = document.getElementById('sbBtnCustomColorsWrap');
+    if (variantSel && customWrap) {
+      customWrap.style.display = variantSel.value === 'custom' ? 'block' : 'none';
+    }
+    SB.updateBtnModalPreview();
+  };
+
+  SB.onBtnActionChange = function() {
+    const actionSel = document.getElementById('sbBtnAction');
+    const scrollWrap = document.getElementById('sbBtnScrollWrap');
+    const urlWrap = document.getElementById('sbBtnUrlWrap');
+    const val = actionSel ? actionSel.value : 'subscribe';
+    if (scrollWrap) scrollWrap.style.display = val === 'scroll' ? 'block' : 'none';
+    if (urlWrap) urlWrap.style.display = (val === 'url' || val === 'pdf') ? 'block' : 'none';
+  };
+
+  SB.updateBtnModalPreview = function() {
+    const preview = document.getElementById('sbBtnPreview');
+    const previewText = document.getElementById('sbBtnPreviewText');
+    const previewIcon = document.getElementById('sbBtnPreviewIcon');
+    if (!preview) return;
+
+    const textIn = document.getElementById('sbBtnText');
+    if (previewText) previewText.textContent = (textIn && textIn.value.trim()) ? textIn.value.trim() : 'Button';
+
+    const iconSel = document.getElementById('sbBtnIcon');
+    if (previewIcon) {
+      if (iconSel && iconSel.value) {
+        previewIcon.className = 'fa ' + iconSel.value;
+        previewIcon.style.display = 'inline-block';
+      } else {
+        previewIcon.style.display = 'none';
+      }
+    }
+
+    const variantSel = document.getElementById('sbBtnVariant');
+    const variant = variantSel ? variantSel.value : 'solid';
+    const radSel = document.getElementById('sbBtnRadius');
+    const radius = radSel ? radSel.value : '999px';
+    const sizeSel = document.getElementById('sbBtnSize');
+    const size = sizeSel ? sizeSel.value : 'md';
+
+    const brand = (SB.state && SB.state.brand && SB.state.brand[SB.state.tpl]) || '#3f51b5';
+
+    preview.className = 'sbtn ' + (size !== 'md' ? 'sbtn-' + size : '');
+    preview.style.cssText = 'text-decoration:none;margin:0;transition:all .15s;';
+    preview.style.borderRadius = radius;
+
+    if (size === 'sm') {
+      preview.style.padding = '8px 16px';
+      preview.style.fontSize = '12px';
+    } else if (size === 'lg') {
+      preview.style.padding = '16px 30px';
+      preview.style.fontSize = '16px';
+    } else {
+      preview.style.padding = '12px 22px';
+      preview.style.fontSize = '14px';
+    }
+
+    if (variant === 'solid') {
+      preview.style.background = brand;
+      preview.style.color = '#ffffff';
+      preview.style.border = `1.5px solid ${brand}`;
+    } else if (variant === 'outline') {
+      preview.style.background = 'transparent';
+      preview.style.color = brand;
+      preview.style.border = `1.5px solid ${brand}`;
+    } else if (variant === 'dark') {
+      preview.style.background = '#0f172a';
+      preview.style.color = '#ffffff';
+      preview.style.border = '1.5px solid #0f172a';
+    } else if (variant === 'red') {
+      preview.style.background = '#ef4444';
+      preview.style.color = '#ffffff';
+      preview.style.border = '1.5px solid #ef4444';
+    } else if (variant === 'white') {
+      preview.style.background = '#ffffff';
+      preview.style.color = brand;
+      preview.style.border = '1.5px solid #e2e8f0';
+    } else if (variant === 'custom') {
+      const bgIn = document.getElementById('sbBtnBgInput');
+      const colIn = document.getElementById('sbBtnColorInput');
+      const bdrIn = document.getElementById('sbBtnBorderInput');
+      if (bgIn && bgIn.value) preview.style.background = bgIn.value;
+      if (colIn && colIn.value) preview.style.color = colIn.value;
+      if (bdrIn && bdrIn.value) preview.style.border = `1.5px solid ${bdrIn.value}`;
+    }
+  };
+
+  SB.saveBtnSettings = function() {
+    if (!SB.activeBtnSecId || !SB.activeBtnKey) return;
+    if (!SB.state.btnStyles) SB.state.btnStyles = {};
+
+    const secId = SB.activeBtnSecId;
+    const btnKey = SB.activeBtnKey;
+    const sec = SB.state.sections.find(function(s){ return s.id === secId; });
+
+    const textIn = document.getElementById('sbBtnText');
+    if (btnKey.startsWith('el_')) {
+      const elIdx = parseInt(btnKey.replace('el_', ''), 10);
+      if (sec && sec.elements && sec.elements[elIdx] && textIn) {
+        sec.elements[elIdx].text = textIn.value.trim();
+      }
+    } else if (sec && textIn) {
+      sec[btnKey] = textIn.value.trim();
+    }
+
+    const variantSel = document.getElementById('sbBtnVariant');
+    const radSel = document.getElementById('sbBtnRadius');
+    const sizeSel = document.getElementById('sbBtnSize');
+    const iconSel = document.getElementById('sbBtnIcon');
+    const actionSel = document.getElementById('sbBtnAction');
+    const scrollTarget = document.getElementById('sbBtnScrollTarget');
+    const urlIn = document.getElementById('sbBtnUrl');
+    const newTabChk = document.getElementById('sbBtnNewTab');
+    const bgIn = document.getElementById('sbBtnBgInput');
+    const colIn = document.getElementById('sbBtnColorInput');
+    const bdrIn = document.getElementById('sbBtnBorderInput');
+
+    const btnId = secId + '_' + btnKey;
+    SB.state.btnStyles[btnId] = {
+      variant: variantSel ? variantSel.value : 'solid',
+      radius: radSel ? radSel.value : '999px',
+      size: sizeSel ? sizeSel.value : 'md',
+      icon: iconSel ? iconSel.value : '',
+      action: actionSel ? actionSel.value : 'subscribe',
+      scrollTarget: scrollTarget ? scrollTarget.value : '#pricing',
+      url: urlIn ? urlIn.value.trim() : '',
+      newTab: newTabChk ? newTabChk.checked : true,
+      bg: (variantSel && variantSel.value === 'custom' && bgIn) ? bgIn.value : '',
+      color: (variantSel && variantSel.value === 'custom' && colIn) ? colIn.value : '',
+      borderColor: (variantSel && variantSel.value === 'custom' && bdrIn) ? bdrIn.value : ''
+    };
+
+    SB.pushHistory('Update Button Style & Action');
+    markDirty();
+    SB.render();
+    SB.save();
+    SB.closeBtnModal();
+    toast('Button style & event action applied!');
+  };
+
+  SB.resetBtnSettings = function() {
+    if (!SB.activeBtnSecId || !SB.activeBtnKey) return;
+    const btnId = SB.activeBtnSecId + '_' + SB.activeBtnKey;
+    if (SB.state.btnStyles && SB.state.btnStyles[btnId]) {
+      delete SB.state.btnStyles[btnId];
+      SB.pushHistory('Reset Button Style');
+      markDirty();
+      SB.render();
+      SB.save();
+      SB.closeBtnModal();
+      toast('Button reset to default style');
+    } else {
+      SB.closeBtnModal();
     }
   };
 
@@ -6196,9 +6718,30 @@ body.sb-fullscreen-active{overflow:hidden}
         break;
 
       case 'cta-btn':
+        const elBtnId = secId + '_el_' + elIdx;
+        const elCfg = (SB.state.btnStyles && SB.state.btnStyles[elBtnId]) || {};
+        const elVar = elCfg.variant || 'solid';
+        const elRad = elCfg.radius !== undefined && elCfg.radius !== '' ? elCfg.radius : '';
+        const elSize = elCfg.size || 'md';
+        const elIcon = elCfg.icon || '';
+        let elCustomStyle = '';
+        if (elCfg.bg) elCustomStyle += `background:${elCfg.bg} !important;`;
+        if (elCfg.color) elCustomStyle += `color:${elCfg.color} !important;`;
+        if (elCfg.borderColor) elCustomStyle += `border-color:${elCfg.borderColor} !important;`;
+        if (elRad !== '') elCustomStyle += `border-radius:${elRad} !important;`;
         inner = `
           <div class="sb-el-cta-btn">
-            <button class="sbtn" style="pointer-events:none"><span>${elEd('text', el.text || 'Subscribe to Holiday Flag Program', 'span', 'pointer-events:auto')}</span></button>
+            <div class="sb-btn-wrap" data-btn-key="el_${elIdx}" data-sec-id="${secId}">
+              <span class="sbtn ${elVar === 'outline' ? 'o' : ''} ${elSize !== 'md' ? 'sbtn-' + elSize : ''}" style="${elCustomStyle}">
+                ${elIcon ? `<i class="fa ${elIcon}" style="margin-right:6px"></i>` : ''}
+                <span>${elEd('text', el.text || 'Subscribe to Holiday Flag Program', 'span')}</span>
+              </span>
+              <div class="sb-btn-actions-bar">
+                <button type="button" class="sb-btn-tool-btn" onclick="event.stopPropagation();SB.openBtnModal('${secId}','el_${elIdx}')" title="Configure Button Style &amp; Action">
+                  <i class="fa fa-sliders"></i> Style &amp; Event
+                </button>
+              </div>
+            </div>
           </div>`;
         break;
 
@@ -6342,6 +6885,7 @@ body.sb-fullscreen-active{overflow:hidden}
         if (s.radius !== undefined && s.radius !== '') dzStyle += `border-radius:${s.radius} !important;`;
         return `
           <div class="sb-ph-dropzone ${cls}" data-img-slot="${slot}" data-sec-id="${sec ? sec.id : ''}" style="${dzStyle}" onclick="event.stopPropagation();SB.pick('${slot}','${sec ? sec.id : ''}')" title="Click to browse or Drag &amp; Drop image here">
+            <button type="button" class="sb-dropzone-del" onclick="event.stopPropagation();SB.deleteDropzoneBox('${slot}','${sec ? sec.id : ''}')" title="Remove image box"><i class="fa fa-times"></i></button>
             <div class="sb-ph-dropzone-inner">
               <i class="fa fa-picture-o"></i>
               <div class="sb-ph-dropzone-title">+ Add Photo</div>
@@ -6375,7 +6919,7 @@ body.sb-fullscreen-active{overflow:hidden}
             <div class="sb-ph-overlay-actions">
               <button type="button" class="sb-ph-btn sb-ph-size-btn" onclick="event.stopPropagation();SB.openImgSizeModal('${slot}')" title="Modify image size &amp; style"><i class="fa fa-arrows-alt"></i> Size &amp; Style</button>
               <button type="button" class="sb-ph-btn sb-ph-swap-btn" onclick="event.stopPropagation();SB.pick('${slot}','${secId || ''}')" title="Replace / swap photo"><i class="fa fa-picture-o"></i> Swap</button>
-              ${isGal ? '' : `<button type="button" class="sb-ph-btn sb-ph-del-btn" onclick="event.stopPropagation();SB.removePhoto('${slot}','${secId || ''}')" title="Remove photo from section"><i class="fa fa-trash-o"></i> Remove</button>`}
+              <button type="button" class="sb-ph-btn sb-ph-del-btn" onclick="event.stopPropagation();SB.removePhoto('${slot}','${secId || ''}')" title="Remove photo from section"><i class="fa fa-trash-o"></i> Remove</button>
             </div>
           </div>
         </div>
@@ -6384,6 +6928,53 @@ body.sb-fullscreen-active{overflow:hidden}
 
     const secHdr = function() {
       return `<div class="hd"><div class="ey">${ed('ey', sec.ey)}</div><h2>${ed('heading', sec.heading)}</h2>${sec.desc ? `<p>${ed('desc', sec.desc)}</p>` : `<p style="display:none">${ed('desc', '')}</p>`}</div>`;
+    };
+
+    const btnHtml = function(secId, btnKey, text, defaultVariant, defaultAction) {
+      if (!text && btnKey === 'btn2') return '';
+      const btnId = `${secId}_${btnKey}`;
+      const cfg = (SB.state.btnStyles && SB.state.btnStyles[btnId]) || {};
+      const variant = cfg.variant || defaultVariant || 'solid';
+      const radius = cfg.radius !== undefined && cfg.radius !== '' ? cfg.radius : '';
+      const size = cfg.size || 'md';
+      const icon = cfg.icon || '';
+      const action = cfg.action || defaultAction || 'subscribe';
+
+      let customStyle = '';
+      if (cfg.bg) customStyle += `background:${cfg.bg} !important;`;
+      if (cfg.color) customStyle += `color:${cfg.color} !important;`;
+      if (cfg.borderColor) customStyle += `border-color:${cfg.borderColor} !important;`;
+      if (radius !== '') customStyle += `border-radius:${radius} !important;`;
+
+      const actionLabels = {
+        subscribe: 'Opens Subscribe Modal',
+        manage: 'Opens Manage Modal',
+        donate: 'Opens Donate Modal',
+        scroll: `Scrolls to ${cfg.scrollTarget || 'Section'}`,
+        url: `Opens ${cfg.url || 'Link'}`,
+        pdf: 'Downloads PDF'
+      };
+
+      const actionBadge = actionLabels[action] || 'Action configured';
+
+      return `
+        <div class="sb-btn-wrap" data-btn-key="${btnKey}" data-sec-id="${secId}">
+          <span class="sbtn ${variant === 'outline' ? 'o' : ''} ${size !== 'md' ? 'sbtn-' + size : ''}" style="${customStyle}">
+            ${icon ? `<i class="fa ${icon}" style="margin-right:6px"></i>` : ''}
+            ${ed(btnKey, text || (btnKey === 'btn1' ? 'Button' : 'Secondary Button'))}
+          </span>
+          <div class="sb-btn-actions-bar">
+            <button type="button" class="sb-btn-tool-btn" onclick="event.stopPropagation();SB.openBtnModal('${secId}','${btnKey}')" title="Configure Button Style &amp; Action (${actionBadge})">
+              <i class="fa fa-sliders"></i> Style &amp; Event
+            </button>
+            ${btnKey === 'btn2' ? `<button type="button" class="sb-btn-tool-del" onclick="event.stopPropagation();SB.removeBtn('${secId}','${btnKey}')" title="Remove this button"><i class="fa fa-times"></i></button>` : ''}
+          </div>
+        </div>
+      `;
+    };
+
+    const addBtnHtml = function(secId, btnKey) {
+      return `<button type="button" class="sb-btn-add-tool" onclick="event.stopPropagation();SB.addBtn('${secId}','${btnKey}')" title="Add secondary button"><i class="fa fa-plus"></i> Button</button>`;
     };
 
     const settings = sec.settings || {};
@@ -6434,8 +7025,8 @@ body.sb-fullscreen-active{overflow:hidden}
 
       case 'hero':
         inner = isModern
-          ? `<div class="hero ${sec.hideBox ? 'no-img' : ''}"><div><div class="ey">${ed('ey', sec.ey)}</div><h1>${ed('heading', sec.heading)}</h1><p class="l">${ed('desc', sec.desc)}</p><span class="sbtn">${ed('btn1', sec.btn1)}</span><span class="sbtn o">${ed('btn2', sec.btn2)}</span></div>${ph(sec.img || 'hero', '', sec.id)}</div>`
-          : `<div class="hero ${sec.hideBox ? 'no-img' : ''}"><div class="tx"><div class="ey">${ed('ey', sec.ey)}</div><h1>${ed('heading', sec.heading)}</h1><p class="l">${ed('desc', sec.desc)}</p><span class="sbtn">${ed('btn1', sec.btn1)}</span><span class="sbtn o">${ed('btn2', sec.btn2)}</span></div>${ph(sec.img || 'hero', '', sec.id)}</div>`;
+          ? `<div class="hero ${sec.hideBox ? 'no-img' : ''}"><div><div class="ey">${ed('ey', sec.ey)}</div><h1>${ed('heading', sec.heading)}</h1><p class="l">${ed('desc', sec.desc)}</p><div class="sb-btn-group">${btnHtml(sec.id, 'btn1', sec.btn1, 'solid', 'subscribe')}${sec.btn2 !== undefined && sec.btn2 !== null && sec.btn2 !== '' ? btnHtml(sec.id, 'btn2', sec.btn2, 'outline', 'manage') : addBtnHtml(sec.id, 'btn2')}</div></div>${ph(sec.img || 'hero', '', sec.id)}</div>`
+          : `<div class="hero ${sec.hideBox ? 'no-img' : ''}"><div class="tx"><div class="ey">${ed('ey', sec.ey)}</div><h1>${ed('heading', sec.heading)}</h1><p class="l">${ed('desc', sec.desc)}</p><div class="sb-btn-group">${btnHtml(sec.id, 'btn1', sec.btn1, 'solid', 'subscribe')}${sec.btn2 !== undefined && sec.btn2 !== null && sec.btn2 !== '' ? btnHtml(sec.id, 'btn2', sec.btn2, 'outline', 'manage') : addBtnHtml(sec.id, 'btn2')}</div></div>${ph(sec.img || 'hero', '', sec.id)}</div>`;
         break;
 
       case 'about':
@@ -6510,7 +7101,7 @@ body.sb-fullscreen-active{overflow:hidden}
         break;
 
       case 'cta':
-        inner = `<div class="s br"><div class="cta-banner"><div class="ey">${ed('ey', sec.ey)}</div><h2>${ed('heading', sec.heading)}</h2><p>${ed('desc', sec.desc)}</p><div><span class="sbtn">${ed('btn1', sec.btn1 || 'Subscribe now')}</span>${sec.btn2 ? `<span class="sbtn o">${ed('btn2', sec.btn2)}</span>` : ''}</div></div></div>`;
+        inner = `<div class="s br"><div class="cta-banner"><div class="ey">${ed('ey', sec.ey)}</div><h2>${ed('heading', sec.heading)}</h2><p>${ed('desc', sec.desc)}</p><div class="sb-btn-group" style="justify-content:center">${btnHtml(sec.id, 'btn1', sec.btn1 || 'Subscribe now', 'solid', 'subscribe')}${sec.btn2 !== undefined && sec.btn2 !== null && sec.btn2 !== '' ? btnHtml(sec.id, 'btn2', sec.btn2, 'outline', 'manage') : addBtnHtml(sec.id, 'btn2')}</div></div></div>`;
         break;
 
       case 'hol':
@@ -6531,8 +7122,7 @@ body.sb-fullscreen-active{overflow:hidden}
       case 'gal':
         inner = `<div class="s sf">${secHdr()}<div class="gal">` +
           (sec.items || []).map(function(slot, i){
-            return `<div class="sb-item-wrap" style="position:relative">
-              <button type="button" class="sb-item-del" onclick="event.stopPropagation();SB.deleteItem('${sec.id}', ${i})" title="Delete photo slot"><i class="fa fa-times"></i></button>
+            return `<div class="sb-item-wrap sb-gal-item-wrap" style="position:relative">
               ${ph(slot, 'sb-gal-ph', sec.id)}
             </div>`;
           }).join('') +
@@ -6548,7 +7138,7 @@ body.sb-fullscreen-active{overflow:hidden}
         break;
 
       case 'don':
-        inner = `<div class="s br"><div class="split ${sec.hideBox ? 'no-img' : ''}">${ph(sec.img || 'dinner', '', sec.id)}<div><div class="ey">${ed('ey', sec.ey)}</div><h2 style="font-size:clamp(26px,4.4cqw,38px)">${ed('heading', sec.heading)}</h2><p>${ed('desc', sec.desc)}</p><span class="sbtn">${ed('btn1', sec.btn1 || 'Donate')}</span><span class="sbtn o">${ed('btn2', sec.btn2 || 'Read more (PDF)')}</span></div></div></div>`;
+        inner = `<div class="s br"><div class="split ${sec.hideBox ? 'no-img' : ''}">${ph(sec.img || 'dinner', '', sec.id)}<div><div class="ey">${ed('ey', sec.ey)}</div><h2 style="font-size:clamp(26px,4.4cqw,38px)">${ed('heading', sec.heading)}</h2><p>${ed('desc', sec.desc)}</p><div class="sb-btn-group">${btnHtml(sec.id, 'btn1', sec.btn1 || 'Donate', 'solid', 'donate')}${sec.btn2 !== undefined && sec.btn2 !== null && sec.btn2 !== '' ? btnHtml(sec.id, 'btn2', sec.btn2, 'outline', 'pdf') : addBtnHtml(sec.id, 'btn2')}</div></div></div></div>`;
         break;
 
       case 'text':
@@ -6732,12 +7322,17 @@ ${SB.SLOTS.map(function(s){
         sec.items = sec.items.map(function(slot, idx){
           if (!slot || seen.has(slot)) {
             const uid = 'gal_' + Date.now() + '_' + idx + '_' + Math.random().toString(36).substr(2, 4);
-            SB.IMG[uid] = (slot && SB.IMG[slot]) || fallbackDefs[idx % fallbackDefs.length] || SB.DEF.g1;
+            if (slot && SB.IMG[slot] !== undefined) {
+              SB.IMG[uid] = SB.IMG[slot];
+            } else if (slot && SB.DEF[slot]) {
+              SB.IMG[uid] = SB.DEF[slot];
+            } else if (slot && slot.startsWith('gal_')) {
+              SB.IMG[uid] = '';
+            } else {
+              SB.IMG[uid] = fallbackDefs[idx % fallbackDefs.length] || SB.DEF.g1;
+            }
             seen.add(uid);
             return uid;
-          }
-          if (!SB.IMG[slot] && !SB.DEF[slot]) {
-            SB.IMG[slot] = fallbackDefs[idx % fallbackDefs.length] || SB.DEF.g1;
           }
           seen.add(slot);
           return slot;
@@ -6869,6 +7464,7 @@ ${SB.SLOTS.map(function(s){
         sections: SB.state.sections,
         customIMG: customIMG,
         imgStyles: SB.state.imgStyles || {},
+        btnStyles: SB.state.btnStyles || {},
         savedAt: new Date().toISOString()
       };
       localStorage.setItem('hwf_sitebuilder_design', JSON.stringify(data));
@@ -6912,6 +7508,9 @@ ${SB.SLOTS.map(function(s){
 
       if (data.imgStyles) {
         SB.state.imgStyles = data.imgStyles;
+      }
+      if (data.btnStyles) {
+        SB.state.btnStyles = data.btnStyles;
       }
       ensureUniqueGallerySlots();
       return true;
