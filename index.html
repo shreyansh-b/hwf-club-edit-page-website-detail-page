@@ -6075,16 +6075,47 @@ body.sb-fullscreen-active{overflow:hidden}
   SB.addBtn = function(secId, btnKey){
     const sec = SB.state.sections.find(function(s){ return s.id === secId; });
     if (!sec) return;
-    sec[btnKey] = btnKey === 'btn2' ? 'Learn More' : 'Click Here';
+    sec[btnKey] = btnKey === 'btn2' ? 'Learn More' : 'Subscribe Now';
     if (!SB.state.btnStyles) SB.state.btnStyles = {};
     SB.state.btnStyles[secId + '_' + btnKey] = {
-      variant: 'outline',
-      action: 'manage'
+      variant: btnKey === 'btn2' ? 'outline' : 'solid',
+      action: btnKey === 'btn2' ? 'manage' : 'subscribe'
     };
     SB.pushHistory('Add Button');
     markDirty();
     SB.render();
     toast('Button added to section');
+  };
+
+  SB.deleteActiveBtn = function() {
+    if (!SB.activeBtnSecId || !SB.activeBtnKey) return;
+    const secId = SB.activeBtnSecId;
+    const btnKey = SB.activeBtnKey;
+    const sec = SB.state.sections.find(function(s){ return s.id === secId; });
+    if (!sec) return;
+    sbConfirm({
+      title: 'Remove Button?',
+      text: 'Are you sure you want to remove this button from the section?',
+      confirmButtonText: 'Yes, remove',
+      isDanger: true
+    }).then(function(confirmed){
+      if (confirmed) {
+        if (btnKey.startsWith('el_')) {
+          const elIdx = parseInt(btnKey.replace('el_', ''), 10);
+          if (sec.elements && sec.elements[elIdx]) {
+            sec.elements.splice(elIdx, 1);
+          }
+        } else {
+          sec[btnKey] = '';
+        }
+        SB.pushHistory('Remove Button');
+        markDirty();
+        SB.render();
+        SB.save();
+        SB.closeBtnModal();
+        toast('Button removed');
+      }
+    });
   };
 
   SB.removeBtn = function(secId, btnKey){
@@ -6258,7 +6289,10 @@ body.sb-fullscreen-active{overflow:hidden}
             </div>
           </div>
           <div class="sb-el-modal-foot" style="display:flex;align-items:center;justify-content:space-between">
-            <button type="button" class="btn" style="background:#fee2e2;color:#991b1b;border:1px solid #fca5a5" onclick="SB.resetBtnSettings()"><i class="fa fa-undo"></i> Reset Style</button>
+            <div style="display:flex;align-items:center;gap:8px">
+              <button type="button" class="btn" style="background:#fee2e2;color:#991b1b;border:1px solid #fca5a5" onclick="SB.deleteActiveBtn()"><i class="fa fa-trash-o"></i> Remove Button</button>
+              <button type="button" class="btn ghost" onclick="SB.resetBtnSettings()"><i class="fa fa-undo"></i> Reset Style</button>
+            </div>
             <div style="display:flex;align-items:center;gap:8px">
               <button type="button" class="btn ghost" onclick="SB.closeBtnModal()">Cancel</button>
               <button type="button" class="btn primary" onclick="SB.saveBtnSettings()"><i class="fa fa-check"></i> Apply Button Style &amp; Action</button>
@@ -6931,7 +6965,7 @@ body.sb-fullscreen-active{overflow:hidden}
     };
 
     const btnHtml = function(secId, btnKey, text, defaultVariant, defaultAction) {
-      if (!text && btnKey === 'btn2') return '';
+      if (!text) return '';
       const btnId = `${secId}_${btnKey}`;
       const cfg = (SB.state.btnStyles && SB.state.btnStyles[btnId]) || {};
       const variant = cfg.variant || defaultVariant || 'solid';
@@ -6967,14 +7001,14 @@ body.sb-fullscreen-active{overflow:hidden}
             <button type="button" class="sb-btn-tool-btn" onclick="event.stopPropagation();SB.openBtnModal('${secId}','${btnKey}')" title="Configure Button Style &amp; Action (${actionBadge})">
               <i class="fa fa-sliders"></i> Style &amp; Event
             </button>
-            ${btnKey === 'btn2' ? `<button type="button" class="sb-btn-tool-del" onclick="event.stopPropagation();SB.removeBtn('${secId}','${btnKey}')" title="Remove this button"><i class="fa fa-times"></i></button>` : ''}
           </div>
         </div>
       `;
     };
 
     const addBtnHtml = function(secId, btnKey) {
-      return `<button type="button" class="sb-btn-add-tool" onclick="event.stopPropagation();SB.addBtn('${secId}','${btnKey}')" title="Add secondary button"><i class="fa fa-plus"></i> Button</button>`;
+      const label = btnKey === 'btn1' ? 'Primary Button' : 'Secondary Button';
+      return `<button type="button" class="sb-btn-add-tool" onclick="event.stopPropagation();SB.addBtn('${secId}','${btnKey}')" title="Add ${label}"><i class="fa fa-plus"></i> ${label}</button>`;
     };
 
     const settings = sec.settings || {};
@@ -7025,8 +7059,8 @@ body.sb-fullscreen-active{overflow:hidden}
 
       case 'hero':
         inner = isModern
-          ? `<div class="hero ${sec.hideBox ? 'no-img' : ''}"><div><div class="ey">${ed('ey', sec.ey)}</div><h1>${ed('heading', sec.heading)}</h1><p class="l">${ed('desc', sec.desc)}</p><div class="sb-btn-group">${btnHtml(sec.id, 'btn1', sec.btn1, 'solid', 'subscribe')}${sec.btn2 !== undefined && sec.btn2 !== null && sec.btn2 !== '' ? btnHtml(sec.id, 'btn2', sec.btn2, 'outline', 'manage') : addBtnHtml(sec.id, 'btn2')}</div></div>${ph(sec.img || 'hero', '', sec.id)}</div>`
-          : `<div class="hero ${sec.hideBox ? 'no-img' : ''}"><div class="tx"><div class="ey">${ed('ey', sec.ey)}</div><h1>${ed('heading', sec.heading)}</h1><p class="l">${ed('desc', sec.desc)}</p><div class="sb-btn-group">${btnHtml(sec.id, 'btn1', sec.btn1, 'solid', 'subscribe')}${sec.btn2 !== undefined && sec.btn2 !== null && sec.btn2 !== '' ? btnHtml(sec.id, 'btn2', sec.btn2, 'outline', 'manage') : addBtnHtml(sec.id, 'btn2')}</div></div>${ph(sec.img || 'hero', '', sec.id)}</div>`;
+          ? `<div class="hero ${sec.hideBox ? 'no-img' : ''}"><div><div class="ey">${ed('ey', sec.ey)}</div><h1>${ed('heading', sec.heading)}</h1><p class="l">${ed('desc', sec.desc)}</p><div class="sb-btn-group">${sec.btn1 ? btnHtml(sec.id, 'btn1', sec.btn1, 'solid', 'subscribe') : addBtnHtml(sec.id, 'btn1')}${sec.btn2 !== undefined && sec.btn2 !== null && sec.btn2 !== '' ? btnHtml(sec.id, 'btn2', sec.btn2, 'outline', 'manage') : addBtnHtml(sec.id, 'btn2')}</div></div>${ph(sec.img || 'hero', '', sec.id)}</div>`
+          : `<div class="hero ${sec.hideBox ? 'no-img' : ''}"><div class="tx"><div class="ey">${ed('ey', sec.ey)}</div><h1>${ed('heading', sec.heading)}</h1><p class="l">${ed('desc', sec.desc)}</p><div class="sb-btn-group">${sec.btn1 ? btnHtml(sec.id, 'btn1', sec.btn1, 'solid', 'subscribe') : addBtnHtml(sec.id, 'btn1')}${sec.btn2 !== undefined && sec.btn2 !== null && sec.btn2 !== '' ? btnHtml(sec.id, 'btn2', sec.btn2, 'outline', 'manage') : addBtnHtml(sec.id, 'btn2')}</div></div>${ph(sec.img || 'hero', '', sec.id)}</div>`;
         break;
 
       case 'about':
@@ -7101,7 +7135,7 @@ body.sb-fullscreen-active{overflow:hidden}
         break;
 
       case 'cta':
-        inner = `<div class="s br"><div class="cta-banner"><div class="ey">${ed('ey', sec.ey)}</div><h2>${ed('heading', sec.heading)}</h2><p>${ed('desc', sec.desc)}</p><div class="sb-btn-group" style="justify-content:center">${btnHtml(sec.id, 'btn1', sec.btn1 || 'Subscribe now', 'solid', 'subscribe')}${sec.btn2 !== undefined && sec.btn2 !== null && sec.btn2 !== '' ? btnHtml(sec.id, 'btn2', sec.btn2, 'outline', 'manage') : addBtnHtml(sec.id, 'btn2')}</div></div></div>`;
+        inner = `<div class="s br"><div class="cta-banner"><div class="ey">${ed('ey', sec.ey)}</div><h2>${ed('heading', sec.heading)}</h2><p>${ed('desc', sec.desc)}</p><div class="sb-btn-group" style="justify-content:center">${sec.btn1 ? btnHtml(sec.id, 'btn1', sec.btn1 || 'Subscribe now', 'solid', 'subscribe') : addBtnHtml(sec.id, 'btn1')}${sec.btn2 !== undefined && sec.btn2 !== null && sec.btn2 !== '' ? btnHtml(sec.id, 'btn2', sec.btn2, 'outline', 'manage') : addBtnHtml(sec.id, 'btn2')}</div></div></div>`;
         break;
 
       case 'hol':
@@ -7138,7 +7172,7 @@ body.sb-fullscreen-active{overflow:hidden}
         break;
 
       case 'don':
-        inner = `<div class="s br"><div class="split ${sec.hideBox ? 'no-img' : ''}">${ph(sec.img || 'dinner', '', sec.id)}<div><div class="ey">${ed('ey', sec.ey)}</div><h2 style="font-size:clamp(26px,4.4cqw,38px)">${ed('heading', sec.heading)}</h2><p>${ed('desc', sec.desc)}</p><div class="sb-btn-group">${btnHtml(sec.id, 'btn1', sec.btn1 || 'Donate', 'solid', 'donate')}${sec.btn2 !== undefined && sec.btn2 !== null && sec.btn2 !== '' ? btnHtml(sec.id, 'btn2', sec.btn2, 'outline', 'pdf') : addBtnHtml(sec.id, 'btn2')}</div></div></div></div>`;
+        inner = `<div class="s br"><div class="split ${sec.hideBox ? 'no-img' : ''}">${ph(sec.img || 'dinner', '', sec.id)}<div><div class="ey">${ed('ey', sec.ey)}</div><h2 style="font-size:clamp(26px,4.4cqw,38px)">${ed('heading', sec.heading)}</h2><p>${ed('desc', sec.desc)}</p><div class="sb-btn-group">${sec.btn1 ? btnHtml(sec.id, 'btn1', sec.btn1 || 'Donate', 'solid', 'donate') : addBtnHtml(sec.id, 'btn1')}${sec.btn2 !== undefined && sec.btn2 !== null && sec.btn2 !== '' ? btnHtml(sec.id, 'btn2', sec.btn2, 'outline', 'pdf') : addBtnHtml(sec.id, 'btn2')}</div></div></div></div>`;
         break;
 
       case 'text':
