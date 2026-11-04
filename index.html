@@ -786,9 +786,16 @@ body.sb-fullscreen-active{overflow:hidden}
 .sb-site:not(.sb-classic) .sbtn{background:var(--brand)}
 .sb-site .br .sbtn{background:#fff;color:var(--brand)}
 .sb-site .br .sbtn.o{background:transparent;color:#ffffff !important;border-color:#ffffff}
-.sb-site .nav{display:flex;justify-content:space-between;align-items:center;padding:14px 6cqw;background:var(--sf);border-bottom:1px solid var(--ln);font-size:13px}
-.sb-site .nav b{font-family:var(--d)}
-.sb-site .nav span{color:var(--mt)}
+.sb-site .nav{display:flex;justify-content:space-between;align-items:center;padding:18px 6cqw;background:var(--sf);border-bottom:1px solid var(--ln);font-size:14px;position:sticky;top:0;z-index:25;box-shadow:0 2px 10px rgba(0,0,0,.04)}
+.sb-site .nav b{font-family:var(--d);font-size:18px}
+.sb-site .nav a{color:var(--mt);text-decoration:none;transition:color .15s}
+.sb-site .nav a:hover{color:var(--ink)}
+.sb-site .nav .nav-links{display:flex;align-items:center;gap:20px}
+.sb-site .nav .nav-login{cursor:pointer;text-decoration:underline;color:var(--mt)}
+.sb-frame.m .sb-site .nav .nav-links{display:none}
+@media (max-width:860px){
+  .sb-site .nav .nav-links{display:none}
+}
 .sb-site .hero{display:grid;grid-template-columns:1.05fr 1fr;gap:5cqw;align-items:center;padding:56px 6cqw}
 .sb-site .hero h1{font-size:clamp(32px,6.4cqw,60px)}
 .sb-site .hero p.l{margin:16px 0 20px;color:var(--mt);max-width:48ch}
@@ -7127,11 +7134,11 @@ body.sb-fullscreen-active{overflow:hidden}
         break;
 
       case 'about':
-        inner = `<div class="s base"><div class="split rev ${sec.hideBox ? 'no-img' : ''}">${ph(sec.img || 'about', '', sec.id)}<div><div class="ey">${ed('ey', sec.ey)}</div><h2 style="font-size:clamp(26px,4.4cqw,38px)">${ed('heading', sec.heading)}</h2><p>${ed('desc', sec.desc)}</p></div></div></div>`;
+        inner = `<div class="s base" id="about"><div class="split rev ${sec.hideBox ? 'no-img' : ''}">${ph(sec.img || 'about', '', sec.id)}<div><div class="ey">${ed('ey', sec.ey)}</div><h2 style="font-size:clamp(26px,4.4cqw,38px)">${ed('heading', sec.heading)}</h2><p>${ed('desc', sec.desc)}</p></div></div></div>`;
         break;
 
       case 'how':
-        inner = `<div class="s sf">${secHdr()}<div class="cols">` +
+        inner = `<div class="s sf" id="how">${secHdr()}<div class="cols">` +
           (sec.items || []).map(function(it, i){
             return `<div class="sb-item-wrap card">
               <button type="button" class="sb-item-del" onclick="event.stopPropagation();SB.deleteItem('${sec.id}', ${i})" title="Delete step"><i class="fa fa-times"></i></button>
@@ -7148,7 +7155,7 @@ body.sb-fullscreen-active{overflow:hidden}
         break;
 
       case 'plans':
-        inner = `<div class="s base"><span class="sync" style="margin-top:-40px">Synced from Product List</span>${secHdr()}<div class="cols">` +
+        inner = `<div class="s base" id="plans"><span class="sync" style="margin-top:-40px">Synced from Product List</span>${secHdr()}<div class="cols">` +
           (sec.items || []).map(function(it, i){
             return `<div class="sb-item-wrap card">
               <button type="button" class="sb-item-del" onclick="event.stopPropagation();SB.deleteItem('${sec.id}', ${i})" title="Delete plan"><i class="fa fa-times"></i></button>
@@ -7182,7 +7189,7 @@ body.sb-fullscreen-active{overflow:hidden}
         break;
 
       case 'say':
-        inner = `<div class="s base">${secHdr()}<div class="cols">` +
+        inner = `<div class="s base" id="reviews">${secHdr()}<div class="cols">` +
           (sec.items || []).map(function(it, i){
             return `<div class="sb-item-wrap card">
               <button type="button" class="sb-item-del" onclick="event.stopPropagation();SB.deleteItem('${sec.id}', ${i})" title="Delete testimonial"><i class="fa fa-times"></i></button>
@@ -7198,11 +7205,11 @@ body.sb-fullscreen-active{overflow:hidden}
         break;
 
       case 'cta':
-        inner = `<div class="s br"><div class="cta-banner"><div class="ey">${ed('ey', sec.ey)}</div><h2>${ed('heading', sec.heading)}</h2><p>${ed('desc', sec.desc)}</p><div class="sb-btn-group" style="justify-content:center">${sec.btn1 ? btnHtml(sec.id, 'btn1', sec.btn1 || 'Subscribe now', 'solid', 'subscribe') : addBtnHtml(sec.id, 'btn1')}${sec.btn2 !== undefined && sec.btn2 !== null && sec.btn2 !== '' ? btnHtml(sec.id, 'btn2', sec.btn2, 'outline', 'manage') : addBtnHtml(sec.id, 'btn2')}</div></div></div>`;
+        inner = `<div class="s br" id="cta"><div class="cta-banner"><div class="ey">${ed('ey', sec.ey)}</div><h2>${ed('heading', sec.heading)}</h2><p>${ed('desc', sec.desc)}</p><div class="sb-btn-group" style="justify-content:center">${sec.btn1 ? btnHtml(sec.id, 'btn1', sec.btn1 || 'Subscribe now', 'solid', 'subscribe') : addBtnHtml(sec.id, 'btn1')}${sec.btn2 !== undefined && sec.btn2 !== null && sec.btn2 !== '' ? btnHtml(sec.id, 'btn2', sec.btn2, 'outline', 'manage') : addBtnHtml(sec.id, 'btn2')}</div></div></div>`;
         break;
 
       case 'hol':
-        inner = `<div class="s tn"><span class="sync" style="margin-top:-40px">Synced from Holidays</span>${secHdr()}<div style="max-width:640px;margin:${isModern ? '0' : '0 auto'}">` +
+        inner = `<div class="s tn" id="holidays"><span class="sync" style="margin-top:-40px">Synced from Holidays</span>${secHdr()}<div style="max-width:640px;margin:${isModern ? '0' : '0 auto'}">` +
           (sec.items || []).map(function(it, i){
             return `<div class="sb-item-wrap hol">
               <button type="button" class="sb-item-del" onclick="event.stopPropagation();SB.deleteItem('${sec.id}', ${i})" title="Delete date"><i class="fa fa-times"></i></button>
@@ -7217,7 +7224,7 @@ body.sb-fullscreen-active{overflow:hidden}
         break;
 
       case 'gal':
-        inner = `<div class="s sf">${secHdr()}<div class="gal">` +
+        inner = `<div class="s sf" id="gallery">${secHdr()}<div class="gal">` +
           (sec.items || []).map(function(slot, i){
             return `<div class="sb-item-wrap sb-gal-item-wrap" style="position:relative">
               ${ph(slot, 'sb-gal-ph', sec.id)}
@@ -7231,7 +7238,7 @@ body.sb-fullscreen-active{overflow:hidden}
         break;
 
       case 'contact':
-        inner = `<div class="s tn"><div class="split ${sec.hideBox ? 'no-img' : ''}"><div><div class="ey">${ed('ey', sec.ey)}</div><h2 style="font-size:clamp(26px,4.4cqw,38px)">${ed('heading', sec.heading)}</h2><p style="margin-bottom:14px">${ed('desc', sec.desc)}</p><div style="color:var(--ink);line-height:1.8">${ed('details', sec.details || '<b>Friends of Fairview</b><br>(469) 331-2520<br>info@friendsoffairview.org', 'div')}</div></div>${ph(sec.img || 'map', 'map', sec.id)}</div><p class="who" style="margin-top:12px;text-align:center">${ed('footerNote', sec.footerNote || 'Friends of Fairview’s service area is highlighted in red.')}</p></div>`;
+        inner = `<div class="s tn" id="contact"><div class="split ${sec.hideBox ? 'no-img' : ''}"><div><div class="ey">${ed('ey', sec.ey)}</div><h2 style="font-size:clamp(26px,4.4cqw,38px)">${ed('heading', sec.heading)}</h2><p style="margin-bottom:14px">${ed('desc', sec.desc)}</p><div style="color:var(--ink);line-height:1.8">${ed('details', sec.details || '<b>Friends of Fairview</b><br>(469) 331-2520<br>info@friendsoffairview.org', 'div')}</div></div>${ph(sec.img || 'map', 'map', sec.id)}</div><p class="who" style="margin-top:12px;text-align:center">${ed('footerNote', sec.footerNote || 'Friends of Fairview’s service area is highlighted in red.')}</p></div>`;
         break;
 
       case 'don':
@@ -7438,6 +7445,16 @@ ${SB.SLOTS.map(function(s){
     });
   }
 
+  SB.scrollToSection = function(type, ev) {
+    if (ev) ev.preventDefault();
+    const map = { hol: 'holidays', gal: 'gallery' };
+    const id = map[type] || type;
+    const target = document.getElementById(id) || document.querySelector(`.sb-sec-wrap[data-sec-type="${type}"]`);
+    if (target) {
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
+
   SB.render = function(){
     ensureUniqueGallerySlots();
     const m = SB.state.tpl === 'modern', b = SB.state.brand[SB.state.tpl];
@@ -7446,7 +7463,21 @@ ${SB.SLOTS.map(function(s){
 
     let navLoginText = (SB.state.navLogin || 'Already subscribed? Log in').replace(/,\s*no password needed/gi, '').replace(/\s*no password needed/gi, '').trim();
     SB.state.navLogin = navLoginText;
-    let siteHTML = `<div class="nav"><b contenteditable="true" data-nav="brand">${SB.state.navBrand || "Friends of Fairview"}</b><span><span contenteditable="true" data-nav="login">${navLoginText}</span></span></div>`;
+    let siteHTML = `<header class="nav">
+      <b contenteditable="true" data-nav="brand">${SB.state.navBrand || "Friends of Fairview"}</b>
+      <div class="nav-links">
+        <a href="#about" onclick="SB.scrollToSection('about', event)">About</a>
+        <a href="#how" onclick="SB.scrollToSection('how', event)">How It Works</a>
+        <a href="#plans" onclick="SB.scrollToSection('plans', event)">Plans</a>
+        <a href="#holidays" onclick="SB.scrollToSection('hol', event)">Holidays</a>
+        <a href="#gallery" onclick="SB.scrollToSection('gal', event)">Gallery</a>
+        <a href="#contact" onclick="SB.scrollToSection('contact', event)">Contact</a>
+      </div>
+      <div>
+        <span class="nav-login"><span contenteditable="true" data-nav="login">${navLoginText}</span></span>
+        <button class="sbtn" style="padding:8px 18px;margin:0 0 0 14px;font-size:13px;border:0" type="button" onclick="toast('Opens Subscribe modal on published site')">Subscribe</button>
+      </div>
+    </header>`;
 
     // Render sections with inter-section add lines
     siteHTML += `<div class="sb-sec-add-line"><button type="button" class="sb-sec-add-btn" onclick="SB.openAddSecModal(0)"><i class="fa fa-plus"></i> Add Section</button></div>`;
@@ -7458,7 +7489,7 @@ ${SB.SLOTS.map(function(s){
       }
     });
 
-    siteHTML += `<div class="ft s br" style="padding:36px 6cqw"><b>Friends of Fairview Fire Fighters Association</b><p>info@friendsoffairview.org · (469) 331-2520</p><p>Privacy policy · Terms of service · Recurring billing &amp; cancellation · Donation refund policy</p><p>© 2026 Friends of Fairview · Powered by Helping With Flags</p></div>`;
+    siteHTML += `<footer class="ft s br" style="padding:36px 6cqw"><b>Friends of Fairview Fire Fighters Association</b><p>info@friendsoffairview.org · (469) 331-2520 · 510 State HWY 5, Fairview, TX 75069</p><p>Privacy policy · Terms of service · Recurring billing &amp; cancellation · Donation refund policy</p><p>© 2026 Friends of Fairview · Powered by Helping With Flags</p></footer>`;
 
     $('#sb-site').innerHTML = siteHTML;
 
