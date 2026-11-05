@@ -7959,7 +7959,7 @@ body.sb-fullscreen-active{overflow:hidden}
         break;
 
       case 'hol':
-        inner = `<div class="s tn" id="holidays"><span class="sync" style="margin-top:-40px">Synced from Holidays</span>${secHdr()}<div style="max-width:640px;margin:${isModern ? '0' : '0 auto'}">` +
+        inner = `<div class="s tn" id="holidays">${secHdr()}<div style="max-width:640px;margin:${isModern ? '0' : '0 auto'}">` +
           (sec.items || []).map(function(it, i){
             return `<div class="sb-item-wrap hol">
               <button type="button" class="sb-item-del" onclick="event.stopPropagation();SB.deleteItem('${sec.id}', ${i})" title="Delete date"><i class="fa fa-times"></i></button>
