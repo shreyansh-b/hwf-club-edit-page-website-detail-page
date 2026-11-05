@@ -4099,6 +4099,7 @@ body.sb-fullscreen-active{overflow:hidden}
         }
       }
     }
+    SB.pushHistory('Change Template');
     if (typeof markDirty === 'function') markDirty();
     SB.tplCards();
     SB.render();
@@ -4108,12 +4109,14 @@ body.sb-fullscreen-active{overflow:hidden}
 
   SB.setBrand = function(c){
     SB.state.brand[SB.state.tpl] = c;
+    SB.pushHistory('Change Brand Color');
     if (typeof markDirty === 'function') markDirty();
     SB.render();
   };
 
   SB.resetImage = function(k){
     SB.IMG[k] = SB.DEF[k];
+    SB.pushHistory('Reset Image');
     if (typeof markDirty === 'function') markDirty();
     SB.render();
     if (typeof toast === 'function') toast('Image reset to default');
@@ -4150,6 +4153,7 @@ body.sb-fullscreen-active{overflow:hidden}
           sec.hideBox = false;
         }
       }
+      SB.pushHistory('Update Photo');
       markDirty();
       SB.render();
       toast('Photo updated');
@@ -4173,6 +4177,7 @@ body.sb-fullscreen-active{overflow:hidden}
           sec.hideBox = false;
         }
       }
+      SB.pushHistory('Drop Photo');
       markDirty();
       SB.render();
       toast('Photo added via drag & drop!');
@@ -4190,6 +4195,7 @@ body.sb-fullscreen-active{overflow:hidden}
     }
     if (sec && sec.type === 'gal') {
       SB.IMG[slot] = '';
+      SB.pushHistory('Remove Photo');
       markDirty();
       SB.render();
       toast('Photo removed. Click "+ Add Photo" to choose another image, or delete the slot.');
@@ -4198,6 +4204,7 @@ body.sb-fullscreen-active{overflow:hidden}
     if (sec) {
       sec.hideImg = true;
     }
+    SB.pushHistory('Remove Photo');
     markDirty();
     SB.render();
     toast('Photo removed from section. You can drag & drop an image or click + Add Photo in the preview to restore it.');
@@ -4215,6 +4222,7 @@ body.sb-fullscreen-active{overflow:hidden}
       if (!SB.IMG[slot] && SB.DEF[slot]) {
         SB.IMG[slot] = SB.DEF[slot];
       }
+      SB.pushHistory('Restore Photo');
       markDirty();
       SB.render();
       toast('Photo restored');
@@ -4223,7 +4231,11 @@ body.sb-fullscreen-active{overflow:hidden}
     if (sec) {
       sec.hideImg = false;
       sec.hideBox = false;
+      if (!SB.IMG[slot] && SB.DEF[slot]) {
+        SB.IMG[slot] = SB.DEF[slot];
+      }
     }
+    SB.pushHistory('Restore Photo');
     markDirty();
     SB.render();
     toast('Photo restored to section');
@@ -4450,6 +4462,7 @@ body.sb-fullscreen-active{overflow:hidden}
     const insertIdx = (typeof sbDrawerState.targetSecIdx === 'number') ? sbDrawerState.targetSecIdx : SB.state.sections.length;
     SB.state.sections.splice(insertIdx, 0, newSec);
     SB.closeAddDrawer();
+    SB.pushHistory('Add Section: ' + newSec.title);
     markDirty();
     SB.render();
     setTimeout(function(){
@@ -4475,6 +4488,7 @@ body.sb-fullscreen-active{overflow:hidden}
     if (!sec.elements) sec.elements = [];
     sec.elements.push(newEl);
     SB.closeAddDrawer();
+    SB.pushHistory('Add Element: ' + def.title);
     markDirty();
     SB.render();
     setTimeout(function(){
@@ -4496,6 +4510,7 @@ body.sb-fullscreen-active{overflow:hidden}
     }).then(function(confirmed){
       if (confirmed) {
         sec.elements.splice(elIdx, 1);
+        SB.pushHistory('Delete Element: ' + (el.title || el.type));
         markDirty();
         SB.render();
         toast('Element deleted');
@@ -4511,6 +4526,7 @@ body.sb-fullscreen-active{overflow:hidden}
     const temp = sec.elements[elIdx];
     sec.elements[elIdx] = sec.elements[target];
     sec.elements[target] = temp;
+    SB.pushHistory('Move Element');
     markDirty();
     SB.render();
     toast('Element moved');
@@ -4535,6 +4551,7 @@ body.sb-fullscreen-active{overflow:hidden}
       }).then(function(confirmed){
         if (confirmed) {
           sec.hideImg = true;
+          SB.pushHistory('Remove Section Image');
           markDirty();
           SB.render();
           toast(`Image removed from "${sec.title || sec.type}". Click delete again to delete the section.`);
@@ -4546,6 +4563,7 @@ body.sb-fullscreen-active{overflow:hidden}
     // Without image (or section has no photo): remove the entire section
     const doDelete = function(){
       SB.state.sections.splice(idx, 1);
+      SB.pushHistory('Delete Section: ' + (sec.title || 'Section'));
       markDirty();
       SB.render();
       toast(`"${sec.title || 'Section'}" deleted`);
@@ -4580,6 +4598,7 @@ body.sb-fullscreen-active{overflow:hidden}
           const itemIdx = sec.items.indexOf(slot);
           if (itemIdx >= 0) {
             sec.items.splice(itemIdx, 1);
+            SB.pushHistory('Delete Photo Slot');
           }
           markDirty();
           SB.render();
@@ -4597,6 +4616,7 @@ body.sb-fullscreen-active{overflow:hidden}
     }).then(function(confirmed){
       if (confirmed) {
         sec.hideBox = true;
+        SB.pushHistory('Remove Image Box');
         markDirty();
         SB.render();
         toast(`Image box removed from "${sec.title || sec.type}". Layout updated.`);
@@ -4629,6 +4649,7 @@ body.sb-fullscreen-active{overflow:hidden}
     }
 
     SB.state.sections.splice(idx + 1, 0, clone);
+    SB.pushHistory('Duplicate Section: ' + orig.title);
     markDirty();
     SB.render();
     setTimeout(function(){
@@ -4646,6 +4667,7 @@ body.sb-fullscreen-active{overflow:hidden}
     const temp = SB.state.sections[idx];
     SB.state.sections[idx] = SB.state.sections[target];
     SB.state.sections[target] = temp;
+    SB.pushHistory('Move Section');
     markDirty();
     SB.render();
     toast('Section moved ' + (dir < 0 ? 'up' : 'down'));
@@ -4669,6 +4691,7 @@ body.sb-fullscreen-active{overflow:hidden}
       var moved = secs.splice(fi, 1)[0];
       ti = secs.findIndex(function(s){ return s.id === targetId; });
       secs.splice(ti, 0, moved);
+      SB.pushHistory('Reorder Sections');
       markDirty();
       SB.render();
     }
@@ -4799,6 +4822,7 @@ body.sb-fullscreen-active{overflow:hidden}
     const sec = SB.state.sections.find(function(s){ return s.id === secId; });
     if (!sec) return;
     sec.hidden = !sec.hidden;
+    SB.pushHistory('Toggle Section: ' + (sec.title || sec.type));
     markDirty();
     SB.render();
     toast(sec.hidden ? `"${sec.title}" hidden` : `"${sec.title}" visible`);
@@ -4828,11 +4852,13 @@ body.sb-fullscreen-active{overflow:hidden}
       const uid = 'gal_' + Date.now() + '_' + Math.random().toString(36).substr(2, 4);
       SB.IMG[uid] = '';
       sec.items.push(uid);
+      SB.pushHistory('Add Photo Slot');
       markDirty();
       SB.render();
       toast('Photo slot added. Click "+ Add Photo" or drag an image file onto it.');
       return;
     }
+    SB.pushHistory('Add Item to ' + (sec.title || sec.type));
     markDirty();
     SB.render();
     toast('New item added');
@@ -4843,6 +4869,7 @@ body.sb-fullscreen-active{overflow:hidden}
     if (!sec || !sec.items) return;
     const doDelete = function(){
       sec.items.splice(itemIdx, 1);
+      SB.pushHistory('Delete Item from ' + (sec.title || sec.type));
       markDirty();
       SB.render();
       toast('Item deleted');
@@ -4881,8 +4908,11 @@ body.sb-fullscreen-active{overflow:hidden}
 
   SB.pushHistory = function(actionName) {
     if (!SB.state) return;
-    const snap = JSON.stringify(SB.state);
-    if (SB.history[SB.historyIdx] === snap) return;
+    const snap = JSON.stringify({
+      state: SB.state,
+      img: (typeof SB.IMG === 'object' && SB.IMG !== null) ? SB.IMG : {}
+    });
+    if (SB.historyIdx >= 0 && SB.history[SB.historyIdx] === snap) return;
     if (SB.historyIdx < SB.history.length - 1) {
       SB.history = SB.history.slice(0, SB.historyIdx + 1);
     }
@@ -4897,7 +4927,18 @@ body.sb-fullscreen-active{overflow:hidden}
   SB.undo = function() {
     if (SB.historyIdx > 0) {
       SB.historyIdx--;
-      SB.state = JSON.parse(SB.history[SB.historyIdx]);
+      try {
+        const raw = SB.history[SB.historyIdx];
+        const data = JSON.parse(raw);
+        if (data && data.state) {
+          SB.state = JSON.parse(JSON.stringify(data.state));
+          if (data.img) SB.IMG = Object.assign({}, data.img);
+        } else {
+          SB.state = JSON.parse(JSON.stringify(data));
+        }
+      } catch(e) {
+        console.error('Undo parse error:', e);
+      }
       markDirty();
       SB.render();
       SB.updateHistoryButtons();
@@ -4908,7 +4949,18 @@ body.sb-fullscreen-active{overflow:hidden}
   SB.redo = function() {
     if (SB.historyIdx < SB.history.length - 1) {
       SB.historyIdx++;
-      SB.state = JSON.parse(SB.history[SB.historyIdx]);
+      try {
+        const raw = SB.history[SB.historyIdx];
+        const data = JSON.parse(raw);
+        if (data && data.state) {
+          SB.state = JSON.parse(JSON.stringify(data.state));
+          if (data.img) SB.IMG = Object.assign({}, data.img);
+        } else {
+          SB.state = JSON.parse(JSON.stringify(data));
+        }
+      } catch(e) {
+        console.error('Redo parse error:', e);
+      }
       markDirty();
       SB.render();
       SB.updateHistoryButtons();
@@ -4919,8 +4971,8 @@ body.sb-fullscreen-active{overflow:hidden}
   SB.updateHistoryButtons = function() {
     const undoBtn = document.getElementById('sb-undo-btn');
     const redoBtn = document.getElementById('sb-redo-btn');
-    if (undoBtn) undoBtn.disabled = SB.historyIdx <= 0;
-    if (redoBtn) redoBtn.disabled = SB.historyIdx >= SB.history.length - 1;
+    if (undoBtn) undoBtn.disabled = (SB.historyIdx <= 0);
+    if (redoBtn) redoBtn.disabled = (SB.historyIdx < 0 || SB.historyIdx >= SB.history.length - 1);
   };
 
   document.addEventListener('keydown', function(e) {
@@ -7911,7 +7963,7 @@ body.sb-fullscreen-active{overflow:hidden}
         break;
 
       case 'plans':
-        inner = `<div class="s base" id="plans"><span class="sync" style="margin-top:-40px">Synced from Product List</span>${secHdr()}<div class="cols">` +
+        inner = `<div class="s base" id="plans">${secHdr()}<div class="cols">` +
           (sec.items || []).map(function(it, i){
             return `<div class="sb-item-wrap card">
               <button type="button" class="sb-item-del" onclick="event.stopPropagation();SB.deleteItem('${sec.id}', ${i})" title="Delete plan"><i class="fa fa-times"></i></button>
@@ -8208,6 +8260,7 @@ body.sb-fullscreen-active{overflow:hidden}
   SB.addNavLink = function() {
     if (!SB.state.navLinks) SB.state.navLinks = [];
     SB.state.navLinks.push({ text: 'New Link', href: '#contact', id: 'contact' });
+    SB.pushHistory('Add Nav Link');
     markDirty();
     SB.render();
     SB.renderNavLinksManagerList();
@@ -8216,6 +8269,7 @@ body.sb-fullscreen-active{overflow:hidden}
   SB.deleteNavLink = function(idx) {
     if (!SB.state.navLinks) return;
     SB.state.navLinks.splice(idx, 1);
+    SB.pushHistory('Delete Nav Link');
     markDirty();
     SB.render();
     SB.renderNavLinksManagerList();
@@ -8236,6 +8290,7 @@ body.sb-fullscreen-active{overflow:hidden}
     SB.state.hideNavLogin = false;
     SB.state.navBtnBg = '';
     SB.state.navBtnColor = '';
+    SB.pushHistory('Reset Navbar');
     markDirty();
     SB.render();
     SB.openNavSettingsModal();
@@ -8603,10 +8658,6 @@ body.sb-fullscreen-active{overflow:hidden}
 
   SB.render = function(){
     ensureUniqueGallerySlots();
-    const m = SB.state.tpl === 'modern', b = SB.state.brand[SB.state.tpl];
-    $('#sb-site').className = 'sb-site ' + (SB.state.tpl === 'classic' ? 'sb-classic' : '');
-    $('#sb-site').style.setProperty('--brand', b);
-
     if (!SB.state.navLinks || !Array.isArray(SB.state.navLinks)) {
       SB.state.navLinks = (typeof SB.defaultNavLinks === 'function') ? SB.defaultNavLinks() : [
         { id: 'about', text: 'About', href: '#about' },
@@ -8617,6 +8668,12 @@ body.sb-fullscreen-active{overflow:hidden}
         { id: 'contact', text: 'Contact', href: '#contact' }
       ];
     }
+    if (SB.history.length === 0 && SB.state) {
+      SB.pushHistory('Initial State');
+    }
+    const m = SB.state.tpl === 'modern', b = SB.state.brand[SB.state.tpl];
+    $('#sb-site').className = 'sb-site ' + (SB.state.tpl === 'classic' ? 'sb-classic' : '');
+    $('#sb-site').style.setProperty('--brand', b);
     if (!SB.state.navCta) SB.state.navCta = 'Subscribe';
 
     let navLoginText = (SB.state.navLogin || 'Already subscribed? Log in').replace(/,\s*no password needed/gi, '').replace(/\s*no password needed/gi, '').trim();
@@ -8762,9 +8819,21 @@ body.sb-fullscreen-active{overflow:hidden}
         sec[field] = el.innerHTML;
       }
       markDirty();
+      clearTimeout(SB._textDebounce);
+      SB._textDebounce = setTimeout(function(){
+        SB.pushHistory('Edit Text');
+      }, 700);
+    };
+
+    $('#sb-site').onblur = function(e){
+      if (e.target && e.target.isContentEditable) {
+        clearTimeout(SB._textDebounce);
+        SB.pushHistory('Edit Text');
+      }
     };
 
     SB.panel();
+    if (typeof SB.updateHistoryButtons === 'function') SB.updateHistoryButtons();
     // Init drag & drop after DOM is updated
     setTimeout(function(){ if(typeof SB.initDragDrop === 'function') SB.initDragDrop(); }, 50);
   };
@@ -8897,6 +8966,8 @@ body.sb-fullscreen-active{overflow:hidden}
     SB.tplCards();
     SB.frame();
     SB.render();
+    SB.pushHistory('Initial State');
+    if (typeof SB.updateHistoryButtons === 'function') SB.updateHistoryButtons();
   };
 
   // Homepage Design is the default landing tab. A hash or ?tab= query can still

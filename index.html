@@ -3757,6 +3757,7 @@ body.sb-fullscreen-active{overflow:hidden}
     const insertIdx = (typeof sbDrawerState.targetSecIdx === 'number') ? sbDrawerState.targetSecIdx : SB.state.sections.length;
     SB.state.sections.splice(insertIdx, 0, newSec);
     SB.closeAddDrawer();
+    SB.pushHistory('Add Section: ' + newSec.title);
     markDirty();
     SB.render();
     setTimeout(function(){
@@ -3782,6 +3783,7 @@ body.sb-fullscreen-active{overflow:hidden}
     if (!sec.elements) sec.elements = [];
     sec.elements.push(newEl);
     SB.closeAddDrawer();
+    SB.pushHistory('Add Element: ' + def.title);
     markDirty();
     SB.render();
     setTimeout(function(){
@@ -3803,6 +3805,7 @@ body.sb-fullscreen-active{overflow:hidden}
     }).then(function(confirmed){
       if (confirmed) {
         sec.elements.splice(elIdx, 1);
+        SB.pushHistory('Delete Element: ' + (el.title || el.type));
         markDirty();
         SB.render();
         toast('Element deleted');
@@ -3853,6 +3856,7 @@ body.sb-fullscreen-active{overflow:hidden}
     // Without image (or section has no photo): remove the entire section
     const doDelete = function(){
       SB.state.sections.splice(idx, 1);
+      SB.pushHistory('Delete Section: ' + (sec.title || 'Section'));
       markDirty();
       SB.render();
       toast(`"${sec.title || 'Section'}" deleted`);
@@ -4188,8 +4192,11 @@ body.sb-fullscreen-active{overflow:hidden}
 
   SB.pushHistory = function(actionName) {
     if (!SB.state) return;
-    const snap = JSON.stringify(SB.state);
-    if (SB.history[SB.historyIdx] === snap) return;
+    const snap = JSON.stringify({
+      state: SB.state,
+      img: (typeof SB.IMG === 'object' && SB.IMG !== null) ? SB.IMG : {}
+    });
+    if (SB.historyIdx >= 0 && SB.history[SB.historyIdx] === snap) return;
     if (SB.historyIdx < SB.history.length - 1) {
       SB.history = SB.history.slice(0, SB.historyIdx + 1);
     }
@@ -4204,7 +4211,18 @@ body.sb-fullscreen-active{overflow:hidden}
   SB.undo = function() {
     if (SB.historyIdx > 0) {
       SB.historyIdx--;
-      SB.state = JSON.parse(SB.history[SB.historyIdx]);
+      try {
+        const raw = SB.history[SB.historyIdx];
+        const data = JSON.parse(raw);
+        if (data && data.state) {
+          SB.state = data.state;
+          if (data.img) SB.IMG = Object.assign({}, data.img);
+        } else {
+          SB.state = data;
+        }
+      } catch(e) {
+        console.error('Undo parse error:', e);
+      }
       markDirty();
       SB.render();
       SB.updateHistoryButtons();
@@ -4215,7 +4233,18 @@ body.sb-fullscreen-active{overflow:hidden}
   SB.redo = function() {
     if (SB.historyIdx < SB.history.length - 1) {
       SB.historyIdx++;
-      SB.state = JSON.parse(SB.history[SB.historyIdx]);
+      try {
+        const raw = SB.history[SB.historyIdx];
+        const data = JSON.parse(raw);
+        if (data && data.state) {
+          SB.state = data.state;
+          if (data.img) SB.IMG = Object.assign({}, data.img);
+        } else {
+          SB.state = data;
+        }
+      } catch(e) {
+        console.error('Redo parse error:', e);
+      }
       markDirty();
       SB.render();
       SB.updateHistoryButtons();
@@ -4226,8 +4255,8 @@ body.sb-fullscreen-active{overflow:hidden}
   SB.updateHistoryButtons = function() {
     const undoBtn = document.getElementById('sb-undo-btn');
     const redoBtn = document.getElementById('sb-redo-btn');
-    if (undoBtn) undoBtn.disabled = SB.historyIdx <= 0;
-    if (redoBtn) redoBtn.disabled = SB.historyIdx >= SB.history.length - 1;
+    if (undoBtn) undoBtn.disabled = (SB.historyIdx <= 0);
+    if (redoBtn) redoBtn.disabled = (SB.historyIdx < 0 || SB.historyIdx >= SB.history.length - 1);
   };
 
   document.addEventListener('keydown', function(e) {
@@ -7216,7 +7245,7 @@ body.sb-fullscreen-active{overflow:hidden}
         break;
 
       case 'plans':
-        inner = `<div class="s base" id="plans"><span class="sync" style="margin-top:-40px">Synced from Product List</span>${secHdr()}<div class="cols">` +
+        inner = `<div class="s base" id="plans">${secHdr()}<div class="cols">` +
           (sec.items || []).map(function(it, i){
             return `<div class="sb-item-wrap card">
               <button type="button" class="sb-item-del" onclick="event.stopPropagation();SB.deleteItem('${sec.id}', ${i})" title="Delete plan"><i class="fa fa-times"></i></button>
@@ -7475,6 +7504,7 @@ ${SB.SLOTS.map(function(s){
     f.style.width = SB.state.dev === 'm' ? '390px' : '100%';
     f.classList.toggle('m', SB.state.dev === 'm');
     SB.panel();
+    if (typeof SB.updateHistoryButtons === 'function') SB.updateHistoryButtons();
     // Init drag & drop after DOM is updated
     setTimeout(function(){ if(typeof SB.initDragDrop === 'function') SB.initDragDrop(); }, 50);
   };
@@ -7517,6 +7547,9 @@ ${SB.SLOTS.map(function(s){
   };
 
   SB.render = function(){
+    if (SB.history.length === 0 && SB.state) {
+      SB.pushHistory('Initial State');
+    }
     ensureUniqueGallerySlots();
     const m = SB.state.tpl === 'modern', b = SB.state.brand[SB.state.tpl];
     $('#sb-site').className = 'sb-site ' + (SB.state.tpl === 'classic' ? 'sb-classic' : '');
@@ -7634,6 +7667,7 @@ ${SB.SLOTS.map(function(s){
     };
 
     SB.panel();
+    if (typeof SB.updateHistoryButtons === 'function') SB.updateHistoryButtons();
     // Init drag & drop after DOM is updated
     setTimeout(function(){ if(typeof SB.initDragDrop === 'function') SB.initDragDrop(); }, 50);
   };
