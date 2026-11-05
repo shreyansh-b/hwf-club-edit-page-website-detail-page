@@ -608,7 +608,8 @@ main{min-width:0;padding:6px 12px 24px}
 .sb-slide-drawer.open {
   right: 0;
 }
-.sb-drawer-backdrop {
+#sbSecDrawerBackdrop,
+.sb-slide-backdrop {
   position: fixed;
   inset: 0;
   background: rgba(15, 23, 42, 0.45);
@@ -618,11 +619,12 @@ main{min-width:0;padding:6px 12px 24px}
   pointer-events: none;
   transition: opacity 0.25s ease;
 }
-.sb-drawer-backdrop.open {
+#sbSecDrawerBackdrop.open,
+.sb-slide-backdrop.open {
   opacity: 1;
   pointer-events: auto;
 }
-.sb-drawer-header {
+.sb-slide-drawer .sb-drawer-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -630,7 +632,7 @@ main{min-width:0;padding:6px 12px 24px}
   border-bottom: 1px solid #e2e8f0;
   background: #f8fafc;
 }
-.sb-drawer-header h3 {
+.sb-slide-drawer .sb-drawer-header h3 {
   margin: 0;
   font-size: 16px;
   font-weight: 700;
@@ -639,7 +641,7 @@ main{min-width:0;padding:6px 12px 24px}
   align-items: center;
   gap: 8px;
 }
-.sb-drawer-close {
+.sb-slide-drawer .sb-drawer-close {
   background: transparent;
   border: 0;
   font-size: 18px;
@@ -649,11 +651,11 @@ main{min-width:0;padding:6px 12px 24px}
   border-radius: 6px;
   transition: all 0.15s;
 }
-.sb-drawer-close:hover {
+.sb-slide-drawer .sb-drawer-close:hover {
   background: #e2e8f0;
   color: #0f172a;
 }
-.sb-drawer-body {
+.sb-slide-drawer .sb-drawer-body {
   flex: 1;
   overflow-y: auto;
   padding: 18px 20px;
@@ -1158,7 +1160,7 @@ main{min-width:0;padding:6px 12px 24px}
 .sb-site .cta-banner p{font-size:18px;opacity:.9;max-width:60ch;margin:0 auto 24px}
 
 /* Add Drawer & Modal System */
-.sb-drawer-backdrop{position:fixed;inset:0;background:rgba(15,23,42,.65);backdrop-filter:blur(5px);z-index:99999;display:flex;align-items:center;justify-content:center;padding:20px}
+.sb-drawer-backdrop, #sbAddDrawerModal{position:fixed;inset:0;background:rgba(15,23,42,.65);backdrop-filter:blur(5px);z-index:99999;display:flex;align-items:center;justify-content:center;padding:20px;opacity:1 !important;pointer-events:auto !important}
 .sb-drawer{background:#fff;width:100%;max-width:1080px;height:88vh;border-radius:16px;box-shadow:0 25px 60px rgba(0,0,0,.35);display:flex;flex-direction:column;overflow:hidden}
 .sb-drawer-head{padding:14px 22px;border-bottom:1px solid #e2e8f0;display:flex;justify-content:space-between;align-items:center;background:#fff}
 .sb-drawer-tabs{display:flex;gap:8px;align-items:center}
@@ -1171,7 +1173,7 @@ main{min-width:0;padding:6px 12px 24px}
 .sb-drawer-search-box{flex:1;display:flex;align-items:center;gap:10px;background:#fff;border:1px solid #cbd5e1;border-radius:99px;padding:7px 16px;font-size:13px}
 .sb-drawer-search-box input{border:0;outline:none;width:100%;font-size:13px;background:transparent}
 .sb-drawer-target-badge{font-size:11px;font-weight:600;color:#64748b;background:#e2e8f0;padding:4px 10px;border-radius:99px;white-space:nowrap}
-.sb-drawer-body{display:flex;flex:1;min-height:0;overflow:hidden}
+.sb-drawer-body, .sb-drawer .sb-drawer-body{display:flex !important;flex-direction:row !important;flex:1;min-height:0;overflow:hidden;padding:0 !important;gap:0 !important}
 .sb-drawer-sidebar{width:230px;background:#f8fafc;border-right:1px solid #e2e8f0;padding:14px 10px;overflow-y:auto;display:flex;flex-direction:column;gap:3px;flex-shrink:0}
 .sb-drawer-cat-item{display:flex;align-items:center;justify-content:space-between;padding:9px 12px;border-radius:8px;color:#475569;font-size:13px;font-weight:500;cursor:pointer;border:0;background:none;width:100%;text-align:left;transition:all .15s ease}
 .sb-drawer-cat-item:hover{background:#edf2f7;color:#0f172a}
@@ -4301,11 +4303,15 @@ body.sb-fullscreen-active{overflow:hidden}
     const drawer = ensureAddDrawerDOM();
     SB.renderAddDrawer();
     drawer.style.display = 'flex';
+    drawer.classList.add('open');
   };
 
   SB.closeAddDrawer = function() {
     const drawer = document.getElementById('sbAddDrawerModal');
-    if (drawer) drawer.style.display = 'none';
+    if (drawer) {
+      drawer.style.display = 'none';
+      drawer.classList.remove('open');
+    }
   };
 
   SB.switchDrawerTab = function(tab) {
