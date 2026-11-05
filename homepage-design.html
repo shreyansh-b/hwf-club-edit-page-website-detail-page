@@ -8258,7 +8258,8 @@ body.sb-fullscreen-active{overflow:hidden}
     if (!bd) {
       bd = document.createElement('div');
       bd.id = 'sbSecDrawerBackdrop';
-      bd.className = 'sb-drawer-backdrop';
+      bd.className = 'sb-slide-backdrop';
+      bd.style.display = 'none';
       bd.innerHTML = `
         <div class="sb-slide-drawer" id="sbSecSlideDrawer" onclick="event.stopPropagation()">
           <div class="sb-drawer-header">
@@ -8286,11 +8287,12 @@ body.sb-fullscreen-active{overflow:hidden}
   }
 
   SB.openSectionsDrawer = function() {
-    ensureSectionsDrawerDOM();
+    const bd = ensureSectionsDrawerDOM();
     SB.renderSectionsDrawer();
-    const bd = document.getElementById('sbSecDrawerBackdrop');
     const drawer = document.getElementById('sbSecSlideDrawer');
     if (bd && drawer) {
+      bd.style.display = 'block';
+      bd.offsetHeight;
       bd.classList.add('open');
       drawer.classList.add('open');
     }
@@ -8302,6 +8304,11 @@ body.sb-fullscreen-active{overflow:hidden}
     if (bd && drawer) {
       drawer.classList.remove('open');
       bd.classList.remove('open');
+      setTimeout(function() {
+        if (!bd.classList.contains('open')) {
+          bd.style.display = 'none';
+        }
+      }, 260);
     }
   };
 
