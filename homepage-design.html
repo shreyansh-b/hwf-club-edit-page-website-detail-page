@@ -4986,6 +4986,7 @@ body.sb-fullscreen-active{overflow:hidden}
 
   document.addEventListener('keydown', function(e) {
     if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+    if (e.target && e.target.isContentEditable) return;
     if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'z') {
       if (e.shiftKey) {
         e.preventDefault();
@@ -5134,6 +5135,7 @@ body.sb-fullscreen-active{overflow:hidden}
           targetEl[elField] = el.innerHTML;
         }
         markDirty();
+        SB.pushHistory('Format Text');
       }
       return;
     }
@@ -5155,6 +5157,7 @@ body.sb-fullscreen-active{overflow:hidden}
           sec[field] = el.innerHTML;
         }
         markDirty();
+        SB.pushHistory('Format Text');
       }
     }
   };
@@ -8744,32 +8747,31 @@ body.sb-fullscreen-active{overflow:hidden}
     });
 
     // Attach inline text editing handler
-    $('#sb-site').oninput = function(ev){
-      const el = ev.target.closest('[contenteditable]');
-      if (!el) return;
+    function handleInlineTextChange(el){
+      if (!el) return false;
 
       if (el.dataset.nav === 'brand') {
         SB.state.navBrand = el.innerHTML;
         markDirty();
-        return;
+        return true;
       }
       if (el.dataset.nav === 'login') {
         SB.state.navLogin = el.innerHTML;
         markDirty();
-        return;
+        return true;
       }
       if (el.dataset.nav === 'ctaBtn') {
         SB.state.navCta = el.innerText || el.textContent;
         markDirty();
-        return;
+        return true;
       }
       if (el.dataset.navLinkIdx !== undefined) {
         const lIdx = parseInt(el.dataset.navLinkIdx, 10);
         if (SB.state.navLinks && SB.state.navLinks[lIdx]) {
           SB.state.navLinks[lIdx].text = el.innerText || el.textContent;
           markDirty();
+          return true;
         }
-        return;
       }
 
       const secId = el.dataset.secId;
@@ -8801,15 +8803,15 @@ body.sb-fullscreen-active{overflow:hidden}
             targetEl[elField] = el.innerHTML;
           }
           markDirty();
+          return true;
         }
-        return;
       }
 
       const field = el.dataset.field;
-      if (!secId || !field) return;
+      if (!secId || !field) return false;
 
       const sec = SB.state.sections.find(function(s){ return s.id === secId; });
-      if (!sec) return;
+      if (!sec) return false;
 
       if (field.startsWith('items[')) {
         const match = field.match(/^items\[(\d+)\](?:\.(.+))?$/);
@@ -8828,18 +8830,41 @@ body.sb-fullscreen-active{overflow:hidden}
         sec[field] = el.innerHTML;
       }
       markDirty();
-      clearTimeout(SB._textDebounce);
-      SB._textDebounce = setTimeout(function(){
-        SB.pushHistory('Edit Text');
-      }, 700);
-    };
+      return true;
+    }
 
-    $('#sb-site').onblur = function(e){
-      if (e.target && e.target.isContentEditable) {
-        clearTimeout(SB._textDebounce);
-        SB.pushHistory('Edit Text');
-      }
-    };
+    const sbSiteEl = $('#sb-site');
+    if (sbSiteEl) {
+      sbSiteEl.oninput = function(ev){
+        const el = ev.target.closest('[contenteditable]');
+        if (!el) return;
+        if (handleInlineTextChange(el)) {
+          clearTimeout(SB._textDebounce);
+          SB._textDebounce = setTimeout(function(){
+            SB.pushHistory('Edit Text');
+          }, 300);
+        }
+      };
+
+      sbSiteEl.addEventListener('focusout', function(ev){
+        const el = ev.target && ev.target.closest && ev.target.closest('[contenteditable]');
+        if (el) {
+          clearTimeout(SB._textDebounce);
+          handleInlineTextChange(el);
+          SB.pushHistory('Edit Text');
+        }
+      });
+    }
+
+    const undoBtnEl = document.getElementById('sb-undo-btn');
+    if (undoBtnEl) {
+      undoBtnEl.addEventListener('mouseenter', function(){
+        if (SB._textDebounce) {
+          clearTimeout(SB._textDebounce);
+          SB.pushHistory('Edit Text');
+        }
+      });
+    }
 
     SB.panel();
     if (typeof SB.updateHistoryButtons === 'function') SB.updateHistoryButtons();
@@ -8959,6 +8984,7 @@ body.sb-fullscreen-active{overflow:hidden}
         SB.SLOTS.forEach(function(s){ SB.DEF[s[0]] = SB.IMG[s[0]] = uri(s[2]); });
         SB.tplCards();
         SB.frame();
+        SB.pushHistory('Reset to Defaults');
         SB.render();
         dirty = false;
         $('#saveSt').textContent = 'Changes reset to default.';
