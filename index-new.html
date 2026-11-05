@@ -1151,7 +1151,7 @@ main{min-width:0;padding:6px 12px 24px}
 .sb-site .cta-banner p{font-size:18px;opacity:.9;max-width:60ch;margin:0 auto 24px}
 
 /* Add Drawer & Modal System */
-.sb-drawer-backdrop, #sbAddDrawerModal{position:fixed;inset:0;background:rgba(15,23,42,.65);backdrop-filter:blur(5px);z-index:99999;display:flex;align-items:center;justify-content:center;padding:20px;opacity:1 !important;pointer-events:auto !important}
+#sbAddDrawerModal{position:fixed;inset:0;background:rgba(15,23,42,.65);backdrop-filter:blur(5px);z-index:99999;display:flex;align-items:center;justify-content:center;padding:20px}
 .sb-drawer{background:#fff;width:100%;max-width:1080px;height:88vh;border-radius:16px;box-shadow:0 25px 60px rgba(0,0,0,.35);display:flex;flex-direction:column;overflow:hidden}
 .sb-drawer-head{padding:14px 22px;border-bottom:1px solid #e2e8f0;display:flex;justify-content:space-between;align-items:center;background:#fff}
 .sb-drawer-tabs{display:flex;gap:8px;align-items:center}
@@ -1164,7 +1164,7 @@ main{min-width:0;padding:6px 12px 24px}
 .sb-drawer-search-box{flex:1;display:flex;align-items:center;gap:10px;background:#fff;border:1px solid #cbd5e1;border-radius:99px;padding:7px 16px;font-size:13px}
 .sb-drawer-search-box input{border:0;outline:none;width:100%;font-size:13px;background:transparent}
 .sb-drawer-target-badge{font-size:11px;font-weight:600;color:#64748b;background:#e2e8f0;padding:4px 10px;border-radius:99px;white-space:nowrap}
-.sb-drawer-body, .sb-drawer .sb-drawer-body{display:flex !important;flex-direction:row !important;flex:1;min-height:0;overflow:hidden;padding:0 !important;gap:0 !important}
+#sbAddDrawerModal .sb-drawer-body{display:flex;flex-direction:row;flex:1;min-height:0;overflow:hidden}
 .sb-drawer-sidebar{width:230px;background:#f8fafc;border-right:1px solid #e2e8f0;padding:14px 10px;overflow-y:auto;display:flex;flex-direction:column;gap:3px;flex-shrink:0}
 .sb-drawer-cat-item{display:flex;align-items:center;justify-content:space-between;padding:9px 12px;border-radius:8px;color:#475569;font-size:13px;font-weight:500;cursor:pointer;border:0;background:none;width:100%;text-align:left;transition:all .15s ease}
 .sb-drawer-cat-item:hover{background:#edf2f7;color:#0f172a}
@@ -8249,7 +8249,8 @@ body.sb-fullscreen-active{overflow:hidden}
     if (!bd) {
       bd = document.createElement('div');
       bd.id = 'sbSecDrawerBackdrop';
-      bd.className = 'sb-drawer-backdrop';
+      bd.className = 'sb-slide-backdrop';
+      bd.style.display = 'none';
       bd.innerHTML = `
         <div class="sb-slide-drawer" id="sbSecSlideDrawer" onclick="event.stopPropagation()">
           <div class="sb-drawer-header">
@@ -8277,11 +8278,12 @@ body.sb-fullscreen-active{overflow:hidden}
   }
 
   SB.openSectionsDrawer = function() {
-    ensureSectionsDrawerDOM();
+    const bd = ensureSectionsDrawerDOM();
     SB.renderSectionsDrawer();
-    const bd = document.getElementById('sbSecDrawerBackdrop');
     const drawer = document.getElementById('sbSecSlideDrawer');
     if (bd && drawer) {
+      bd.style.display = 'block';
+      bd.offsetHeight;
       bd.classList.add('open');
       drawer.classList.add('open');
     }
@@ -8293,6 +8295,11 @@ body.sb-fullscreen-active{overflow:hidden}
     if (bd && drawer) {
       drawer.classList.remove('open');
       bd.classList.remove('open');
+      setTimeout(function() {
+        if (!bd.classList.contains('open')) {
+          bd.style.display = 'none';
+        }
+      }, 260);
     }
   };
 
